@@ -125,7 +125,7 @@ bundle_me <- function(path) {
 
   duckdbfs::close_connection(con); gc()
 
-  invisible(0)
+  invisible(path)
 }
 
 

@@ -15,24 +15,22 @@ handlers("cli")
 
 
 # # bundled count at start
-# count <- open_dataset("s3://bio230121-bucket01/vera4cast/forecasts/bundled-summaries",
-#                       s3_endpoint = "amnh1.osn.mghpcc.org",
-#                       anonymous = TRUE) |>
-#   count()
-#
-# print(count)
+b <- open_dataset("s3://bio230121-bucket01/vera4cast/forecasts/bundled-summaries",
+                  s3_endpoint = "amnh1.osn.mghpcc.org",
+                  anonymous = TRUE)
+
+b |> count() |> print()
+b |> summarise(date = max(reference_datetime)) |> print()
+
 
 install_mc()
 mc_alias_set("osn", "amnh1.osn.mghpcc.org", Sys.getenv("OSN_KEY"), Sys.getenv("OSN_SECRET"))
 # mc_alias_set("nrp", "s3-west.nrp-nautilus.io", Sys.getenv("EFI_NRP_KEY"), Sys.getenv("EFI_NRP_SECRET"))
 
-duckdb_secrets(endpoint = "amnh1.osn.mghpcc.org", key = Sys.getenv("OSN_KEY"), secret = Sys.getenv("OSN_SECRET"), bucket = "bio230121-bucket01")
-
-# bundled count at start
-open_dataset("s3://bio230121-bucket01/vera4cast/forecasts/bundled-summaries",
-             s3_endpoint = "amnh1.osn.mghpcc.org",
-             anonymous = TRUE) |>
-  count()
+duckdb_secrets(endpoint = "amnh1.osn.mghpcc.org",
+               key = Sys.getenv("OSN_KEY"),
+               secret = Sys.getenv("OSN_SECRET"),
+               bucket = "bio230121-bucket01")
 
 
 remote_path <- "osn/bio230121-bucket01/vera4cast/forecasts/summaries/project_id=vera4cast/"
@@ -85,7 +83,10 @@ bundle_me <- function(path) {
 
   print(path)
   con = duckdbfs::cached_connection(tempfile())
-  duckdb_secrets(endpoint = "amnh1.osn.mghpcc.org", key = Sys.getenv("OSN_KEY"), secret = Sys.getenv("OSN_SECRET"), bucket = "bio230121-bucket01")
+  duckdb_secrets(endpoint = "amnh1.osn.mghpcc.org",
+                 key = Sys.getenv("OSN_KEY"),
+                 secret = Sys.getenv("OSN_SECRET"),
+                 bucket = "bio230121-bucket01")
 
   bundled_path <- path |>
     str_replace(fixed("forecasts/summaries"), "forecasts/bundled-summaries")
@@ -115,7 +116,7 @@ bundle_me <- function(path) {
     old <- open_dataset("tmp_old.parquet")
 
     union_all(old, new) |>
-      write_dataset(bundled_path,
+      write_dataset(paste0(bundled_path,"data_0.parquet"),
                     options = list("PER_THREAD_OUTPUT false"))
 
   } else {
@@ -127,7 +128,7 @@ bundle_me <- function(path) {
     new <- open_dataset("tmp_new.parquet")
 
     new |>
-      write_dataset(bundled_path,
+      write_dataset(paste0(bundled_path,"data_0.parquet"),
                     options = list("PER_THREAD_OUTPUT false"))
   }
 
@@ -150,24 +151,26 @@ bundle_me <- function(path) {
 
 # We use future_apply framework to show progress while being robust to OOM kils.
 # We are not actually running on multi-core, which would be RAM-inefficient
-# future::plan(future::sequential)
-#
-# safe_bundles <- function(xs) {
-#   p <- progressor(along = xs)
-#   future_lapply(xs, function(x, ...) {
-#     bundle_me(x)
-#     p(sprintf("x=%s", x))
-#   },  future.seed = TRUE)
-# }
-#
-#
-# bench::bench_time({
-#   safe_bundles(model_paths)
-# })
+
+future::plan(future::sequential)
+
+safe_bundles <- function(xs) {
+  p <- progressor(along = xs)
+  future_lapply(xs, function(x, ...) {
+    bundle_me(x)
+    p(sprintf("x=%s", x))
+  },  future.seed = TRUE)
+}
+
 
 bench::bench_time({
-  out <- purrr::map(model_paths, bundle_me)
+  safe_bundles(model_paths)
 })
+
+## old method
+# bench::bench_time({
+#   out <- purrr::map(model_paths, bundle_me)
+# })
 
 
 # # bundled count at end
