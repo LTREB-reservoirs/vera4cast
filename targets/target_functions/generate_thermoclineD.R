@@ -15,10 +15,7 @@ generate_thermocline_depth <- function(current_file, historic_file) {
   if (current_df$Reservoir[1] == 'BVR') {
     bvr_depths <- find_depths(data_file = current_file,
                               depth_offset = "https://raw.githubusercontent.com/FLARE-forecast/BVRE-data/bvre-platform-data-qaqc/BVR_Depth_offsets.csv",
-                              output = NULL,
-                              date_offset = "2021-04-05",
-                              offset_column1 = "Offset_before_05APR21",
-                              offset_column2 = "Offset_after_05APR21") |>
+                              output = NULL) |>
       dplyr::filter(variable == 'ThermistorTemp') |>
       dplyr::select(Reservoir, DateTime, variable, depth_bin, Position)
 
@@ -99,10 +96,7 @@ generate_thermocline_depth <- function(current_file, historic_file) {
   if (historic_df$Reservoir[1] == 'BVR') {
     bvr_depths <- find_depths(data_file = historic_file,
                               depth_offset = "https://raw.githubusercontent.com/FLARE-forecast/BVRE-data/bvre-platform-data-qaqc/BVR_Depth_offsets.csv",
-                              output = NULL,
-                              date_offset <- "2021-04-05",
-                              offset_column1<- "Offset_before_05APR21",
-                              offset_column2 <- "Offset_after_05APR21") |>
+                              output = NULL) |>
       dplyr::filter(variable == 'ThermistorTemp') |>
       dplyr::select(Reservoir, DateTime, variable, depth_bin, Position)
 
