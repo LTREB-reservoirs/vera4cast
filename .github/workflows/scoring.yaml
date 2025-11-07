@@ -39,7 +39,8 @@ jobs:
       - name: scoring
         run: r scoring/scoring.R
 
-      - name: install curl
+      - name: Ping Healthchecks
         run: |
           sudo apt-get update
           sudo apt-get install -y curl
+          curl -m 10 --retry 5 https://hc-ping.com/931decf3-9674-4498-a2fc-938a4321ea2e
