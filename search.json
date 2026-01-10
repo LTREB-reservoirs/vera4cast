@@ -123,14 +123,14 @@
     "href": "index.html#why-a-forecasting-challenge",
     "title": "VERA Forecasting Challenge",
     "section": "Why a forecasting challenge?",
-    "text": "Why a forecasting challenge?\nWe are using forecasts to compare the predictability of different physical, chemical, and biological variables across varying environmental conditions to identify the fundamental predictability of freshwater ecosystems.\nThe VERA forecasting challenge is one component of the Virginia Reservoirs LTREB project, which is monitoring two connected drinking water supply reservoirs with contrasting dissolved oxygen conditions to broadly advance our understanding of freshwater ecosystem processes.\n \n\n\n\n\n\n\n\n\n\nTotal forecasts submitted to the VERA Challenge\n16149\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMost recent data for model training\n2026-01-08\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNumber of years of data for model training\n12.85\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNumber of variables being forecasted\n47"
+    "text": "Why a forecasting challenge?\nWe are using forecasts to compare the predictability of different physical, chemical, and biological variables across varying environmental conditions to identify the fundamental predictability of freshwater ecosystems.\nThe VERA forecasting challenge is one component of the Virginia Reservoirs LTREB project, which is monitoring two connected drinking water supply reservoirs with contrasting dissolved oxygen conditions to broadly advance our understanding of freshwater ecosystem processes.\n \n\n\n\n\n\n\n\n\n\nTotal forecasts submitted to the VERA Challenge\n16168\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMost recent data for model training\n2026-01-09\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNumber of years of data for model training\n12.85\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNumber of variables being forecasted\n47"
   },
   {
     "objectID": "index.html#what-sites-are-being-forecasted",
     "href": "index.html#what-sites-are-being-forecasted",
     "title": "VERA Forecasting Challenge",
     "section": "What sites are being forecasted?",
-    "text": "What sites are being forecasted?\n\n\n\n\n\n\n  This material is based upon work supported by the National Science Foundation under Grant DEB-2327030. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.   Page last updated on 2026-01-09"
+    "text": "What sites are being forecasted?\n\n\n\n\n\n\n  This material is based upon work supported by the National Science Foundation under Grant DEB-2327030. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.   Page last updated on 2026-01-10"
   },
   {
     "objectID": "performance_variables.html",
@@ -144,7 +144,7 @@
     "href": "performance_variables.html#sec-performance",
     "title": "All VERA Variables",
     "section": "Most recent baseline forecasts for all variables",
-    "text": "Most recent baseline forecasts for all variables\nForecasts submitted on 2026-01-06"
+    "text": "Most recent baseline forecasts for all variables\nForecasts submitted on 2026-01-07"
   },
   {
     "objectID": "performance_variables.html#physical-variables",
@@ -179,7 +179,7 @@
     "href": "performance.html#sec-performance",
     "title": "Forecast performance",
     "section": "Most recent forecasts for focal variables",
-    "text": "Most recent forecasts for focal variables\nForecasts submitted on 2026-01-05\n\nChlorophyll-aChlorophyll-a bloom probabilityWater temperatureDissolved oxygenAir temperaturefDOMSecchi depthDissolved methaneMethane FluxCO2 FluxInflow discharge\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nClick here to view the baseline forecasts for the complete list of variables"
+    "text": "Most recent forecasts for focal variables\nForecasts submitted on 2026-01-06\n\nChlorophyll-aChlorophyll-a bloom probabilityWater temperatureDissolved oxygenAir temperaturefDOMSecchi depthDissolved methaneMethane FluxCO2 FluxInflow discharge\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nClick here to view the baseline forecasts for the complete list of variables"
   },
   {
     "objectID": "performance.html#forecast-analysis",
@@ -193,7 +193,7 @@
     "href": "performance.html#aggregated-scores",
     "title": "Forecast performance",
     "section": "Aggregated scores",
-    "text": "Aggregated scores\nAverage skill scores of each model are shown for each target variable, aggregated across model (top), time of year (middle), and forecast horizon (bottom). The evaluation metrics is the Continuous Ranked Probability Score (CRPS). Lower CRPS values correspond a better performing model. CRPS is similar in concept to Mean Absolute Error (|mean(forecast) - observation|), except that it evaulates the full forecast distribution rather than the mean of the forecast. CRPS is in native units for the variable\n\nScores are shown by reference date and forecast horizon (in days).\n\nScores are averaged across all submissions of the model with a given horizon or a given reference_datetime using submissions made since 2025-12-10.\n\n\nChlorophyll-aChlorophyll-a bloom probabilityWater temperatureDissolved oxygenSecchi depthAir temperaturefDOMDissolved MethaneMethane FluxCO2 FluxInflow Discharge"
+    "text": "Aggregated scores\nAverage skill scores of each model are shown for each target variable, aggregated across model (top), time of year (middle), and forecast horizon (bottom). The evaluation metrics is the Continuous Ranked Probability Score (CRPS). Lower CRPS values correspond a better performing model. CRPS is similar in concept to Mean Absolute Error (|mean(forecast) - observation|), except that it evaulates the full forecast distribution rather than the mean of the forecast. CRPS is in native units for the variable\n\nScores are shown by reference date and forecast horizon (in days).\n\nScores are averaged across all submissions of the model with a given horizon or a given reference_datetime using submissions made since 2025-12-11.\n\n\nChlorophyll-aChlorophyll-a bloom probabilityWater temperatureDissolved oxygenSecchi depthAir temperaturefDOMDissolved MethaneMethane FluxCO2 FluxInflow Discharge"
   },
   {
     "objectID": "learn-more.html",
