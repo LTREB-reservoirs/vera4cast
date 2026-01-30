@@ -103,10 +103,11 @@ chem_data$datetime <- lubridate::as_datetime(chem_data$datetime)
 
 ## GHG
 print('GHG')
-source('targets/target_functions/target_generation_ghg_daily.R')
-ghg_data <- target_generation_ghg_daily(current_data_file = 'https://raw.githubusercontent.com/CareyLabVT/Reservoirs/master/Data/DataNotYetUploadedToEDI/Raw_GHG/L1_manual_GHG.csv',
-                                        edi_data_file = 'https://pasta.lternet.edu/package/data/eml/edi/551/10/ee8e65a2a380c9fb63bbf7f4a542c895')
-ghg_data$datetime <- lubridate::as_datetime(ghg_data$datetime)
+### UNCOMMENT THIS WHEN NEW GHG DATA HAS BEEN ADDED ###
+#source('targets/target_functions/target_generation_ghg_daily.R')
+#ghg_data <- target_generation_ghg_daily(current_data_file = 'https://raw.githubusercontent.com/CareyLabVT/Reservoirs/master/Data/DataNotYetUploadedToEDI/Raw_GHG/L1_manual_GHG.csv',
+#                                        edi_data_file = 'https://pasta.lternet.edu/package/data/eml/edi/551/10/ee8e65a2a380c9fb63bbf7f4a542c895')
+#ghg_data$datetime <- lubridate::as_datetime(ghg_data$datetime)
 
 
 ## CTD  - MOM
