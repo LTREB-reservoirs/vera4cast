@@ -158,8 +158,12 @@ schmidt_stability <- schmidt_stability_fcr
 
 ## combine the data and perform final adjustments (depth, etc.)
 
+#combined_targets <- bind_rows(exo_daily, fluoro_daily, fcr_thermistor_temp_daily, bvr_thermistor_temp_daily, secchi_daily,
+#                              mom_daily_targets, thermocline_depth, schmidt_stability, eddy_flux, chem_data, ghg_data, silica_data) |>
+#  select(all_of(column_names))
+
 combined_targets <- bind_rows(exo_daily, fluoro_daily, fcr_thermistor_temp_daily, bvr_thermistor_temp_daily, secchi_daily,
-                              mom_daily_targets, thermocline_depth, schmidt_stability, eddy_flux, chem_data, ghg_data, silica_data) |>
+                              mom_daily_targets, thermocline_depth, schmidt_stability, eddy_flux, chem_data, silica_data) |>
   select(all_of(column_names))
 
 combined_targets_deduped <- combined_targets |>
