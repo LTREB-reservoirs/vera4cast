@@ -1,6 +1,7 @@
 # Title: Function that uses the calculated depth of the pressure transducer and the depth of the sensor when it comes out of the water to determine the depth of the sensors.
 
 # Edited: 04 Nov 2025 - changed the format of the offset file to make it a long format and to make the function cleaner with less arguments for a pre and post move.
+# 10 Feb 2026 - added a drop_na to take out NAs in the DateTime column. It was throwing errors. 
 
 
 
@@ -52,11 +53,12 @@ find_depths <- function(data_file, # data_file = the file of most recent data ei
 
 
   # Make an if statement if there is a depths offset file and then separate out when the sensors were moved
-
+  
   # Let's try conditional joins
-
+  
   by <- join_by(between(x$DateTime, y$Offset_start, y$Offset_end), Position, Reservoir, Site)
-  long_w_depth  <- full_join(long, depth, by)
+  long_w_depth  <- full_join(long, depth, by)|>
+    drop_na(DateTime) # drop the NAs in DateTime column
 
 
   # The pressure sensor was moved to be in line with the bottom thermistor. The top two thermistors had slid closer to each other
