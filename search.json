@@ -1,5 +1,110 @@
 [
   {
+    "objectID": "catalog.html",
+    "href": "catalog.html",
+    "title": "Forecast catalog",
+    "section": "",
+    "text": "The catalog of submitted forecasts, evaluations of the forecasts (“scores”), and summarized forecasts are available through the SpatioTemporal Asset Catalogs browser (below). The catalog also contains information and access to the metadata for the forecast sites, the NOAA weather forecasts at the forecast sites, and the targets (observational data) collected at the forecast sites. The full-page version can be found here"
+  },
+  {
+    "objectID": "catalog.html#what-types-of-models-are-submitting-forecasts",
+    "href": "catalog.html#what-types-of-models-are-submitting-forecasts",
+    "title": "Forecast catalog",
+    "section": "What types of models are submitting forecasts?",
+    "text": "What types of models are submitting forecasts?"
+  },
+  {
+    "objectID": "catalog.html#sec-spatiotemporal-asset-catalog",
+    "href": "catalog.html#sec-spatiotemporal-asset-catalog",
+    "title": "Forecast catalog",
+    "section": "Catalog of forecast submissions and evaluations",
+    "text": "Catalog of forecast submissions and evaluations"
+  },
+  {
+    "objectID": "performance_variables.html",
+    "href": "performance_variables.html",
+    "title": "All VERA Variables",
+    "section": "",
+    "text": "This page visualizes the baseline forecasts for all of the the VERA target variables."
+  },
+  {
+    "objectID": "performance_variables.html#sec-performance",
+    "href": "performance_variables.html#sec-performance",
+    "title": "All VERA Variables",
+    "section": "Most recent baseline forecasts for all variables",
+    "text": "Most recent baseline forecasts for all variables\nForecasts submitted on 2026-02-10"
+  },
+  {
+    "objectID": "performance_variables.html#physical-variables",
+    "href": "performance_variables.html#physical-variables",
+    "title": "All VERA Variables",
+    "section": "Physical Variables",
+    "text": "Physical Variables\n\nWater temperatureDissolved oxygenDissolved oxygen saturationSecchi depthInflow dischargeConductivityTurbidityMOM binaryThermoclineDepth_m_meanSchmidtStability_Jm2_mean"
+  },
+  {
+    "objectID": "performance_variables.html#biological-variables",
+    "href": "performance_variables.html#biological-variables",
+    "title": "All VERA Variables",
+    "section": "Biological Variables",
+    "text": "Biological Variables\n\nChlorophyll-aChlorophyll-a bloom probabilityGreen AlgaeBluegreen AlgaeBrown AlgaeMixed AlgaeGreen Algae DCMBluegreen Algae DCMBrown Algae DCMMixed Algae DCMDCM depthDCM binary"
+  },
+  {
+    "objectID": "performance_variables.html#chemical-variables",
+    "href": "performance_variables.html#chemical-variables",
+    "title": "All VERA Variables",
+    "section": "Chemical Variables",
+    "text": "Chemical Variables\n\nfDOMDissolved methaneMethane FluxCO2 FluxTotal NTotal PNH4NO3NO2SRPDOCDissolved CO2Dissolved SilicaDICDissolved CarbonDissolved Nitrogen"
+  },
+  {
+    "objectID": "performance.html",
+    "href": "performance.html",
+    "title": "Forecast performance",
+    "section": "",
+    "text": "This page visualizes the forecasts and forecast performance for the focal target variables."
+  },
+  {
+    "objectID": "performance.html#sec-performance",
+    "href": "performance.html#sec-performance",
+    "title": "Forecast performance",
+    "section": "Most recent forecasts for focal variables",
+    "text": "Most recent forecasts for focal variables\nForecasts submitted on 2026-02-09\n\nChlorophyll-aChlorophyll-a bloom probabilityWater temperatureDissolved oxygenAir temperaturefDOMSecchi depthDissolved methaneMethane FluxCO2 FluxInflow discharge\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nClick here to view the baseline forecasts for the complete list of variables"
+  },
+  {
+    "objectID": "performance.html#forecast-analysis",
+    "href": "performance.html#forecast-analysis",
+    "title": "Forecast performance",
+    "section": "Forecast analysis",
+    "text": "Forecast analysis\nBelow are forecasts submitted 30 days ago and include the observations used to evaluate them (black points). Mouse over the figure to see the team id, and scroll to zoom.\n\nChlorophyll-aChlorophyll-a bloom probabilityWater temperatureDissolved oxygenSecchi depthAir TemperaturefDOMDissolved MethaneMethane FluxCO2 FluxInflow Discharge\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n[1] \"No scored forecasts are available for this period\"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n[1] \"No scored forecasts are available for this period\""
+  },
+  {
+    "objectID": "performance.html#aggregated-scores",
+    "href": "performance.html#aggregated-scores",
+    "title": "Forecast performance",
+    "section": "Aggregated scores",
+    "text": "Aggregated scores\nAverage skill scores of each model are shown for each target variable, aggregated across model (top), time of year (middle), and forecast horizon (bottom). The evaluation metrics is the Continuous Ranked Probability Score (CRPS). Lower CRPS values correspond a better performing model. CRPS is similar in concept to Mean Absolute Error (|mean(forecast) - observation|), except that it evaulates the full forecast distribution rather than the mean of the forecast. CRPS is in native units for the variable\n\nScores are shown by reference date and forecast horizon (in days).\n\nScores are averaged across all submissions of the model with a given horizon or a given reference_datetime using submissions made since 2026-01-14.\n\n\nChlorophyll-aChlorophyll-a bloom probabilityWater temperatureDissolved oxygenSecchi depthAir temperaturefDOMDissolved MethaneMethane FluxCO2 FluxInflow Discharge"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "VERA Forecasting Challenge",
+    "section": "",
+    "text": "Welcome to the Virginia Ecoforecast Reservoir Analysis (VERA) Forecasting Challenge, hosted by the Virginia Tech Center for Ecosystem Forecasting (CEF) as part of the Virginia Reservoirs LTREB program.\nWe invite you to submit forecasts! Your forecasts will automatically be scored and cataloged using our cyberinfrastructure."
+  },
+  {
+    "objectID": "index.html#why-a-forecasting-challenge",
+    "href": "index.html#why-a-forecasting-challenge",
+    "title": "VERA Forecasting Challenge",
+    "section": "Why a forecasting challenge?",
+    "text": "Why a forecasting challenge?\nWe are using forecasts to compare the predictability of different physical, chemical, and biological variables across varying environmental conditions to identify the fundamental predictability of freshwater ecosystems.\nThe VERA forecasting challenge is one component of the Virginia Reservoirs LTREB project, which is monitoring two connected drinking water supply reservoirs with contrasting dissolved oxygen conditions to broadly advance our understanding of freshwater ecosystem processes.\n \n\n\n\n\n\n\n\n\n\nTotal forecasts submitted to the VERA Challenge\n16807\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMost recent data for model training\n2026-02-12\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNumber of years of data for model training\n12.95\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNumber of variables being forecasted\n47"
+  },
+  {
+    "objectID": "index.html#what-sites-are-being-forecasted",
+    "href": "index.html#what-sites-are-being-forecasted",
+    "title": "VERA Forecasting Challenge",
+    "section": "What sites are being forecasted?",
+    "text": "What sites are being forecasted?\n\n\n\n\n\n\n  This material is based upon work supported by the National Science Foundation under Grant DEB-2327030. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.   Page last updated on 2026-02-13"
+  },
+  {
     "objectID": "targets.html",
     "href": "targets.html",
     "title": "What to forecast",
@@ -26,6 +131,34 @@
     "title": "What to forecast",
     "section": "Additional target variables",
     "text": "Additional target variables\nWe are collecting many additional datasets in near-real time at the reservoirs that can be used for forecasting, even though they are not the focal target variables evaluated in the VERA Challenge.\n\nStream inflow to Falling Creek Reservoir\nDaily time-step variables measured in the monitored stream (Tunnel Branch; site_id = tubr)\n\nurl2 &lt;- \"https://amnh1.osn.mghpcc.org/bio230121-bucket01/vera4cast/targets/project_id=vera4cast/duration=P1D/daily-inflow-targets.csv.gz\"\ninflow_targets &lt;- read_csv(url2, show_col_types = FALSE)\n\n\n\n\n\n\n\n\n\n\n\nvariable\nduration\nDescription\n\n\n\n\nFlow_cms_mean\nP1D\ndaily discharge from inflow stream cubic meters per second\n\n\nTemp_C_mean\nP1D\ndaily mean water temperature in degrees C\n\n\n\n\n\n\n\n\n\n\nOther variables measured in at the stream inflow:\n\n\n\n\n\n\n\n\n\n\nvariable\nduration\nDescription\n\n\n\n\nTP_ugL_sample\nP1D\ndaily sampled total phosphorus concentration in mg/L\n\n\nNH4_ugL_sample\nP1D\ndaily sampled ammonium concentration in ug/L\n\n\nNO3NO2_ugL_sample\nP1D\ndaily sampled nitrate concentration in ug/L\n\n\nSRP_ugL_sample\nP1D\ndaily sampled soluble reactive phosphorus concentration ug/L\n\n\nDOC_mgL_sample\nP1D\ndaily sampled dissolved organic carbon concentration in mg/L\n\n\nDRSI_mgL_sample\nP1D\ndaily sampled silica concentration in mg/L\n\n\nTN_ugL_sample\nP1D\ndaily sampled total nitrogen concentration mg/L\n\n\nCO2_umolL_sample\nP1D\ndaily sampled dissolved carbon dioxide in umol/L, taken at the surface\n\n\nDIC_mgL_sample\nP1D\ndaily sample dissolved organic carbon concentration in mg/L\n\n\nDC_mgL_sample\nP1D\ndaily sample dissolved carbon concentration in mg/L\n\n\nDN_mgL_sample\nP1D\ndaily sample dissolved nitrogen concentration in mg/L\n\n\n\n\n\n\n\nFalling Creek Reservoir meteorology\nDaily time-step variables measured at the meteorological station (located on the dam at Falling Creek Reservoir)\n\nurl3 &lt;- \"https://amnh1.osn.mghpcc.org/bio230121-bucket01/vera4cast/targets/project_id=vera4cast/duration=P1D/daily-met-targets.csv.gz\"\nmet_targets &lt;- read_csv(url3, show_col_types = FALSE)\n#glimpse(met_targets)\n\n\n\n\n\n\n\n\n\n\n\nvariable\nduration\nDescription\n\n\n\n\nPAR_umolm2s_mean\nP1D\nDaily mean PAR\n\n\nBP_kPa_mean\nP1D\nDaily mean surface pressure\n\n\nAirTemp_C_mean\nP1D\nDaily mean air temperature\n\n\nRH_percent_mean\nP1D\nDaily mean relative humidity\n\n\nWindSpeed_ms_mean\nP1D\nDaily mean wind speed\n\n\nWindDir_degrees_mean\nP1D\nDaily mean wind direction\n\n\nShortwaveRadiationUp_Wm2_mean\nP1D\nDaily mean shortwave radiation\n\n\nInfraredRadiationUp_Wm2_mean\nP1D\nDaily mean longwave radiation\n\n\nAlbedo_Wm2_mean\nP1D\nDaily mean surface albedo\n\n\nRain_mm_sum\nP1D\nDaily sum of precipitation\n\n\n\n\n\n\n\n\n\n\nHourly time-step variables measured at the meteorology station (located on the dam at Falling Creek Reservoir)\n\nurl3 &lt;- \"https://amnh1.osn.mghpcc.org/bio230121-bucket01/vera4cast/targets/project_id=vera4cast/duration=PT1H/hourly-met-targets.csv.gz\"\n\n\n\nOther variables measured in the reservoirs\n\n\n\n\n\n\n\n\n\n\nvariable\nduration\nDescription\n\n\n\n\nSpCond_uScm_mean\nP1D\ndaily mean specific conductance in microsiemens per centimeter from EXO\n\n\nTurbidity_FNU_mean\nP1D\ndaily mean turbidity in Formazin Nephelometric Units from EXO\n\n\nDOsat_percent_mean\nP1D\ndaily mean oxygen percent saturation from EXO\n\n\nGreenAlgae_ugL_sample\nP1D\nthe total biomass of green algae in micrograms per liter at 1.6 m\n\n\nBluegreens_ugL_sample\nP1D\nthe total biomass of cyanobacteria in micrograms per liter at 1.6 m\n\n\nBrownAlgae_ugL_sample\nP1D\nthe total biomass of brown algae in micrograms per liter at 1.6 m\n\n\nMixedAlgae_ugL_sample\nP1D\nthe total biomass of cryptophytes in micrograms per liter at 1.6 m\n\n\nGreenAlgaeCM_ugL_sample\nP1D\nthe total biomass of green algae in micrograms per liter at the deep chlorophyll maximum\n\n\nBluegreensCM_ugL_sample\nP1D\nthe total biomass of bluegreen algae in micrograms per liter at the deep chlorophyll maximum\n\n\nBrownAlgaeCM_ugL_sample\nP1D\nthe total biomass of brown algae in micrograms per liter at the deep chlorophyll maximum\n\n\nChlorophyllMaximum_depth_sample\nP1D\nthe depth of the maximum chlorophyll concentration\n\n\nDeepChlorophyllMaximum_binary_sample\nP1D\nthe presence or absence of a deep chlorophyll maximum, defined as ((1) a peak was present, with a biomass maximum at least 0.5 μg L−1 greater and 1.5× the magnitude of mean photic zone biomass (following Leach et al. 2018); and (2) the peak was deep, with a depth of maximum biomass below the top 10% of the water column); definition taken from Lofton et al. 2020\n\n\nMOM_binary_sample\nP1D\npresence or absence of metalimnetic oxygen minimum\n\n\nThermoclineDepth_m_mean\nP1D\ndaily mean thermocline depth meters\n\n\nSchmidtStability_Jm2_mean\nP1D\ndaily mean schimdt stability joules per square meter\n\n\nTN_ugL_sample\nP1D\ndaily sampled total nitrogen concentration mg/L\n\n\nTP_ugL_sample\nP1D\ndaily sampled total phosphorus concentration in mg/L\n\n\nNH4_ugL_sample\nP1D\ndaily sampled ammonium concentration in ug/L\n\n\nNO3NO2_ugL_sample\nP1D\ndaily sampled nitrate concentration in ug/L\n\n\nSRP_ugL_sample\nP1D\ndaily sampled soluble reactive phosphorus concentration ug/L\n\n\nDOC_mgL_sample\nP1D\ndaily sampled dissolved organic carbon concentration in mg/L\n\n\nDIC_mgL_sample\nP1D\ndaily sample dissolved organic carbon concentration in mg/L\n\n\nDC_mgL_sample\nP1D\ndaily sample dissolved carbon concentration in mg/L\n\n\nDN_mgL_sample\nP1D\ndaily sample dissolved nitrogen concentration in mg/L\n\n\nCO2_umolL_sample\nP1D\ndaily sampled dissolved carbon dioxide in umol/L, taken at the surface\n\n\nDRSI_mgL_sample\nP1D\ndaily sampled silica concentration in mg/L"
+  },
+  {
+    "objectID": "learn-more.html",
+    "href": "learn-more.html",
+    "title": "Learn more",
+    "section": "",
+    "text": "See below to access the cyberinfrastructure that underlies the VERA Challenge, helpful tutorials for participating the VERA Challenge, and papers related to VERA.\n\n\nWe provide an introductory tutorial for submitting to the Challenge: https://github.com/LTREB-reservoirs/vera4cast-example.\nWe provide videos of the tutorial to guide you through the submission process. The videos include an:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nClick here an introductory tutorial for submitting to the Forecting Challenge using Python\n\n\n\n\nPublications about forecasting and modeling\n\n\n\nYour forecast model may require weather as a driving variable. We provide functions in the vera4castHelpers package that access NOAA weather forecasts that have already been downloaded and standardized for the reservoirs. To install the vera4castHelpers use\n\nremotes::install_github(\"ltreb-reservoirs/vera4castHelpers\")\n\nUsing the package, 31 ensemble member forecasts are provided at 1 hr time resolution\nVariables and units are:\n\nair_temperature (K)\n\nair_pressure (Pa)\n\nrelative_humidity (proportion)\n\nsurface_downwelling_longwave_flux_in_air (W/m^2)\n\nsurface_downwelling_shortwave_flux_in_air (W/m^2)\nprecipitation_flux (kg/(m^2 s))\n\neastward_wind (m/s)\n\nnorthward_wind (m/s)\n\n\n\nweather &lt;- vera4castHelpers::noaa_stage2(start_date = \"2022-04-01\")\ndf_future &lt;- weather |&gt; \n  dplyr::filter(site_id == \"fcre\") |&gt;\n  dplyr::collect()\n\nThe data frame has following columns:\nsite_id: string : NEON site ID\nprediction: double : forecasted value\nvariable: string : weather variable\nhorizon: double : number of hours in the future\nfamily: string: class of uncertainty (ensemble)\nparameter: int32 : ensemble member number\nreference_datetime: timestamp[us, tz=UTC]: datetime of horizon 0\ndatetime: timestamp[us, tz=UTC] : datetime of forecast\n\n\n\nStage 3 can be viewed as the “historical” weather for site as simulated by NOAA GEFS. Stage 3 is useful for model training because it ensures that the magnitude and variability of the weather data used to train your model is similar to that in the NOAA GEFS weather forecast you may use as inputs to your forecast.\nStage 3 uses CF variable names and 1 hr interval\n\nair_temperature (K)\n\nair_pressure (Pa)\n\nrelative_humidity (proportion)\n\nsurface_downwelling_longwave_flux_in_air (W/m^2)\n\nsurface_downwelling_shortwave_flux_in_air (W/m^2)\nprecipitation_flux (kg/(m^2 s))\n\neastward_wind (m/s)\n\nnorthward_wind (m/s)\n\n\n\nweather_stage3 &lt;- vera4castHelpers::noaa_stage3()\ndf_historical &lt;- weather_stage3 |&gt; \n  dplyr::filter(site_id == \"fcre\") |&gt;\n  dplyr::collect()\n\nStage 3 has the following columns\nsite_id: string : NEON site ID\nprediction: double : forecasted value\nvariable: string : weather variable\nfamily: string: class of uncertainty (ensemble)\nparameter: int32 : ensemble member number\nreference_datetime: timestamp[us, tz=UTC]: always NA in Stage3 datetime: timestamp[us, tz=UTC] : datetime of forecast"
+  },
+  {
+    "objectID": "learn-more.html#tutorials",
+    "href": "learn-more.html#tutorials",
+    "title": "Learn more",
+    "section": "",
+    "text": "We provide an introductory tutorial for submitting to the Challenge: https://github.com/LTREB-reservoirs/vera4cast-example.\nWe provide videos of the tutorial to guide you through the submission process. The videos include an:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nClick here an introductory tutorial for submitting to the Forecting Challenge using Python"
+  },
+  {
+    "objectID": "learn-more.html#research-from-the-virginia-ecoforecast-reservoir-analysis-team",
+    "href": "learn-more.html#research-from-the-virginia-ecoforecast-reservoir-analysis-team",
+    "title": "Learn more",
+    "section": "",
+    "text": "Publications about forecasting and modeling"
+  },
+  {
+    "objectID": "learn-more.html#sec-noaa-downloads",
+    "href": "learn-more.html#sec-noaa-downloads",
+    "title": "Learn more",
+    "section": "",
+    "text": "Your forecast model may require weather as a driving variable. We provide functions in the vera4castHelpers package that access NOAA weather forecasts that have already been downloaded and standardized for the reservoirs. To install the vera4castHelpers use\n\nremotes::install_github(\"ltreb-reservoirs/vera4castHelpers\")\n\nUsing the package, 31 ensemble member forecasts are provided at 1 hr time resolution\nVariables and units are:\n\nair_temperature (K)\n\nair_pressure (Pa)\n\nrelative_humidity (proportion)\n\nsurface_downwelling_longwave_flux_in_air (W/m^2)\n\nsurface_downwelling_shortwave_flux_in_air (W/m^2)\nprecipitation_flux (kg/(m^2 s))\n\neastward_wind (m/s)\n\nnorthward_wind (m/s)\n\n\n\nweather &lt;- vera4castHelpers::noaa_stage2(start_date = \"2022-04-01\")\ndf_future &lt;- weather |&gt; \n  dplyr::filter(site_id == \"fcre\") |&gt;\n  dplyr::collect()\n\nThe data frame has following columns:\nsite_id: string : NEON site ID\nprediction: double : forecasted value\nvariable: string : weather variable\nhorizon: double : number of hours in the future\nfamily: string: class of uncertainty (ensemble)\nparameter: int32 : ensemble member number\nreference_datetime: timestamp[us, tz=UTC]: datetime of horizon 0\ndatetime: timestamp[us, tz=UTC] : datetime of forecast\n\n\n\nStage 3 can be viewed as the “historical” weather for site as simulated by NOAA GEFS. Stage 3 is useful for model training because it ensures that the magnitude and variability of the weather data used to train your model is similar to that in the NOAA GEFS weather forecast you may use as inputs to your forecast.\nStage 3 uses CF variable names and 1 hr interval\n\nair_temperature (K)\n\nair_pressure (Pa)\n\nrelative_humidity (proportion)\n\nsurface_downwelling_longwave_flux_in_air (W/m^2)\n\nsurface_downwelling_shortwave_flux_in_air (W/m^2)\nprecipitation_flux (kg/(m^2 s))\n\neastward_wind (m/s)\n\nnorthward_wind (m/s)\n\n\n\nweather_stage3 &lt;- vera4castHelpers::noaa_stage3()\ndf_historical &lt;- weather_stage3 |&gt; \n  dplyr::filter(site_id == \"fcre\") |&gt;\n  dplyr::collect()\n\nStage 3 has the following columns\nsite_id: string : NEON site ID\nprediction: double : forecasted value\nvariable: string : weather variable\nfamily: string: class of uncertainty (ensemble)\nparameter: int32 : ensemble member number\nreference_datetime: timestamp[us, tz=UTC]: always NA in Stage3 datetime: timestamp[us, tz=UTC] : datetime of forecast"
   },
   {
     "objectID": "instructions.html",
@@ -89,138 +222,5 @@
     "title": "How to forecast",
     "section": "8 Questions?",
     "text": "8 Questions?\nThanks for reading this document! If you still have questions about how to submit your forecast to the VERA Forecasting Challenge, we encourage you to email Dr. Quinn Thomas (rqthomas{at}vt.edu)."
-  },
-  {
-    "objectID": "catalog.html",
-    "href": "catalog.html",
-    "title": "Forecast catalog",
-    "section": "",
-    "text": "The catalog of submitted forecasts, evaluations of the forecasts (“scores”), and summarized forecasts are available through the SpatioTemporal Asset Catalogs browser (below). The catalog also contains information and access to the metadata for the forecast sites, the NOAA weather forecasts at the forecast sites, and the targets (observational data) collected at the forecast sites. The full-page version can be found here"
-  },
-  {
-    "objectID": "catalog.html#what-types-of-models-are-submitting-forecasts",
-    "href": "catalog.html#what-types-of-models-are-submitting-forecasts",
-    "title": "Forecast catalog",
-    "section": "What types of models are submitting forecasts?",
-    "text": "What types of models are submitting forecasts?"
-  },
-  {
-    "objectID": "catalog.html#sec-spatiotemporal-asset-catalog",
-    "href": "catalog.html#sec-spatiotemporal-asset-catalog",
-    "title": "Forecast catalog",
-    "section": "Catalog of forecast submissions and evaluations",
-    "text": "Catalog of forecast submissions and evaluations"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "VERA Forecasting Challenge",
-    "section": "",
-    "text": "Welcome to the Virginia Ecoforecast Reservoir Analysis (VERA) Forecasting Challenge, hosted by the Virginia Tech Center for Ecosystem Forecasting (CEF) as part of the Virginia Reservoirs LTREB program.\nWe invite you to submit forecasts! Your forecasts will automatically be scored and cataloged using our cyberinfrastructure."
-  },
-  {
-    "objectID": "index.html#why-a-forecasting-challenge",
-    "href": "index.html#why-a-forecasting-challenge",
-    "title": "VERA Forecasting Challenge",
-    "section": "Why a forecasting challenge?",
-    "text": "Why a forecasting challenge?\nWe are using forecasts to compare the predictability of different physical, chemical, and biological variables across varying environmental conditions to identify the fundamental predictability of freshwater ecosystems.\nThe VERA forecasting challenge is one component of the Virginia Reservoirs LTREB project, which is monitoring two connected drinking water supply reservoirs with contrasting dissolved oxygen conditions to broadly advance our understanding of freshwater ecosystem processes.\n \n\n\n\n\n\n\n\n\n\nTotal forecasts submitted to the VERA Challenge\n16783\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMost recent data for model training\n2026-02-11\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNumber of years of data for model training\n12.94\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNumber of variables being forecasted\n47"
-  },
-  {
-    "objectID": "index.html#what-sites-are-being-forecasted",
-    "href": "index.html#what-sites-are-being-forecasted",
-    "title": "VERA Forecasting Challenge",
-    "section": "What sites are being forecasted?",
-    "text": "What sites are being forecasted?\n\n\n\n\n\n\n  This material is based upon work supported by the National Science Foundation under Grant DEB-2327030. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.   Page last updated on 2026-02-12"
-  },
-  {
-    "objectID": "performance_variables.html",
-    "href": "performance_variables.html",
-    "title": "All VERA Variables",
-    "section": "",
-    "text": "This page visualizes the baseline forecasts for all of the the VERA target variables."
-  },
-  {
-    "objectID": "performance_variables.html#sec-performance",
-    "href": "performance_variables.html#sec-performance",
-    "title": "All VERA Variables",
-    "section": "Most recent baseline forecasts for all variables",
-    "text": "Most recent baseline forecasts for all variables\nForecasts submitted on 2026-02-09"
-  },
-  {
-    "objectID": "performance_variables.html#physical-variables",
-    "href": "performance_variables.html#physical-variables",
-    "title": "All VERA Variables",
-    "section": "Physical Variables",
-    "text": "Physical Variables\n\nWater temperatureDissolved oxygenDissolved oxygen saturationSecchi depthInflow dischargeConductivityTurbidityMOM binaryThermoclineDepth_m_meanSchmidtStability_Jm2_mean"
-  },
-  {
-    "objectID": "performance_variables.html#biological-variables",
-    "href": "performance_variables.html#biological-variables",
-    "title": "All VERA Variables",
-    "section": "Biological Variables",
-    "text": "Biological Variables\n\nChlorophyll-aChlorophyll-a bloom probabilityGreen AlgaeBluegreen AlgaeBrown AlgaeMixed AlgaeGreen Algae DCMBluegreen Algae DCMBrown Algae DCMMixed Algae DCMDCM depthDCM binary"
-  },
-  {
-    "objectID": "performance_variables.html#chemical-variables",
-    "href": "performance_variables.html#chemical-variables",
-    "title": "All VERA Variables",
-    "section": "Chemical Variables",
-    "text": "Chemical Variables\n\nfDOMDissolved methaneMethane FluxCO2 FluxTotal NTotal PNH4NO3NO2SRPDOCDissolved CO2Dissolved SilicaDICDissolved CarbonDissolved Nitrogen"
-  },
-  {
-    "objectID": "performance.html",
-    "href": "performance.html",
-    "title": "Forecast performance",
-    "section": "",
-    "text": "This page visualizes the forecasts and forecast performance for the focal target variables."
-  },
-  {
-    "objectID": "performance.html#sec-performance",
-    "href": "performance.html#sec-performance",
-    "title": "Forecast performance",
-    "section": "Most recent forecasts for focal variables",
-    "text": "Most recent forecasts for focal variables\nForecasts submitted on 2026-02-08\n\nChlorophyll-aChlorophyll-a bloom probabilityWater temperatureDissolved oxygenAir temperaturefDOMSecchi depthDissolved methaneMethane FluxCO2 FluxInflow discharge\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nClick here to view the baseline forecasts for the complete list of variables"
-  },
-  {
-    "objectID": "performance.html#forecast-analysis",
-    "href": "performance.html#forecast-analysis",
-    "title": "Forecast performance",
-    "section": "Forecast analysis",
-    "text": "Forecast analysis\nBelow are forecasts submitted 30 days ago and include the observations used to evaluate them (black points). Mouse over the figure to see the team id, and scroll to zoom.\n\nChlorophyll-aChlorophyll-a bloom probabilityWater temperatureDissolved oxygenSecchi depthAir TemperaturefDOMDissolved MethaneMethane FluxCO2 FluxInflow Discharge\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n[1] \"No scored forecasts are available for this period\"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n[1] \"No scored forecasts are available for this period\""
-  },
-  {
-    "objectID": "performance.html#aggregated-scores",
-    "href": "performance.html#aggregated-scores",
-    "title": "Forecast performance",
-    "section": "Aggregated scores",
-    "text": "Aggregated scores\nAverage skill scores of each model are shown for each target variable, aggregated across model (top), time of year (middle), and forecast horizon (bottom). The evaluation metrics is the Continuous Ranked Probability Score (CRPS). Lower CRPS values correspond a better performing model. CRPS is similar in concept to Mean Absolute Error (|mean(forecast) - observation|), except that it evaulates the full forecast distribution rather than the mean of the forecast. CRPS is in native units for the variable\n\nScores are shown by reference date and forecast horizon (in days).\n\nScores are averaged across all submissions of the model with a given horizon or a given reference_datetime using submissions made since 2026-01-13.\n\n\nChlorophyll-aChlorophyll-a bloom probabilityWater temperatureDissolved oxygenSecchi depthAir temperaturefDOMDissolved MethaneMethane FluxCO2 FluxInflow Discharge"
-  },
-  {
-    "objectID": "learn-more.html",
-    "href": "learn-more.html",
-    "title": "Learn more",
-    "section": "",
-    "text": "See below to access the cyberinfrastructure that underlies the VERA Challenge, helpful tutorials for participating the VERA Challenge, and papers related to VERA.\n\n\nWe provide an introductory tutorial for submitting to the Challenge: https://github.com/LTREB-reservoirs/vera4cast-example.\nWe provide videos of the tutorial to guide you through the submission process. The videos include an:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nClick here an introductory tutorial for submitting to the Forecting Challenge using Python\n\n\n\n\nPublications about forecasting and modeling\n\n\n\nYour forecast model may require weather as a driving variable. We provide functions in the vera4castHelpers package that access NOAA weather forecasts that have already been downloaded and standardized for the reservoirs. To install the vera4castHelpers use\n\nremotes::install_github(\"ltreb-reservoirs/vera4castHelpers\")\n\nUsing the package, 31 ensemble member forecasts are provided at 1 hr time resolution\nVariables and units are:\n\nair_temperature (K)\n\nair_pressure (Pa)\n\nrelative_humidity (proportion)\n\nsurface_downwelling_longwave_flux_in_air (W/m^2)\n\nsurface_downwelling_shortwave_flux_in_air (W/m^2)\nprecipitation_flux (kg/(m^2 s))\n\neastward_wind (m/s)\n\nnorthward_wind (m/s)\n\n\n\nweather &lt;- vera4castHelpers::noaa_stage2(start_date = \"2022-04-01\")\ndf_future &lt;- weather |&gt; \n  dplyr::filter(site_id == \"fcre\") |&gt;\n  dplyr::collect()\n\nThe data frame has following columns:\nsite_id: string : NEON site ID\nprediction: double : forecasted value\nvariable: string : weather variable\nhorizon: double : number of hours in the future\nfamily: string: class of uncertainty (ensemble)\nparameter: int32 : ensemble member number\nreference_datetime: timestamp[us, tz=UTC]: datetime of horizon 0\ndatetime: timestamp[us, tz=UTC] : datetime of forecast\n\n\n\nStage 3 can be viewed as the “historical” weather for site as simulated by NOAA GEFS. Stage 3 is useful for model training because it ensures that the magnitude and variability of the weather data used to train your model is similar to that in the NOAA GEFS weather forecast you may use as inputs to your forecast.\nStage 3 uses CF variable names and 1 hr interval\n\nair_temperature (K)\n\nair_pressure (Pa)\n\nrelative_humidity (proportion)\n\nsurface_downwelling_longwave_flux_in_air (W/m^2)\n\nsurface_downwelling_shortwave_flux_in_air (W/m^2)\nprecipitation_flux (kg/(m^2 s))\n\neastward_wind (m/s)\n\nnorthward_wind (m/s)\n\n\n\nweather_stage3 &lt;- vera4castHelpers::noaa_stage3()\ndf_historical &lt;- weather_stage3 |&gt; \n  dplyr::filter(site_id == \"fcre\") |&gt;\n  dplyr::collect()\n\nStage 3 has the following columns\nsite_id: string : NEON site ID\nprediction: double : forecasted value\nvariable: string : weather variable\nfamily: string: class of uncertainty (ensemble)\nparameter: int32 : ensemble member number\nreference_datetime: timestamp[us, tz=UTC]: always NA in Stage3 datetime: timestamp[us, tz=UTC] : datetime of forecast"
-  },
-  {
-    "objectID": "learn-more.html#tutorials",
-    "href": "learn-more.html#tutorials",
-    "title": "Learn more",
-    "section": "",
-    "text": "We provide an introductory tutorial for submitting to the Challenge: https://github.com/LTREB-reservoirs/vera4cast-example.\nWe provide videos of the tutorial to guide you through the submission process. The videos include an:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nClick here an introductory tutorial for submitting to the Forecting Challenge using Python"
-  },
-  {
-    "objectID": "learn-more.html#research-from-the-virginia-ecoforecast-reservoir-analysis-team",
-    "href": "learn-more.html#research-from-the-virginia-ecoforecast-reservoir-analysis-team",
-    "title": "Learn more",
-    "section": "",
-    "text": "Publications about forecasting and modeling"
-  },
-  {
-    "objectID": "learn-more.html#sec-noaa-downloads",
-    "href": "learn-more.html#sec-noaa-downloads",
-    "title": "Learn more",
-    "section": "",
-    "text": "Your forecast model may require weather as a driving variable. We provide functions in the vera4castHelpers package that access NOAA weather forecasts that have already been downloaded and standardized for the reservoirs. To install the vera4castHelpers use\n\nremotes::install_github(\"ltreb-reservoirs/vera4castHelpers\")\n\nUsing the package, 31 ensemble member forecasts are provided at 1 hr time resolution\nVariables and units are:\n\nair_temperature (K)\n\nair_pressure (Pa)\n\nrelative_humidity (proportion)\n\nsurface_downwelling_longwave_flux_in_air (W/m^2)\n\nsurface_downwelling_shortwave_flux_in_air (W/m^2)\nprecipitation_flux (kg/(m^2 s))\n\neastward_wind (m/s)\n\nnorthward_wind (m/s)\n\n\n\nweather &lt;- vera4castHelpers::noaa_stage2(start_date = \"2022-04-01\")\ndf_future &lt;- weather |&gt; \n  dplyr::filter(site_id == \"fcre\") |&gt;\n  dplyr::collect()\n\nThe data frame has following columns:\nsite_id: string : NEON site ID\nprediction: double : forecasted value\nvariable: string : weather variable\nhorizon: double : number of hours in the future\nfamily: string: class of uncertainty (ensemble)\nparameter: int32 : ensemble member number\nreference_datetime: timestamp[us, tz=UTC]: datetime of horizon 0\ndatetime: timestamp[us, tz=UTC] : datetime of forecast\n\n\n\nStage 3 can be viewed as the “historical” weather for site as simulated by NOAA GEFS. Stage 3 is useful for model training because it ensures that the magnitude and variability of the weather data used to train your model is similar to that in the NOAA GEFS weather forecast you may use as inputs to your forecast.\nStage 3 uses CF variable names and 1 hr interval\n\nair_temperature (K)\n\nair_pressure (Pa)\n\nrelative_humidity (proportion)\n\nsurface_downwelling_longwave_flux_in_air (W/m^2)\n\nsurface_downwelling_shortwave_flux_in_air (W/m^2)\nprecipitation_flux (kg/(m^2 s))\n\neastward_wind (m/s)\n\nnorthward_wind (m/s)\n\n\n\nweather_stage3 &lt;- vera4castHelpers::noaa_stage3()\ndf_historical &lt;- weather_stage3 |&gt; \n  dplyr::filter(site_id == \"fcre\") |&gt;\n  dplyr::collect()\n\nStage 3 has the following columns\nsite_id: string : NEON site ID\nprediction: double : forecasted value\nvariable: string : weather variable\nfamily: string: class of uncertainty (ensemble)\nparameter: int32 : ensemble member number\nreference_datetime: timestamp[us, tz=UTC]: always NA in Stage3 datetime: timestamp[us, tz=UTC] : datetime of forecast"
   }
 ]
