@@ -99,6 +99,15 @@ chem_data <- target_generation_chemistry_daily(current_data_file = NULL,
                                                historic_data_file = 'https://pasta.lternet.edu/package/data/eml/edi/199/13/3f09a3d23b7b5dd32ed7d28e9bc1b081')
 chem_data$datetime <- lubridate::as_datetime(chem_data$datetime)
 
+## METALS
+print("Metals")
+source('targets/target_functions/target_generation_metals_daily.R')
+metals_data <- target_generation_metals_daily(
+current_file = 'https://raw.githubusercontent.com/CareyLabVT/Reservoirs/refs/heads/master/Data/DataNotYetUploadedToEDI/Metals_Data/metals_L1.csv',
+historic_file = "https://pasta.lternet.edu/package/data/eml/edi/455/9/9a072c4e4af39f96f60954fc4f7d8be5")
+
+ metals_data$datetime <- lubridate::as_datetime(metals_data$datetime)   
+
 ## SILICA
 print('Silica')
 source('targets/target_functions/target_generation_silica_daily.R')
@@ -158,7 +167,7 @@ schmidt_stability <- schmidt_stability_fcr
 ## combine the data and perform final adjustments (depth, etc.)
 
 combined_targets <- bind_rows(exo_daily, fluoro_daily, fcr_thermistor_temp_daily, bvr_thermistor_temp_daily, secchi_daily,
-                              mom_daily_targets, thermocline_depth, schmidt_stability, eddy_flux, chem_data, ghg_data, silica_data) |>
+                              mom_daily_targets, thermocline_depth, schmidt_stability, eddy_flux, chem_data, metals_data,ghg_data, silica_data) |>
   select(all_of(column_names))
 
 combined_targets_deduped <- combined_targets |>
