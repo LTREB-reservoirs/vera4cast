@@ -159,17 +159,17 @@ bench::bench_time({
 })
 
 # bundled count at end
-count <- open_dataset("s3://bio230121-bucket01/vera4cast/forecasts/bundled-parquet",
-                      s3_endpoint = "amnh1.osn.mghpcc.org",
-                      anonymous = TRUE) |>
-  count()
-print(count)
+#count <- open_dataset("s3://bio230121-bucket01/vera4cast/forecasts/bundled-parquet",
+#                      s3_endpoint = "amnh1.osn.mghpcc.org",
+#                      anonymous = TRUE) |>
+#  count()
+#print(count)
 
 
-most_recent <- open_dataset("s3://bio230121-bucket01/vera4cast/forecasts/bundled-parquet",
-                            s3_endpoint = "amnh1.osn.mghpcc.org",
-                            anonymous = TRUE) |>
-  group_by(model_id, variable) |>
-  summarise(most_recent = max(reference_datetime)) |>
-  arrange(desc(most_recent))
-print(most_recent)
+#most_recent <- open_dataset("s3://bio230121-bucket01/vera4cast/forecasts/bundled-parquet",
+#                            s3_endpoint = "amnh1.osn.mghpcc.org",
+#                            anonymous = TRUE) |>
+ # group_by(model_id, variable) |>
+#  summarise(most_recent = max(reference_datetime)) |>
+#  arrange(desc(most_recent))
+#print(most_recent)
