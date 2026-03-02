@@ -150,9 +150,9 @@ bundle_me <- function(path) {
 # })
 # print(out)
 
-bench::bench_time({
-  out <- purrr::map(model_paths, bundle_me)
-})
+#bench::bench_time({
+#  out <- purrr::map(model_paths, bundle_me)
+#})
 
 bench::bench_time({
   out <- purrr::map(arima_chla_model_path_removed, bundle_me)
