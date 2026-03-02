@@ -29,8 +29,10 @@ model_paths <-
   str_replace("^osn\\/", "s3://") |>
   unique()
 
-print(model_paths)
+arima_chla_model_path_removed <- model_paths[!grepl('variable=Chla_ugL_mean/model_id=fableARIMA/', model_paths)]
 
+print(arima_chla_model_path_removed)
+#print(model_paths)
 # bundled count at start
 open_dataset("s3://bio230121-bucket01/vera4cast/forecasts/bundled-parquet",
              s3_endpoint = "amnh1.osn.mghpcc.org",
@@ -150,6 +152,10 @@ bundle_me <- function(path) {
 
 bench::bench_time({
   out <- purrr::map(model_paths, bundle_me)
+})
+
+bench::bench_time({
+  out <- purrr::map(arima_chla_model_path_removed, bundle_me)
 })
 
 # bundled count at end
