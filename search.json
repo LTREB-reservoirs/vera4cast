@@ -81,7 +81,7 @@
     "href": "performance.html#aggregated-scores",
     "title": "Forecast performance",
     "section": "Aggregated scores",
-    "text": "Aggregated scores\nAverage skill scores of each model are shown for each target variable, aggregated across model (top), time of year (middle), and forecast horizon (bottom). The evaluation metrics is the Continuous Ranked Probability Score (CRPS). Lower CRPS values correspond a better performing model. CRPS is similar in concept to Mean Absolute Error (|mean(forecast) - observation|), except that it evaulates the full forecast distribution rather than the mean of the forecast. CRPS is in native units for the variable\n\nScores are shown by reference date and forecast horizon (in days).\n\nScores are averaged across all submissions of the model with a given horizon or a given reference_datetime using submissions made since 2026-01-31.\n\n\nChlorophyll-aChlorophyll-a bloom probabilityWater temperatureDissolved oxygenSecchi depthAir temperaturefDOMDissolved MethaneMethane FluxCO2 FluxInflow Discharge"
+    "text": "Aggregated scores\nAverage skill scores of each model are shown for each target variable, aggregated across model (top), time of year (middle), and forecast horizon (bottom). The evaluation metrics is the Continuous Ranked Probability Score (CRPS). Lower CRPS values correspond a better performing model. CRPS is similar in concept to Mean Absolute Error (|mean(forecast) - observation|), except that it evaulates the full forecast distribution rather than the mean of the forecast. CRPS is in native units for the variable\n\nScores are shown by reference date and forecast horizon (in days).\n\nScores are averaged across all submissions of the model with a given horizon or a given reference_datetime using submissions made since 2026-02-01.\n\n\nChlorophyll-aChlorophyll-a bloom probabilityWater temperatureDissolved oxygenSecchi depthAir temperaturefDOMDissolved MethaneMethane FluxCO2 FluxInflow Discharge"
   },
   {
     "objectID": "index.html",
@@ -102,7 +102,7 @@
     "href": "index.html#what-sites-are-being-forecasted",
     "title": "VERA Forecasting Challenge",
     "section": "What sites are being forecasted?",
-    "text": "What sites are being forecasted?\n\n\n\n\n\n\n  This material is based upon work supported by the National Science Foundation under Grant DEB-2327030. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.   Page last updated on 2026-03-02"
+    "text": "What sites are being forecasted?\n\n\n\n\n\n\n  This material is based upon work supported by the National Science Foundation under Grant DEB-2327030. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.   Page last updated on 2026-03-03"
   },
   {
     "objectID": "targets.html",
