@@ -104,7 +104,7 @@ print("Metals")
 source('targets/target_functions/target_generation_metals_daily.R')
 metals_data <- target_generation_metals_daily(
 current_data_file = 'https://raw.githubusercontent.com/CareyLabVT/Reservoirs/refs/heads/master/Data/DataNotYetUploadedToEDI/Metals_Data/metals_L1.csv',
-historic_data_file = "https://pasta.lternet.edu/package/data/eml/edi/455/9/9a072c4e4af39f96f60954fc4f7d8be5")
+edi_data_file = "https://pasta.lternet.edu/package/data/eml/edi/455/9/9a072c4e4af39f96f60954fc4f7d8be5")
 
  metals_data$datetime <- lubridate::as_datetime(metals_data$datetime)   
 
