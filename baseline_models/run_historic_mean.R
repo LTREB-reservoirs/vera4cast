@@ -198,6 +198,9 @@ historic_insitu_metals <- purrr::pmap_dfr(site_var_combinations_metals,
                                                                                   forecast_date = Sys.Date(),
                                                                                   depth = 'target',
                                                                                   ...))
+
+historic_insitu_metals$duration <- 'P1D'
+
 # Flux variables
 # get all combinations
 print('Flux model')
