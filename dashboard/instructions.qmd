@@ -141,7 +141,9 @@ Kernel density estimation uses the default bandwidth produced by the `bw.nrd` fu
 Here is an example of a forecast that has a normal distribution:
 
 ```{r}
-df <- readr::read_csv("https://amnh1.osn.mghpcc.org/bio230121-bucket01/vera4cast/forecasts/raw/T20231001231345_daily-2023-10-01-climatology.csv.gz", show_col_types = FALSE)
+df <- readr::read_csv("https://amnh1.osn.mghpcc.org/bio230121-bucket01/vera4cast/forecasts/raw/T20231001231345_daily-2023-10-01-climatology.csv.gz", show_col_types = FALSE) |>
+dplyr::mutate(datetime = lubridate::as_datetime(datetime),
+       reference_datetime = lubridate::as_datetime(reference_datetime))
 dplyr::glimpse(df)
 ```
 
