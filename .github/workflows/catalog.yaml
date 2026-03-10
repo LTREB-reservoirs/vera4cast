@@ -34,6 +34,7 @@ jobs:
         shell: Rscript {0}
         run: |
           install.packages('gsheet')
+          install.packages('googlesheets4')
           install.packages('minioclient')
           devtools::install_github('eco4cast/stac4cast')
 
