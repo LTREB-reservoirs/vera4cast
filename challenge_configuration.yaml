@@ -1,51 +1,53 @@
 challenge_long_name: Virginia Ecoforecast Reservoir Analysis
 project_id: vera4cast
+github_repo: LTREB-reservoirs/vera4cast
+# S3 Bucket Information
 endpoint: amnh1.osn.mghpcc.org
 noaa_endpoint: amnh1.osn.mghpcc.org
 submissions_endpoint: submit.ltreb-reservoirs.org
 scores_bucket: bio230121-bucket01/vera4cast/scores
 forecasts_bucket: bio230121-bucket01/vera4cast/forecasts
-summaries_bucket: bio230121-bucket01/vera4cast/forecasts/summaries
+summaries_bucket: bio230121-bucket01/vera4cast/forecasts
 submissions_bucket: vera4cast-submissions
-inventory_bucket: bio230121-bucket01/vera4cast/inventory
+#inventory_bucket: bio230121-bucket01/vera4cast/inventory
 #inventory_bucket: bio230014-bucket01/challenges/inventory
 #noaa_forecast_bucket: drivers/noaa/gefs-v12-reprocess/
 noaa_forecast_bucket: bio230121-bucket01/flare/drivers/met/gefs-v12
-prov_bucket: bio230121-bucket01/vera4cast/prov
+#prov_bucket: bio230121-bucket01/vera4cast/prov
 targets_bucket: bio230121-bucket01/vera4cast/targets
 archive_bucket: bio230121-bucket01/vera4cast/archive
 model_metadata_bucket: bio230121-bucket01/vera4cast/metadata/model_id
 model_metadata_gsheet: https://docs.google.com/spreadsheets/d/1f177dpaxLzc4UuQ4_SJV9JWIbQPlilVnEztyvZE6aSU/edit?usp=sharing
 example_model_id: example
-site_table: vera4cast_field_site_metadata.csv
-site_table_link: 'https://raw.githubusercontent.com/LTREB-reservoirs/vera4cast/main/vera4cast_field_site_metadata.csv'
-site_thumbnail: "https://raw.githubusercontent.com/LTREB-reservoirs/vera4cast/main/catalog/thumbnail_plots/fcr_scenic.jpg"
-site_thumbnail_title: "Falling Creek Reservoir Image"
-site_path: 'catalog/sites'
+#site_table: vera4cast_field_site_metadata.csv
+#site_table_link: 'https://raw.githubusercontent.com/LTREB-reservoirs/vera4cast/main/vera4cast_field_site_metadata.csv'
+#site_thumbnail: "https://raw.githubusercontent.com/LTREB-reservoirs/vera4cast/main/catalog/thumbnail_plots/fcr_scenic.jpg"
+#site_thumbnail_title: "Falling Creek Reservoir Image"
+#site_path: 'catalog/sites'
 target_metadata_gsheet: https://docs.google.com/spreadsheets/d/1fOWo6zlcWA8F6PmRS9AD6n1pf-dTWSsmGKNpaX3yHNE/edit?usp=sharing
 challenge_url: https://www.ltreb-reservoirs.org/vera4cast/
-github_repo: LTREB-reservoirs/vera4cast
+#TARGET CONFIGURATIONS
 target_groups:
-  Insitu:
-    targets_file: "https://amnh1.osn.mghpcc.org/bio230121-bucket01/vera4cast/targets/project_id=vera4cast/duration=P1D/daily-insitu-targets.csv.gz"
-  Inflow:
-    targets_file: "https://amnh1.osn.mghpcc.org/bio230121-bucket01/vera4cast/targets/project_id=vera4cast/duration=P1D/daily-inflow-targets.csv.gz"
-  Met:
-    targets_file: "https://amnh1.osn.mghpcc.org/bio230121-bucket01/vera4cast/targets/project_id=vera4cast/duration=P1D/daily-met-targets.csv.gz"
-noaa_forecast_groups: ['Pseudo','Stage1-stats','Stage1','Stage2','Stage3']
-noaa_forecast_group_paths: ['pseudo','stage1-stats','stage1','stage2','stage3']
-variable_groups:
   Biological:
+    targets_file: "https://amnh1.osn.mghpcc.org/bio230121-bucket01/vera4cast/targets/project_id=vera4cast/duration=P1D/daily-insitu-targets.csv.gz"
     variable: ['Chla_ugL_mean','Bloom_binary_mean']
+    max_horizon: [35, 35]
     duration: ['P1D','P1D']
     thumbnail_link: 'https://raw.githubusercontent.com/addelany/vera4cast/main/catalog/thumbnail_plots/bvr_platform_green_close.jpg'
     thumbnail_title: 'BVRE Algae Bloom Image'
     group_vars:
       Chla_ugL_mean:
         duration: 'P1D'
+        max_horizon: 35
+        var_doi: "10.1002/fee.2616"
+        var_citation: "Thomas, R.Q., C. Boettiger, C.C. Carey, M.C. Dietze, L.R. Johnson, M.A. Kenney, J.S. Mclachlan, J.A. Peters, E.R. Sokol, J.F. Weltzin, A. Willson, W.M. Woelmer, and Challenge Contributors. 2023. The NEON Ecological Forecasting Challenge. Frontiers in Ecology and Environment 21: 112-113."
       Bloom_binary_mean:
-        duration: "P1D"
+        duration: 'P1D'
+        max_horizon: 35
+        var_doi: "10.1002/fee.2616"
+        var_citation: "Thomas, R.Q., C. Boettiger, C.C. Carey, M.C. Dietze, L.R. Johnson, M.A. Kenney, J.S. Mclachlan, J.A. Peters, E.R. Sokol, J.F. Weltzin, A. Willson, W.M. Woelmer, and Challenge Contributors. 2023. The NEON Ecological Forecasting Challenge. Frontiers in Ecology and Environment 21: 112-113."
   Physical:
+    targets_file: "https://amnh1.osn.mghpcc.org/bio230121-bucket01/vera4cast/targets/project_id=vera4cast/duration=P1D/daily-insitu-targets.csv.gz"
     variable: ['Temp_C_mean', 'Secchi_m_sample','Temp_C_mean']
     duration: ['P1D','P1D','PT1H']
     thumbnail_link: 'https://raw.githubusercontent.com/addelany/vera4cast/main/catalog/thumbnail_plots/fcr_catwalk.jpg'
@@ -53,9 +55,16 @@ variable_groups:
     group_vars:
       Temp_C_mean:
         duration: ['P1D','PT1H']
+        max_horizon: [35, 35]
+        var_doi: "10.1002/fee.2616"
+        var_citation: "Thomas, R.Q., C. Boettiger, C.C. Carey, M.C. Dietze, L.R. Johnson, M.A. Kenney, J.S. Mclachlan, J.A. Peters, E.R. Sokol, J.F. Weltzin, A. Willson, W.M. Woelmer, and Challenge Contributors. 2023. The NEON Ecological Forecasting Challenge. Frontiers in Ecology and Environment 21: 112-113."
       Secchi_m_sample:
         duration: "P1D"
+        max_horizon: [35]
+        var_doi: "10.1002/fee.2616"
+        var_citation: "Thomas, R.Q., C. Boettiger, C.C. Carey, M.C. Dietze, L.R. Johnson, M.A. Kenney, J.S. Mclachlan, J.A. Peters, E.R. Sokol, J.F. Weltzin, A. Willson, W.M. Woelmer, and Challenge Contributors. 2023. The NEON Ecological Forecasting Challenge. Frontiers in Ecology and Environment 21: 112-113."
   Chemical:
+    targets_file: "https://amnh1.osn.mghpcc.org/bio230121-bucket01/vera4cast/targets/project_id=vera4cast/duration=P1D/daily-insitu-targets.csv.gz"
     variable: ['DO_mgL_mean']
     duration: ['P1D']
     thumbnail_link: 'https://raw.githubusercontent.com/addelany/vera4cast/main/catalog/thumbnail_plots/bvr_platform_green.jpg'
@@ -63,33 +72,81 @@ variable_groups:
     group_vars:
       DO_mgL_mean:
         duration: 'P1D'
-        # var_doi: "10.5194/bg-20-5211-2023"
-        # var_citation: "Delany, A., Ladwig, R., Buelo, C., Albright, E., and Hanson, P. C.: The influence of carbon cycling on oxygen depletion in
-        # north-temperate lakes, Biogeosciences, 20, 5211–5228, https://doi.org/10.5194/bg-20-5211-2023, 2023."
+        max_horizon: [35]
+        var_doi: "10.1002/fee.2616"
+        var_citation: "Thomas, R.Q., C. Boettiger, C.C. Carey, M.C. Dietze, L.R. Johnson, M.A. Kenney, J.S. Mclachlan, J.A. Peters, E.R. Sokol, J.F. Weltzin, A. Willson, W.M. Woelmer, and Challenge Contributors. 2023. The NEON Ecological Forecasting Challenge. Frontiers in Ecology and Environment 21: 112-113."
+noaa_forecasts:
+  noaa_forecast_groups: ['Pseudo','Stage1-stats','Stage1','Stage2','Stage3']
+  noaa_forecast_group_paths: ['pseudo','stage1-stats','stage1','stage2','stage3']
+
+
+
+
+  # Insitu:
+  #   targets_file: "https://amnh1.osn.mghpcc.org/bio230121-bucket01/vera4cast/targets/project_id=vera4cast/duration=P1D/daily-insitu-targets.csv.gz"
+  # Inflow:
+  #   targets_file: "https://amnh1.osn.mghpcc.org/bio230121-bucket01/vera4cast/targets/project_id=vera4cast/duration=P1D/daily-inflow-targets.csv.gz"
+  # Met:
+  #   targets_file: "https://amnh1.osn.mghpcc.org/bio230121-bucket01/vera4cast/targets/project_id=vera4cast/duration=P1D/daily-met-targets.csv.gz"
+
+# variable_groups:
+#   Biological:
+#     variable: ['Chla_ugL_mean','Bloom_binary_mean']
+#     duration: ['P1D','P1D']
+#     thumbnail_link: 'https://raw.githubusercontent.com/addelany/vera4cast/main/catalog/thumbnail_plots/bvr_platform_green_close.jpg'
+#     thumbnail_title: 'BVRE Algae Bloom Image'
+#     group_vars:
+#       Chla_ugL_mean:
+#         duration: 'P1D'
+#       Bloom_binary_mean:
+#         duration: "P1D"
+#   Physical:
+#     variable: ['Temp_C_mean', 'Secchi_m_sample','Temp_C_mean']
+#     duration: ['P1D','P1D','PT1H']
+#     thumbnail_link: 'https://raw.githubusercontent.com/addelany/vera4cast/main/catalog/thumbnail_plots/fcr_catwalk.jpg'
+#     thumbnail_title: 'FCRE Catwalk Image'
+#     group_vars:
+#       Temp_C_mean:
+#         duration: ['P1D','PT1H']
+#       Secchi_m_sample:
+#         duration: "P1D"
+#   Chemical:
+#     variable: ['DO_mgL_mean']
+#     duration: ['P1D']
+#     thumbnail_link: 'https://raw.githubusercontent.com/addelany/vera4cast/main/catalog/thumbnail_plots/bvr_platform_green.jpg'
+#     thumbnail_title: 'BVRE Algae Bloom Image'
+#     group_vars:
+#       DO_mgL_mean:
+#         duration: 'P1D'
+#         # var_doi: "10.5194/bg-20-5211-2023"
+#         # var_citation: "Delany, A., Ladwig, R., Buelo, C., Albright, E., and Hanson, P. C.: The influence of carbon cycling on oxygen depletion in
+#         # north-temperate lakes, Biogeosciences, 20, 5211–5228, https://doi.org/10.5194/bg-20-5211-2023, 2023."
 catalog_config:
+  catalog_path: 'vera4cast-catalog'
   about_string: 'https://www.ltreb-reservoirs.org/vera4cast/'
   about_title: 'VERA Forecasting Challenge Documentation'
   scores_thumbnail: "https://raw.githubusercontent.com/addelany/vera4cast/main/catalog/thumbnail_plots/bvr_platform.jpg"
   scores_thumbnail_title: "Beaver Creek Reservoir"
   forecasts_thumbnail: "https://raw.githubusercontent.com/LTREB-reservoirs/vera4cast/main/dashboard/img/banner-2.jpg"
   forecasts_thumbnail_title: "Falling Creek Reservoir"
-  forecast_path: 'catalog/forecasts/'
-  scores_path: 'catalog/scores/'
-  summaries_path: 'catalog/summaries/'
+  forecast_path: 'vera4cast-catalog/forecasts/'
+  scores_path: 'vera4cast-catalog/scores/'
+  summaries_path: 'vera4cast-catalog/summaries/'
   summaries_thumbnail: 'https://raw.githubusercontent.com/addelany/vera4cast/main/catalog/thumbnail_plots/bvr_edge.JPG'
   summaries_thumbnail_title: "BVRE Shore Image"
-  inventory_path: 'catalog/inventory/'
+  inventory_path: 'vera4cast-catalog/inventory/'
   inventory_thumbnail: 'https://raw.githubusercontent.com/LTREB-reservoirs/vera4cast/main/catalog/thumbnail_plots/bvr_low.JPG'
   inventory_thumbnail_title: "BVRE Reservoir Image"
-  noaa_path: 'catalog/noaa_forecasts/'
+  noaa_path: 'vera4cast-catalog/noaa_forecasts/'
   noaa_thumbnail: 'https://raw.githubusercontent.com/addelany/vera4cast/main/catalog/thumbnail_plots/bvr_dusk.jpg'
   noaa_thumbnail_title: "CCRE Reservoir Image"
-  targets_path: 'catalog/targets/'
+  site_path: 'vera4cast-catalog/sites'
+  targets_path: 'vera4cast-catalog/targets/'
   targets_thumbnail: 'https://raw.githubusercontent.com/addelany/vera4cast/main/catalog/thumbnail_plots/carvens_full.jpg'
   targets_thumbnail_title: "CCRE Reservoir Image"
-  aws_download_path_forecasts: 'bio230121-bucket01/vera4cast/forecasts/bundled-parquet'
-  aws_download_path_scores: 'bio230121-bucket01/vera4cast/scores/bundled-parquet'
-  aws_download_path_summaries: 'bio230121-bucket01/vera4cast/forecasts/bundled-summaries'
+  #aws_download_path_forecasts: 'bio230121-bucket01/vera4cast/forecasts/bundled-parquet'
+  #aws_download_path_scores: 'bio230121-bucket01/vera4cast/scores/bundled-parquet'
+  #aws_download_path_summaries: 'bio230121-bucket01/vera4cast/forecasts/bundled-summaries'
   host_url: "http://ecoforecast.centers.vt.edu/"
   host_name: "Virginia Tech Center for Ecosystem Forecasting"
   bbox:
@@ -102,7 +159,9 @@ catalog_config:
   citation_doi_link: "https://doi.org/10.1002/fee.2616"
   citation_doi: "10.1002/fee.2616"
   citation_text: "Thomas, R.Q., C. Boettiger, C.C. Carey, M.C. Dietze, L.R. Johnson, M.A. Kenney, J.S. Mclachlan, J.A. Peters, E.R. Sokol, J.F. Weltzin, A. Willson, W.M. Woelmer, and Challenge Contributors. 2023. The NEON Ecological Forecasting Challenge. Frontiers in Ecology and Environment 21: 112-113."
-  dashboard_url: "https://www.ltreb-reservoirs.org/vera4cast"
-  dashboard_title: "VERA Forecast Challenge Dashboard"
+  documentation_url: "https://www.ltreb-reservoirs.org/vera4cast/"
+  #dashboard_url: "https://www.ltreb-reservoirs.org/vera4cast"
+  #dashboard_title: "VERA Forecast Challenge Dashboard"
   site_metadata_url: 'https://raw.githubusercontent.com/LTREB-reservoirs/vera4cast/main/vera4cast_field_site_metadata.csv'
-  noaa_sites: ['fcre']
+  #noaa_sites: ['fcre']
+  catalog_title: 'Virginia Ecoforecast Reservoir Analysis Forecasting Challenge'

@@ -37,8 +37,8 @@ forecast_theme_df <- arrow::open_dataset(arrow::s3_bucket((config$forecasts_buck
 message('forecast sites...')
 
 site_metadata <- read_csv(catalog_config$site_metadata_url) |>
-  distinct(field_site_id) |>
-  pull(field_site_id)
+  distinct(site_id) |>
+  pull(site_id)
 
 
 message('forecast dates...')
