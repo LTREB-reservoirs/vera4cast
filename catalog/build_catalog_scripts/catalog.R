@@ -35,12 +35,6 @@ build_catalog <- function(){
       list(
         "rel"= "child",
         "type"= "application/json",
-        "title"= "Inventory",
-        "href" = 'inventory/collection.json'
-      ),
-      list(
-        "rel"= "child",
-        "type"= "application/json",
         "title"= "NOAA Forecasts",
         "href" = 'noaa_forecasts/collection.json'
       ),
