@@ -73,7 +73,7 @@ if(length(submissions) > 0){
 
   time_stamp <- format(Sys.time(), format = "%Y%m%d%H%M%S")
 
-  sites <- readr::read_csv(config$site_table,show_col_types = FALSE) |>
+  sites <- readr::read_csv(config$catalog_config$site_metadata_url,show_col_types = FALSE) |>
   select(site_id, latitude, longitude)
 
   for(i in 1:length(submissions)){
