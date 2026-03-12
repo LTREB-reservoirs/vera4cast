@@ -21,7 +21,7 @@ targets_met <- readr::read_csv(paste0("https://", config$endpoint, "/", config$t
 targets_tubr <- readr::read_csv(paste0("https://", config$endpoint, "/", config$targets_bucket, "/project_id=vera4cast/duration=P1D/daily-inflow-targets.csv.gz"), guess_max = 10000, show_col_types = FALSE)
 
 # Get site information
-sites <- readr::read_csv(config$site_table, show_col_types = FALSE)
+sites <- readr::read_csv(config$catalog_config$site_metadata_url, show_col_types = FALSE)
 site_names <- sites$site_id
 
 # Inflow variables

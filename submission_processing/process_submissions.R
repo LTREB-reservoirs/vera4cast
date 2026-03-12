@@ -57,19 +57,19 @@ if(length(submissions) > 0){
                          access_key = Sys.getenv("OSN_KEY"),
                          secret_key = Sys.getenv("OSN_SECRET"))
 
-  s3_inventory <- arrow::s3_bucket(dirname(config$inventory_bucket),
-                                   endpoint_override = config$endpoint,
-                                   access_key = Sys.getenv("OSN_KEY"),
-                                   secret_key = Sys.getenv("OSN_SECRET"))
-
-  s3_inventory$CreateDir(paste0("inventory/catalog/forecasts/project_id=", config$project_id))
-
-  s3_inventory <- arrow::s3_bucket(paste0(config$inventory_bucket,"/catalog/forecasts/project_id=", config$project_id),
-                                   endpoint_override = config$endpoint,
-                                   access_key = Sys.getenv("OSN_KEY"),
-                                   secret_key = Sys.getenv("OSN_SECRET"))
-
-  inventory_df <- arrow::open_dataset(s3_inventory) |> dplyr::collect()
+  # s3_inventory <- arrow::s3_bucket(dirname(config$inventory_bucket),
+  #                                  endpoint_override = config$endpoint,
+  #                                  access_key = Sys.getenv("OSN_KEY"),
+  #                                  secret_key = Sys.getenv("OSN_SECRET"))
+  #
+  # s3_inventory$CreateDir(paste0("inventory/catalog/forecasts/project_id=", config$project_id))
+  #
+  # s3_inventory <- arrow::s3_bucket(paste0(config$inventory_bucket,"/catalog/forecasts/project_id=", config$project_id),
+  #                                  endpoint_override = config$endpoint,
+  #                                  access_key = Sys.getenv("OSN_KEY"),
+  #                                  secret_key = Sys.getenv("OSN_SECRET"))
+  #
+  # inventory_df <- arrow::open_dataset(s3_inventory) |> dplyr::collect()
 
   time_stamp <- format(Sys.time(), format = "%Y%m%d%H%M%S")
 

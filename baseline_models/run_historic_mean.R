@@ -20,7 +20,7 @@ targets_tubr <- readr::read_csv(paste0("https://", config$endpoint, "/", config$
 
 
 # Get site information
-sites <- readr::read_csv(config$site_table, show_col_types = FALSE)
+sites <- readr::read_csv(config$catalog_config$site_metadata_url, show_col_types = FALSE)
 site_names <- sites$site_id
 
 # Runs the RW forecast for inflow variables
