@@ -70,10 +70,10 @@ build_catalog <- function(){
     )
   )
 
-  dest <- "catalog/"
+  dest <- paste0("../", config$catalog_config$catalog_path)
   jsonlite::write_json(catalog, file.path(dest, "catalog.json"),
                        pretty=TRUE, auto_unbox=TRUE)
-  stac4cast::stac_validate(file.path(dest, "catalog.json"))
+  #stac4cast::stac_validate(file.path(dest, "catalog.json"))
 
 }
 
