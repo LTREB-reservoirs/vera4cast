@@ -35,6 +35,7 @@ site_metadata <- read_csv(catalog_config$site_metadata_url) |>
 print('FIND SUMMARIES TABLE SCHEMA')
 summaries_theme_df <- arrow::open_dataset(arrow::s3_bucket(paste0(config$forecasts_bucket,'/bundled-summaries'), endpoint_override = config$endpoint, anonymous = TRUE)) #|>
 
+print('forecast_sites...')
 summaries_sites <- duckdbfs::open_dataset(paste0("s3://anonymous@",config$summaries_bucket,"/bundled-summaries/project_id=",
                                                  config$project_id,"/?endpoint_override=",config$endpoint))   |>
   filter(duration %in% c("P1D", "P1W")) |>
@@ -45,6 +46,7 @@ summaries_sites <- duckdbfs::open_dataset(paste0("s3://anonymous@",config$summar
 
 all_summaries_sites <- unique(summaries_sites$site_id)
 
+print('forecast dates...')
 summaries_model_var_max_date_df <- duckdbfs::open_dataset(paste0("s3://anonymous@",config$summaries_bucket,"/bundled-summaries/project_id=",
                                                                  config$project_id,"/?endpoint_override=",config$endpoint))   |>
   filter(duration %in% c("P1D", "PT1H")) |>
