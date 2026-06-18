@@ -67,6 +67,37 @@ historic_mean_insitu <- purrr::pmap_dfr(site_var_combinations,
                                                                     depth = 'target',
                                                                     ...))
 
+### INSITU VARIABLES AT DEEPER DEPTH ##
+print('Insitu model deeper...')
+site_var_combinations_deeper_depth_fcr <- expand.grid(var = c('DO_mgL_mean',
+                                                              'Temp_C_mean',
+                                                              'CH4_umolL_sample'),
+                                                      site = 'fcre',
+                                                      depth = 9)
+
+historic_mean_insitu_deeper_fcr <- purrr::pmap_dfr(site_var_combinations_deeper_depth_fcr,
+                                                 .f = ~ generate_baseline_mean(targets = targets_insitu,
+                                                                                      h = 35,
+                                                                                      model_id = team_name,
+                                                                                      forecast_date = Sys.Date(),
+                                                                                      #depth = 'target',
+                                                                                      ...))
+
+site_var_combinations_deeper_depth_bvr <- expand.grid(var = c('DO_mgL_mean',
+                                                              'Temp_C_mean',
+                                                              'CH4_umolL_sample'),
+                                                      site = 'bvre',
+                                                      depth = 8)
+
+historic_mean_insitu_deeper_bvr <- purrr::pmap_dfr(site_var_combinations_deeper_depth_bvr,
+                                                 .f = ~ generate_baseline_mean(targets = targets_insitu,
+                                                                                      h = 35,
+                                                                                      model_id = team_name,
+                                                                                      forecast_date = Sys.Date(),
+                                                                                      #depth = 'target',
+                                                                                      ...))
+
+## GHG VARIABLES
 site_var_combinations_ghg_insitu <- expand.grid(var = c('CH4_umolL_sample',
                                                         'CO2_umolL_sample'),
                                                 site = c('fcre',
@@ -226,7 +257,7 @@ historic_mean_insitu_binary <- purrr::pmap_dfr(binary_site_var_comb,
 # combine and submit
 combined_historic_mean <- bind_rows(historic_mean_inflow, historic_mean_insitu, historic_mean_met, historic_mean_insitu_binary, historic_flux,
                                     historic_insitu_productivity, historic_mean_ghg_insitu, historic_insitu_chem, historic_insitu_physical, historic_insitu_metals,
-                                    climatology_insitu_chla_max)
+                                    climatology_insitu_chla_max, historic_mean_insitu_deeper_fcr, historic_mean_insitu_deeper_bvr)
 
 # write forecast file
 file_date <- combined_historic_mean$reference_datetime[1]
