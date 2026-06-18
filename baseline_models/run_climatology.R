@@ -61,6 +61,37 @@ climatology_insitu_focal <- purrr::pmap_dfr(site_var_combinations_focal,
                                                                          depth = 'target',
                                                                          ...))
 
+
+### INSITU VARIABLES AT DEEPER DEPTH ##
+print('Insitu model deeper...')
+site_var_combinations_deeper_depth_fcr <- expand.grid(var = c('DO_mgL_mean',
+                                                              'Temp_C_mean',
+                                                              'CH4_umolL_sample'),
+                                                      site = 'fcre',
+                                                      depth = 9)
+
+climatology_insitu_deeper_fcr <- purrr::pmap_dfr(site_var_combinations_deeper_depth_fcr,
+                                                   .f = ~ generate_baseline_climatology(targets = targets_insitu,
+                                                                                          h = 35,
+                                                                                          model_id = team_name,
+                                                                                          forecast_date = Sys.Date(),
+                                                                                          #depth = 'target',
+                                                                                          ...))
+
+site_var_combinations_deeper_depth_bvr <- expand.grid(var = c('DO_mgL_mean',
+                                                              'Temp_C_mean',
+                                                              'CH4_umolL_sample'),
+                                                      site = 'bvre',
+                                                      depth = 8)
+
+climatology_insitu_deeper_bvr <- purrr::pmap_dfr(site_var_combinations_deeper_depth_bvr,
+                                                   .f = ~ generate_baseline_climatology(targets = targets_insitu,
+                                                                                                    h = 35,
+                                                                                                    model_id = team_name,
+                                                                                                    forecast_date = Sys.Date(),
+                                                                                                    #depth = 'target',
+                                                                                                    ...))
+
 ## GHG VARIABLES (TAKEN FROM DIFFERENT DEPTH)
 site_var_combinations_ghg_insitu <- expand.grid(var = c('CH4_umolL_sample',
                                                         'CO2_umolL_sample'),
@@ -221,7 +252,7 @@ climatology_insitu_binary <- purrr::pmap_dfr(binary_site_var_comb,
 # combine and submit
 combined_climatology <- bind_rows(climatology_met, climatology_inflow, climatology_insitu_focal, climatology_insitu_binary, climatology_flux,
                                   climatology_ghg_insitu, climatology_insitu_productivity, climatology_insitu_chem, climatology_insitu_physical, climatology_insitu_metals,
-                                  climatology_insitu_chla_max)
+                                  climatology_insitu_chla_max, climatology_insitu_deeper_fcr, climatology_insitu_deeper_bvr)
 
 # 4. Write forecast file
 file_date <- combined_climatology$reference_datetime[1]

@@ -12,7 +12,7 @@ Sys.unsetenv("AWS_S3_ENDPOINT")
 Sys.setenv("AWS_EC2_METADATA_DISABLED"="TRUE")
 
 config <- yaml::read_yaml("challenge_configuration.yaml")
-team_name <- 'persistenceRW'
+team_name <- 'persistence_constSD'
 
 source('R/fablePersistenceModelFunction.R')
 source('R/convert2binary.R')
@@ -30,10 +30,10 @@ site_names <- sites$site_id
 # Runs the RW forecast for inflow variables
 print('Inflow model')
 
-persistenceRW_inflow <- purrr::map_dfr(.x = c('Flow_cms_mean', 'Temp_C_mean'),
-                                       .f = ~ generate_baseline_persistenceRW(targets = targets_tubr,
+persistence_constSD_inflow <- purrr::map_dfr(.x = c('Flow_cms_mean', 'Temp_C_mean'),
+                                       .f = ~ generate_baseline_persistence_constant_sd(targets = targets_tubr,
                                                                               h = 35,
-                                                                              model_id = 'persistenceRW',
+                                                                              model_id = team_name,
                                                                               forecast_date = Sys.Date(),
                                                                               site = 'tubr',
                                                                               depth = 'target',
@@ -42,9 +42,9 @@ persistenceRW_inflow <- purrr::map_dfr(.x = c('Flow_cms_mean', 'Temp_C_mean'),
 # met variables
 print('Met model')
 
-persistenceRW_met <- generate_baseline_persistenceRW(targets = targets_met,
+persistence_constSD_met <- generate_baseline_persistence_constant_sd(targets = targets_met,
                                                    h = 35,
-                                                   model_id = 'persistenceRW',
+                                                   model_id = team_name,
                                                    forecast_date = Sys.Date(),
                                                    site = 'fcre',
                                                    depth = 'target',
@@ -74,10 +74,10 @@ site_var_combinations <- expand.grid(var = c('DO_mgL_mean',
                                      site = c('fcre',
                                               'bvre'))
 
-persistenceRW_insitu <- purrr::pmap_dfr(site_var_combinations,
-                                        .f = ~ generate_baseline_persistenceRW(targets = targets_insitu,
+persistence_constSD_insitu <- purrr::pmap_dfr(site_var_combinations,
+                                        .f = ~ generate_baseline_persistence_constant_sd(targets = targets_insitu,
                                                                                h = 35,
-                                                                               model_id = 'persistenceRW',
+                                                                               model_id = team_name,
                                                                                forecast_date = Sys.Date(),
                                                                                depth = 'target',
                                                                                ...))
@@ -86,18 +86,17 @@ persistenceRW_insitu <- purrr::pmap_dfr(site_var_combinations,
 ### INSITU VARIABLES AT DEEPER DEPTH ##
 print('Insitu model deeper...')
 site_var_combinations_deeper_depth_fcr <- expand.grid(var = c('DO_mgL_mean',
-                                                              'Temp_C_mean',
-                                                              'CH4_umolL_sample'),
-                                                      site = 'fcre',
-                                                      depth = 9)
-
-persistenceRW_insitu_deeper_fcr <- purrr::pmap_dfr(site_var_combinations_deeper_depth_fcr,
-                                                         .f = ~ generate_baseline_persistenceRW(targets = targets_insitu,
-                                                                                                          h = 35,
-                                                                                                          model_id = 'persistenceRW',
-                                                                                                          forecast_date = Sys.Date(),
-                                                                                                          #depth = 'target',
-                                                                                                          ...))
+                                             'Temp_C_mean',
+                                             'CH4_umolL_sample'),
+                                     site = 'fcre',
+                                     depth = 9)
+persistence_constSD_insitu_deeper_fcr <- purrr::pmap_dfr(site_var_combinations_deeper_depth_fcr,
+                                              .f = ~ generate_baseline_persistence_constant_sd(targets = targets_insitu,
+                                                                                               h = 35,
+                                                                                               model_id = team_name,
+                                                                                               forecast_date = Sys.Date(),
+                                                                                               #depth = 'target',
+                                                                                               ...))
 
 site_var_combinations_deeper_depth_bvr <- expand.grid(var = c('DO_mgL_mean',
                                                               'Temp_C_mean',
@@ -105,13 +104,14 @@ site_var_combinations_deeper_depth_bvr <- expand.grid(var = c('DO_mgL_mean',
                                                       site = 'bvre',
                                                       depth = 8)
 
-persistenceRW_insitu_deeper_bvr <- purrr::pmap_dfr(site_var_combinations_deeper_depth_bvr,
+persistence_constSD_insitu_deeper_bvr <- purrr::pmap_dfr(site_var_combinations_deeper_depth_bvr,
                                                          .f = ~ generate_baseline_persistence_constant_sd(targets = targets_insitu,
                                                                                                           h = 35,
-                                                                                                          model_id = 'persistenceRW',
+                                                                                                          model_id = team_name,
                                                                                                           forecast_date = Sys.Date(),
                                                                                                           #depth = 'target',
                                                                                                           ...))
+
 
 ## GHG VARIABLES (TAKEN FROM DIFFERENT DEPTH)
 site_var_combinations_ghg_insitu <- expand.grid(var = c('CH4_umolL_sample',
@@ -119,8 +119,8 @@ site_var_combinations_ghg_insitu <- expand.grid(var = c('CH4_umolL_sample',
                                                 site = c('fcre',
                                                          'bvre'))
 
-persistenceRW_ghg_insitu <- purrr::pmap_dfr(site_var_combinations_ghg_insitu,
-                                            .f = ~ generate_baseline_persistenceRW(targets = targets_insitu,
+persistence_constSD_ghg_insitu <- purrr::pmap_dfr(site_var_combinations_ghg_insitu,
+                                            .f = ~ generate_baseline_persistence_constant_sd(targets = targets_insitu,
                                                                           h = 35,
                                                                           model_id = team_name,
                                                                           forecast_date = Sys.Date(),
@@ -146,8 +146,8 @@ site_var_combinations_productivity <- expand.grid(var = c(#'DeepChlorophyllMaxim
   site = c('fcre',
            'bvre'))
 
-persistenceRW_insitu_productivity <- purrr::pmap_dfr(site_var_combinations_productivity,
-                                                   .f = ~ generate_baseline_persistenceRW(targets = targets_insitu,
+persistence_constSD_insitu_productivity <- purrr::pmap_dfr(site_var_combinations_productivity,
+                                                   .f = ~ generate_baseline_persistence_constant_sd(targets = targets_insitu,
                                                                                         h = 35,
                                                                                         forecast_date = Sys.Date(),
                                                                                         depth = 'target',
@@ -172,8 +172,8 @@ site_var_combinations_chla_max <- expand.grid(var = cmax_vars,
                                               site = c('fcre',
                                                        'bvre'))
 
-persistence_insitu_chla_max <- purrr::pmap_dfr(site_var_combinations_chla_max,
-                                               .f = ~ generate_baseline_persistenceRW(targets = targets_cmax,
+persistence_constSD_insitu_chla_max <- purrr::pmap_dfr(site_var_combinations_chla_max,
+                                               .f = ~ generate_baseline_persistence_constant_sd(targets = targets_cmax,
                                                                                     h = 35,
                                                                                     forecast_date = Sys.Date(),
                                                                                     depth = 'target',
@@ -219,8 +219,8 @@ targets_insitu <- targets_insitu |>
                           1.5,
                           depth_m))
 
-persistenceRW_insitu_chem <- purrr::pmap_dfr(site_var_combinations_chem,
-                                       .f = ~ generate_baseline_persistenceRW(targets = targets_insitu,
+persistence_constSD_insitu_chem <- purrr::pmap_dfr(site_var_combinations_chem,
+                                       .f = ~ generate_baseline_persistence_constant_sd(targets = targets_insitu,
                                                                              h = 35,
                                                                              forecast_date = Sys.Date(),
                                                                              depth = 'target',
@@ -232,8 +232,8 @@ site_var_combinations_physical <- expand.grid(var = c('ThermoclineDepth_m_mean',
                                               site = c('fcre',
                                                        'bvre'))
 
-persistenceRW_insitu_physical <- purrr::pmap_dfr(site_var_combinations_physical,
-                                           .f = ~ generate_baseline_persistenceRW(targets = targets_insitu,
+persistence_constSD_insitu_physical <- purrr::pmap_dfr(site_var_combinations_physical,
+                                           .f = ~ generate_baseline_persistence_constant_sd(targets = targets_insitu,
                                                                                  h = 35,
                                                                                  forecast_date = Sys.Date(),
                                                                                  depth = 'target',
@@ -249,13 +249,13 @@ site_var_combinations_metals <- expand.grid(var = c('TFe_mgL_sample',
                                             site = c('fcre',
                                                      'bvre'))
 
-persistenceRW_insitu_metals <- purrr::pmap_dfr(site_var_combinations_metals,
-                                         .f = ~ generate_baseline_persistenceRW(targets = targets_insitu,
+persistence_constSD_insitu_metals <- purrr::pmap_dfr(site_var_combinations_metals,
+                                         .f = ~ generate_baseline_persistence_constant_sd(targets = targets_insitu,
                                                                                h = 35,
                                                                                forecast_date = Sys.Date(),
                                                                                depth = 'target',
                                                                                ...))
-persistenceRW_insitu_metals$duration <- 'P1D'
+persistence_constSD_insitu_metals$duration <- 'P1D'
 
 # Flux variables
 # get all combinations
@@ -265,10 +265,10 @@ site_var_combinations <- expand.grid(var = c('CO2flux_umolm2s_mean',
                                              'CH4flux_umolm2s_mean'),
                                      site = c('fcre'))
 
-persistenceRW_flux <- purrr::pmap_dfr(site_var_combinations,
-                                        .f = ~ generate_baseline_persistenceRW(targets = targets_insitu,
+persistence_constSD_flux <- purrr::pmap_dfr(site_var_combinations,
+                                        .f = ~ generate_baseline_persistence_constant_sd(targets = targets_insitu,
                                                                                h = 35,
-                                                                               model_id = 'persistenceRW',
+                                                                               model_id = team_name,
                                                                                forecast_date = Sys.Date(),
                                                                                depth = 'target',
                                                                                ...))
@@ -277,25 +277,25 @@ persistenceRW_flux <- purrr::pmap_dfr(site_var_combinations,
 binary_site_var_comb <- data.frame(site = c('fcre', 'bvre'),
                                    depth = c(1.6, 1.5))
 
-persistenceRW_insitu_binary <- purrr::pmap_dfr(binary_site_var_comb,
+persistence_constSD_insitu_binary <- purrr::pmap_dfr(binary_site_var_comb,
                                              .f = ~convert_continuous_binary(continuous_var = 'Chla_ugL_mean',
                                                                              binary_var = 'Bloom_binary_mean',
-                                                                             forecast = persistenceRW_insitu,
+                                                                             forecast = persistence_constSD_insitu,
                                                                              targets = targets_insitu,
                                                                              threshold = 20,
                                                                              ...))
 
 # combine and submit
-combined_persistenceRW <- bind_rows(persistenceRW_inflow, persistenceRW_insitu, persistenceRW_met, persistenceRW_flux, persistenceRW_insitu_binary,
-                                    persistenceRW_ghg_insitu, persistenceRW_insitu_productivity, persistenceRW_insitu_chem, persistenceRW_insitu_physical, persistenceRW_insitu_metals,
-                                    persistence_insitu_chla_max, persistenceRW_insitu_deeper_fcr, persistenceRW_insitu_deeper_bvr)
+combined_persistence_constSD <- bind_rows(persistence_constSD_inflow, persistence_constSD_insitu, persistence_constSD_met, persistence_constSD_flux, persistence_constSD_insitu_binary,
+                                          persistence_constSD_ghg_insitu, persistence_constSD_insitu_productivity, persistence_constSD_insitu_chem, persistence_constSD_insitu_physical, persistence_constSD_insitu_metals,
+                                          persistence_constSD_insitu_chla_max, persistence_constSD_insitu_deeper_fcr, persistence_constSD_insitu_deeper_bvr)
 
 # write forecast file
-file_date <- combined_persistenceRW$reference_datetime[1]
+file_date <- combined_persistence_constSD$reference_datetime[1]
 
 forecast_file <- paste0(paste("daily", file_date, team_name, sep = "-"), ".csv.gz")
 
-write_csv(combined_persistenceRW, forecast_file)
+write_csv(combined_persistence_constSD, forecast_file)
 
 # combined_persistenceRW %>%
 #   filter(family == 'normal') |>
