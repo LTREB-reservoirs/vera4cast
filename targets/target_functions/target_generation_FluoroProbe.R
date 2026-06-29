@@ -62,7 +62,7 @@ target_generation_FluoroProbe <- function(current_file, historic_file){
     print("No new FP data for the current year. All data are in the EDI package.")
   }
 
-  
+
   fp <- fp |>
     rename(GreenAlgae_ugL_sample = GreenAlgae_ugL, Bluegreens_ugL_sample = Bluegreens_ugL, BrownAlgae_ugL_sample = BrownAlgae_ugL,
            MixedAlgae_ugL_sample = MixedAlgae_ugL, TotalConc_ugL_sample = TotalConc_ugL) |>
@@ -90,7 +90,8 @@ target_generation_FluoroProbe <- function(current_file, historic_file){
     rename(datetime = DateTime, depth_m = Depth_m) %>%
     separate_wider_delim(variable,"_",names = c("spectral_group","unit","measurement_type")) %>%
     mutate(site_id = ifelse(Reservoir == "FCR","fcre","bvre"),
-           variable = paste0(spectral_group,"CM_ugL_sample")) %>%
+           variable = paste0(spectral_group,"CM_ugL_sample"),
+           depth_m = NA) %>% ## set depth to NA (we track is as a separate variable)
     select(datetime, site_id, depth_m, observation, variable)
 
   cmax_depth <- fp %>%
@@ -107,8 +108,8 @@ target_generation_FluoroProbe <- function(current_file, historic_file){
 
   mean_biomass <- fp %>%
     mutate(Date = date(DateTime)) %>%
-    group_by(Date) %>%
-    summarize(mean_biomass = mean(TotalConc_ugL_sample, na.rm = TRUE))
+    dplyr::group_by(Date) %>%
+    dplyr::summarize(mean_biomass = mean(TotalConc_ugL_sample, na.rm = TRUE))
 
   dcm <- fp %>%
     mutate(Date = date(DateTime)) %>%
