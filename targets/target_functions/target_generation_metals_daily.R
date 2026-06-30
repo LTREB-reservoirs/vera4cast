@@ -46,6 +46,7 @@ target_generation_metals_daily <- function(current_data_file, edi_data_file){
 
 
   targets_df$variable <- paste0(targets_df$variable,'_sample')
+  targets_df$duration <- 'P1D'
   ## return dataframe formatted to match FLARE targets
   return(targets_df)
 }
