@@ -21,7 +21,7 @@ target_generation_daily_secchi_m <- function(current, edi){
   # infile1 <- tempfile()
   # try(download.file(inUrl1,infile1,method="curl"))
   # if (is.na(file.size(infile1))) download.file(inUrl1,infile1,method="auto")
-  # edi_df <-read_csv(edi)
+  edi_df <-read_csv(edi)
 #subset to only one spot in the reservoir (deep hole)
   edi_1 <- edi_df %>% subset(Site == "50")
 
