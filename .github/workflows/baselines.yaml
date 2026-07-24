@@ -20,68 +20,82 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install
+        if: always()
         shell: Rscript {0}
         run: |
           remotes::install_github("cboettig/aws.s3")
           remotes::install_github("LTREB-reservoirs/vera4castHelpers")
           install.packages(c("imputeTS", "tsibble", "fable", "feasts"))
 
-      # - name: Generate persistence
-      #   shell: Rscript {0}
-      #   run: |
-      #      source("baseline_models/run_persistence.R")
-      # - name: Generate climatology
-      #   shell: Rscript {0}
-      #   run: |
-      #      source("baseline_models/run_climatology.R")
-      # - name: Generate historic mean
-      #   shell: Rscript {0}
-      #   run: |
-      #      source("baseline_models/run_historic_mean.R")
-      #
-      # - name: Generate monthly mean
-      #   shell: Rscript {0}
-      #   run: |
-      #      source("baseline_models/run_monthly_mean.R")
+      - name: Generate persistence
+        if: always()
+        shell: Rscript {0}
+        run: |
+           source("baseline_models/run_persistence.R")
+
+      - name: Generate climatology
+        if: always()
+        shell: Rscript {0}
+        run: |
+           source("baseline_models/run_climatology.R")
+
+      - name: Generate historic mean
+        if: always()
+        shell: Rscript {0}
+        run: |
+           source("baseline_models/run_historic_mean.R")
+
+      - name: Generate monthly mean
+        if: always()
+        shell: Rscript {0}
+        run: |
+           source("baseline_models/run_monthly_mean.R")
 
       - name: Generate persistence constant SD
+        if: always()
         shell: Rscript {0}
         run: |
            source("baseline_models/run_persistence_constant_sd.R")
 
       - name: Generate arima no covariate
+        if: always()
         shell: Rscript {0}
         run: |
            source("baseline_models/run_arima_no_covariate.R")
 
       - name: Generate NNETAR
+        if: always()
         shell: Rscript {0}
         run: |
            source("baseline_models/nnetar_workflows.R")
 
       - name: Generate ETS
+        if: always()
         shell: Rscript {0}
         run: |
            source("baseline_models/run_ETS_model.R")
 
       - name: Generate prophet
+        if: always()
         shell: Rscript {0}
         run: |
            source("baseline_models/run_prophet.R")
 
       - name: Generate EDM
+        if: always()
         shell: Rscript {0}
         run: |
            source("baseline_models/run_edm.R")
 
       - name: Generate Chronos2
+        if: always()
         shell: Rscript {0}
         run: |
            source("baseline_models/run_chronos2.R")
 
       - name: Healthcheck
+        if: always()
         run: |
           sudo apt-get update
           sudo apt-get install -y curl
           curl -m 10 --retry 5 https://hc-ping.com/183e72e8-9408-4764-8337-d7a00a75f21c
-

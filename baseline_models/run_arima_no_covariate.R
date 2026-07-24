@@ -86,8 +86,7 @@ arima_nc_insitu <- purrr::pmap_dfr(site_var_combinations,
 ### INSITU VARIABLES AT DEEPER DEPTH ##
 print('Insitu model deeper...')
 site_var_combinations_deeper_depth_fcr <- expand.grid(var = c('DO_mgL_mean',
-                                                              'Temp_C_mean',
-                                                              'CH4_umolL_sample'),
+                                                              'Temp_C_mean'), # 'CH4_umolL_sample' (NEED TO ADD THIS BACK IN - BREAKING EVERYTHING RIGHT NOW)
                                                       site = 'fcre',
                                                       depth = 9)
 arima_nc_insitu_deeper_fcr <- purrr::pmap_dfr(site_var_combinations_deeper_depth_fcr,
@@ -114,19 +113,20 @@ arima_nc_insitu_deeper_bvr <- purrr::pmap_dfr(site_var_combinations_deeper_depth
 
 
 ## GHG VARIABLES (TAKEN FROM DIFFERENT DEPTH)
-site_var_combinations_ghg_insitu <- expand.grid(var = c('CH4_umolL_sample',
-                                                        'CO2_umolL_sample'),
-                                                site = c('fcre',
-                                                         'bvre'))
-
-arima_nc_ghg_insitu <- purrr::pmap_dfr(site_var_combinations_ghg_insitu,
-                                                  .f = ~ generate_baseline_arima_no_covariate(targets = targets_insitu,
-                                                                                                   h = 35,
-                                                                                                   model_id = team_name,
-                                                                                                   forecast_date = Sys.Date(),
-                                                                                                   #depth = c(0.1),
-                                                                                                   depth = 'target',
-                                                                                                   ...))
+## # (NEED TO ADD THIS BACK IN - BREAKING EVERYTHING RIGHT NOW)
+# site_var_combinations_ghg_insitu <- expand.grid(var = c('CO2_umolL_sample',
+#                                                         'CH4_umolL_sample'),
+#                                                 site = c('fcre',
+#                                                          'bvre'))
+#
+# arima_nc_ghg_insitu <- purrr::pmap_dfr(site_var_combinations_ghg_insitu,
+#                                                   .f = ~ generate_baseline_arima_no_covariate(targets = targets_insitu,
+#                                                                                                    h = 35,
+#                                                                                                    model_id = team_name,
+#                                                                                                    forecast_date = Sys.Date(),
+#                                                                                                    #depth = c(0.1),
+#                                                                                                    depth = 'target',
+#                                                                                                    ...))
 
 ## Productivity variables
 site_var_combinations_productivity <- expand.grid(var = c(#'DeepChlorophyllMaximum_binary',
@@ -186,10 +186,10 @@ site_var_combinations_chem <- expand.grid(var = c('TN_ugL_sample',
                                                   'NO3NO2_ugL_sample',
                                                   'NH4_ugL_sample',
                                                   'DOC_mgL_sample',
-                                                  'DRSI_mgL_sample',
+                                                  'DRSI_mgL_sample'),
                                                   #'DIC_mgL_sample',
-                                                  'DC_mgL_sample',
-                                                  'DN_mgL_sample'),
+                                                  #'DC_mgL_sample', ## THIS IS FAILING - COME BACK TO LATER
+                                                  #'DN_mgL_sample'), ## THIS IS FAILING - COME BACK TO LATER
                                           site = c('fcre',
                                                    'bvre'))
 
@@ -247,7 +247,7 @@ arima_nc_insitu_metals <- purrr::pmap_dfr(site_var_combinations_metals,
                                                                                                       forecast_date = Sys.Date(),
                                                                                                       depth = 'target',
                                                                                                       ...))
-persistence_constSD_insitu_metals$duration <- 'P1D'
+arima_nc_insitu_metals$duration <- 'P1D'
 
 # Flux variables
 # get all combinations
@@ -278,9 +278,9 @@ arima_nc_insitu_binary <- purrr::pmap_dfr(binary_site_var_comb,
                                                                                      ...))
 
 # combine and submit
-combined_arima_nc <- bind_rows(arima_nc_inflow, arima_nc_insitu, arima_nc_met, arima_nc_flux, arima_nc_insitu_binary,
-                               arima_nc_ghg_insitu, arima_nc_insitu_productivity, arima_nc_insitu_chem, arima_nc_insitu_physical, arima_nc_insitu_metals,
+combined_arima_nc <- bind_rows(arima_nc_inflow, arima_nc_insitu, arima_nc_met, arima_nc_flux, arima_nc_insitu_binary,arima_nc_insitu_productivity, arima_nc_insitu_chem, arima_nc_insitu_physical, arima_nc_insitu_metals,
                                arima_nc_insitu_chla_max, arima_nc_insitu_deeper_fcr, arima_nc_insitu_deeper_bvr)
+## ADD BACK GHG -- BREAKING THINGS RIGHT NOW (arima_nc_ghg_insitu)
 
 # write forecast file
 file_date <- combined_arima_nc$reference_datetime[1]
