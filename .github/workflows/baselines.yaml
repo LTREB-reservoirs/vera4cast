@@ -67,7 +67,7 @@ jobs:
         if: always()
         shell: Rscript {0}
         run: |
-           source("baseline_models/nnetar_workflows.R")
+           source("baseline_models/nnetar_workflow.R")
 
       - name: Generate ETS
         if: always()
