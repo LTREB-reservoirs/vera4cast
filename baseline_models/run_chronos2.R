@@ -11,6 +11,10 @@ Sys.unsetenv("AWS_DEFAULT_REGION")
 Sys.unsetenv("AWS_S3_ENDPOINT")
 Sys.setenv("AWS_EC2_METADATA_DISABLED"="TRUE")
 
+# --- Python setup via reticulate ---
+Sys.setenv("TOKENIZERS_PARALLELISM" = "false")
+Sys.setenv("TRANSFORMERS_NO_ADVISORY_WARNINGS" = "1")
+
 config <- yaml::read_yaml("challenge_configuration.yaml")
 team_name <- 'chronos2'
 
