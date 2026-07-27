@@ -48,7 +48,10 @@ generate_chronos_forecast <- function(targets,
           ' using model: ', chronos_model)
 
   # --- Python setup via reticulate ---
+  print('set up torch')
   torch   <- reticulate::import("torch")
+
+  print('set up chronos')
   chronos <- reticulate::import("chronos")
 
   # Load the pretrained Chronos-Bolt pipeline (downloads on first call, then cached)
