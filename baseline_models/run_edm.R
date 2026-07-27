@@ -154,6 +154,7 @@ edm_insitu_productivity <- purrr::pmap_dfr(site_var_combinations_productivity,
                                                                                 ...))
 
 ## CHLA maxiumum variables
+print('chla max model')
 cmax_vars <- c('DeepChlorophyllMaximum_binary_sample',
                'TotalConcCM_ugL_sample',
                'GreenAlgaeCM_ugL_sample',
@@ -179,6 +180,7 @@ edm_insitu_chla_max <- purrr::pmap_dfr(site_var_combinations_chla_max,
                                                                             depth = 'target',
                                                                             ...))
 ## CHEM variables
+print('Chem model')
 site_var_combinations_chem <- expand.grid(var = c('TN_ugL_sample',
                                                   'TP_ugL_sample',
                                                   'SRP_ugL_sample',
@@ -227,6 +229,7 @@ edm_insitu_chem <- purrr::pmap_dfr(site_var_combinations_chem,
                                                                         ...))
 
 ## Physical variables
+print('Physical model')
 site_var_combinations_physical <- expand.grid(var = c('ThermoclineDepth_m_mean',
                                                       'SchmidtStability_Jm2_mean'),
                                               site = c('fcre',
