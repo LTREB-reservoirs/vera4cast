@@ -45,6 +45,11 @@ fableETS <- function(targets,
     mutate(observation = na_locf(observation, option = 'locf', na_remaining = 'rm')) |>  ## fill in nas at end of ts
     as_tsibble(key = site_id, index = datetime)
 
+  if (nrow(targets_ts) == 0){
+    message(paste('No data for following combination:', site,',', var))
+    return(NULL)
+  }
+
 
 
   # # Work out when the forecast should start
