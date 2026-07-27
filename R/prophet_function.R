@@ -22,6 +22,11 @@ generate_prophet_forecast <- function(targets,
            datetime < forecast_date) |>
     drop_na(observation)
 
+  if (nrow(target_ts) == 0) {
+    message('No targets available for ', var, ' at ', site)
+    return(NULL)
+  }
+
   prophet_df <- target_ts |>
     select(ds = datetime, y = observation)
 

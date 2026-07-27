@@ -114,6 +114,7 @@ prophet_insitu_deeper_bvr <- purrr::pmap_dfr(site_var_combinations_deeper_depth_
 
 
 ## GHG VARIABLES (TAKEN FROM DIFFERENT DEPTH)
+print('GHG model')
 site_var_combinations_ghg_insitu <- expand.grid(var = c('CH4_umolL_sample',
                                                         'CO2_umolL_sample'),
                                                 site = c('fcre',
@@ -128,6 +129,8 @@ prophet_ghg_insitu <- purrr::pmap_dfr(site_var_combinations_ghg_insitu,
                                                                                                    ...))
 
 ## Productivity variables
+print('Productivity model')
+
 site_var_combinations_productivity <- expand.grid(var = c(#'DeepChlorophyllMaximum_binary',
   'TotalConc_ugL_sample',
   'GreenAlgae_ugL_sample',
@@ -154,6 +157,8 @@ prophet_insitu_productivity <- purrr::pmap_dfr(site_var_combinations_productivit
                                                                                                             ...))
 
 ## CHLA maxiumum variables
+print('Chla max model')
+
 cmax_vars <- c('DeepChlorophyllMaximum_binary_sample',
                'TotalConcCM_ugL_sample',
                'GreenAlgaeCM_ugL_sample',
@@ -179,6 +184,8 @@ prophet_insitu_chla_max <- purrr::pmap_dfr(site_var_combinations_chla_max,
                                                                                                         depth = 'target',
                                                                                                         ...))
 ## CHEM variables
+print('Chem model')
+
 site_var_combinations_chem <- expand.grid(var = c('TN_ugL_sample',
                                                   'TP_ugL_sample',
                                                   'SRP_ugL_sample',
@@ -227,6 +234,8 @@ prophet_insitu_chem <- purrr::pmap_dfr(site_var_combinations_chem,
                                                                                                     ...))
 
 ## Physical variables
+print('Physical model')
+
 site_var_combinations_physical <- expand.grid(var = c('ThermoclineDepth_m_mean',
                                                       'SchmidtStability_Jm2_mean'),
                                               site = c('fcre',
@@ -274,6 +283,8 @@ prophet_flux <- purrr::pmap_dfr(site_var_combinations,
                                                                                              ...))
 
 # Generate binary forecasts from continuous
+print('Binary models')
+
 binary_site_var_comb <- data.frame(site = c('fcre', 'bvre'),
                                    depth = c(1.6, 1.5))
 

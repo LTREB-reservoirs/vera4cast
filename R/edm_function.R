@@ -21,7 +21,8 @@ generate_edm_forecast <- function(targets,
            depth_m %in% target_depths,
            datetime < forecast_date) |>
     drop_na(observation) |>
-    arrange(datetime)
+    arrange(datetime) |>
+    mutate(datetime = lubridate::as_datetime(as.Date(datetime)))
 
   if (nrow(target_ts) == 0) {
     message('No targets available for ', var, ' at ', site)
@@ -31,7 +32,8 @@ generate_edm_forecast <- function(targets,
   model_depth <- unique(target_ts$depth_m)
 
   # Create a regular daily time series and interpolate gaps (rEDM requires uniform spacing)
-  full_dates <- seq(min(target_ts$datetime), max(target_ts$datetime), by = "1 day")
+  full_dates <- as.Date(seq(min(target_ts$datetime), max(target_ts$datetime), by = "1 day"))
+
   ts_regular <- tibble(datetime = full_dates) |>
     left_join(target_ts |> select(datetime, observation), by = "datetime") |>
     mutate(observation = imputeTS::na_interpolation(observation),
