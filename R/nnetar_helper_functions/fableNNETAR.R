@@ -23,6 +23,11 @@ fableNNETAR <- function(data, target_var, reference_datetime, forecast_horizon, 
     mutate(observation = na.locf(observation, fromLast = FALSE, na.rm = FALSE)) |>
     ungroup()
 
+  if (nrow(df) == 0){
+    message(paste('No data for following combination:', target_var))
+    return(NULL)
+  }
+
   #df <- tsibble::fill_gaps(df, .full = TRUE)
 
   #fit NNETAR from fable package
