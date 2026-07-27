@@ -30,15 +30,18 @@ site_names <- sites$site_id
 # Runs the RW forecast for inflow variables
 print('Inflow model')
 
-ETS_inflow <- purrr::map_dfr(.x = c('Flow_cms_mean', 'Temp_C_mean'),
-                                             .f = ~ fableETS(targets = targets_tubr,
-                                                              h = 35,
-                                                              model_id = team_name,
-                                                              forecast_date = Sys.Date(),
-                                                              site = 'tubr',
-                                                              depth = 'target',
-                                                              var = .x,
-                                                              ...))
+site_var_combinations_inflow <- expand.grid(var = c('Flow_cms_mean',
+                                             'Temp_C_mean'),
+                                     site = c('tubr'))
+
+
+ETS_inflow <- purrr::pmap_dfr(site_var_combinations_inflow,
+                              .f = ~ fableETS(targets = targets_tubr,
+                                              h = 35,
+                                              model_id = team_name,
+                                              forecast_date = Sys.Date(),
+                                              depth = 'target',
+                                              ...))
 # met variables
 print('Met model')
 
@@ -161,9 +164,9 @@ cmax_vars <- c('DeepChlorophyllMaximum_binary_sample',
                'BrownAlgaeCM_ugL_sample',
                'MixedAlgaeCM_ugL_sample',
                'ChlorophyllMaximum_depth_sample',
-               'MOM_binary_sample',
-               'MOM_min_sample',
-               'MOM_max_sample')
+               'MOM_binary_sample')#,
+               #'MOM_min_sample',
+               #'MOM_max_sample')
 
 targets_cmax <- targets_insitu |> dplyr::filter(variable %in% cmax_vars) |>
   mutate(depth_m = NA)
