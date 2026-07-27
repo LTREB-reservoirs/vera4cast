@@ -283,7 +283,7 @@ forecast_name <- c(paste0(forecast_models, ".csv"))
 # Write the file locally
 forecast_file <- paste(theme, date, forecast_name, sep = '-')
 
-forecast_file_abs_path <- paste0("./model_output/fable_NNETAR_focal/",forecast_file)
+forecast_file_abs_path <- paste0("./model_output/fable_NNETAR/",forecast_file)
 
 # write to file
 print('Writing File...')
