@@ -50,7 +50,9 @@ format_data_NNETAR <- function(targets, target_var, end_date, depth_select){
     tidyr::fill(depth_m, .direction = "downup") |>
     tidyr::fill(variable, .direction = "downup")
 
-  if (target_var %in% c('Temp_C_mean', 'DO_mgL_mean', "fDOM_QSU_mean", "CH4_umolL_sample")){
+  forecast_site <- unique(dat$site_id)
+
+  if (target_var %in% c('Temp_C_mean', 'DO_mgL_mean', "fDOM_QSU_mean", "CH4_umolL_sample") &  !('tubr' %in% forecast_site)){
     bvr_data <- dat1 |>
       filter(site_id == 'bvre',
              depth_m == depth_select[1])

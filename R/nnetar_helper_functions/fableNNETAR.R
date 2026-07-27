@@ -38,7 +38,7 @@ fableNNETAR <- function(data, target_var, reference_datetime, forecast_horizon, 
 
   #build output df
   df.out <- data.frame(site_id = df$site_id,
-                       model_id = "fableNNETAR_focal",
+                       model_id = "fableNNETAR",
                        datetime = df$datetime,
                        variable = target_var,
                        depth_m = depth_select[2],
@@ -46,11 +46,12 @@ fableNNETAR <- function(data, target_var, reference_datetime, forecast_horizon, 
                        prediction = fitted_values$.fitted)
 
   #get process error
-  sd_resid <- sd(df.out$prediction - df.out$observation)
+  sd_resid <- sd(df.out$prediction - df.out$observation, na.rm = T)
 
   #create "new data" dataframe
   fc_dates <- seq.Date(from = reference_datetime, to = reference_datetime + forecast_horizon, by = "day")
-  new_data <- tibble(datetime = rep(fc_dates,times = 2),
+  new_data <- tibble(datetime = fc_dates,
+                    #datetime = rep(fc_dates,times = 2),
                      site_id = rep(unique(df.out$site_id), each = length(fc_dates)),
                      observation = NA) %>%
     as_tsibble(key = site_id, index = datetime)
@@ -65,18 +66,19 @@ fableNNETAR <- function(data, target_var, reference_datetime, forecast_horizon, 
 
   ensemble_df <- data.frame(ensemble) %>%
     add_column(site_id = rep(unique(df.out$site_id), each = length(fc_dates)),
-               datetime = rep(fc_dates,times = 2),
+               #datetime = rep(fc_dates,times = 2),
+               datetime = fc_dates,
                reference_datetime = reference_datetime,
                family = "ensemble",
                variable = target_var,
-               model_id = "fableNNETAR_focal",
+               model_id = "fableNNETAR",
                duration = "P1D",
                project_id = "vera4cast",
                depth_m = ifelse(site_id == "fcre", depth_select[2], depth_select[1])) %>%
     pivot_longer(X1:X500, names_to = "parameter", values_to = "prediction") %>%
     mutate(across(parameter, substr, 2, nchar(parameter)))
 
-  if (target_var %in% c('Secchi_m_sample', "CO2flux_umolm2s_mean", "CH4flux_umolm2s_mean")){
+  if (target_var %in% c('Secchi_m_sample', "CO2flux_umolm2s_mean", "CH4flux_umolm2s_mean",'Flow_cms_mean')){
     ensemble_df$depth_m = NA
   }
 
