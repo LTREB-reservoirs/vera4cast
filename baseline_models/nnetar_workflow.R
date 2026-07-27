@@ -288,8 +288,8 @@ forecast_file_abs_path <- paste0("./model_output/fable_NNETAR_focal/",forecast_f
 # write to file
 print('Writing File...')
 
-if (!file.exists("./model_output/fable_NNETAR_focal")){
-  dir.create("./model_output/fable_NNETAR_focal")
+if (!file.exists("./model_output/fable_NNETAR")){
+  dir.create("./model_output/fable_NNETAR", recursive = T)
 }
 write.csv(prediction_df, forecast_file_abs_path, row.names = FALSE)
 
