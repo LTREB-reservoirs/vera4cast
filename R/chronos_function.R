@@ -51,6 +51,10 @@ generate_chronos_forecast <- function(targets,
   print('set up torch')
   torch   <- reticulate::import("torch")
 
+  # Disable torchdynamo tracing to avoid trace_length errors in containers
+  torch_dynamo <- reticulate::import("torch._dynamo", convert = FALSE)
+  torch_dynamo$config$suppress_errors <- TRUE
+
   print('set up chronos')
   chronos <- reticulate::import("chronos")
 
