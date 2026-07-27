@@ -48,52 +48,66 @@ for (t in target_variables){
   reference_datetime <- curr_reference_datetime
   forecast_horizon = 35
 
-  if (t == 'CH4_umolL_sample'){
-    dat_NNETAR <- format_data_NNETAR(targets = targets,
-                                     target_var = t,
-                                     end_date = end_date,
-                                     depth_select = c(0.1, 1.6))
-    #Predict variable
-    pred <- fableNNETAR(data = dat_NNETAR,
-                        target_var = t,
-                        reference_datetime = reference_datetime,
-                        forecast_horizon = forecast_horizon,
-                        depth_select = c(0.1, 1.6))
+  target_build <- data.frame()
 
-  } else{
-    #Format data
-    dat_NNETAR <- format_data_NNETAR(targets = targets,
-                                     target_var = t,
-                                     end_date = end_date,
-                                     depth_select = c(1.5, 1.6))
-    #Predict variable
-    pred <- fableNNETAR(data = dat_NNETAR,
-                        target_var = t,
-                        reference_datetime = reference_datetime,
-                        forecast_horizon = forecast_horizon,
-                        depth_select = c(1.5, 1.6))
+  for (site in c('fcre', 'bvre')){
+
+    if (t == 'CH4_umolL_sample'){
+      dat_NNETAR <- format_data_NNETAR(targets = targets,
+                                       target_var = t,
+                                       end_date = end_date,
+                                       depth_select = c(0.1, 1.6))
+      dat_NNETAR <- dat_NNETAR |>
+        filter(site_id == site)
+
+      #Predict variable
+      pred <- fableNNETAR(data = dat_NNETAR,
+                          target_var = t,
+                          reference_datetime = reference_datetime,
+                          forecast_horizon = forecast_horizon,
+                          depth_select = c(0.1, 1.6))
+
+    } else{
+      #Format data
+      dat_NNETAR <- format_data_NNETAR(targets = targets,
+                                       target_var = t,
+                                       end_date = end_date,
+                                       depth_select = c(1.5, 1.6))
+
+      dat_NNETAR <- dat_NNETAR |>
+        filter(site_id == site)
+
+      #Predict variable
+      pred <- fableNNETAR(data = dat_NNETAR,
+                          target_var = t,
+                          reference_datetime = reference_datetime,
+                          forecast_horizon = forecast_horizon,
+                          depth_select = c(1.5, 1.6))
+      }
+
+
+
+    # calculate probability of bloom -- if target variables include chla
+    if (t %in% c('Chla_ugL_mean')){
+      mod <- pred %>%
+        mutate(bloom = ifelse(prediction >= 20, 1, 0)) %>%
+        group_by(site_id, datetime, reference_datetime, family, variable, model_id, duration, project_id, depth_m) %>%
+        summarize(prediction = sum(bloom)/1000) %>%
+        mutate(family = "bernoulli",
+               variable = "Bloom_binary_mean") %>%
+        add_column(parameter = "prob")
+
+      fc <- bind_rows(pred, mod)
+
+      pred <- fc
+
+      print('Bloom_binary_mean')
     }
+      target_build <- bind_rows(target_build, pred)
 
+  } # end site loop
 
-
-  # calculate probability of bloom -- if target variables include chla
-  if (t %in% c('Chla_ugL_mean')){
-    mod <- pred %>%
-      mutate(bloom = ifelse(prediction >= 20, 1, 0)) %>%
-      group_by(site_id, datetime, reference_datetime, family, variable, model_id, duration, project_id, depth_m) %>%
-      summarize(prediction = sum(bloom)/1000) %>%
-      mutate(family = "bernoulli",
-             variable = "Bloom_binary_mean") %>%
-      add_column(parameter = "prob")
-
-    fc <- bind_rows(pred, mod)
-
-    pred <- fc
-
-    print('Bloom_binary_mean')
-  }
-
-  prediction_df_shallow <- bind_rows(prediction_df_shallow, pred)
+  prediction_df_shallow <- bind_rows(prediction_df_shallow, target_build)
 
 } # close variable iteration loop
 
@@ -112,11 +126,18 @@ for (t in target_variables_deep){
   #Define start and end dates (needed for interpolation)
   end_date = curr_reference_datetime
 
+  target_build <- data.frame()
+
+  for (site in c('fcre', 'bvre')){
+
   #Format data
   dat_NNETAR <- format_data_NNETAR(targets = targets,
                                    target_var = t,
                                    end_date = end_date,
-                                   depth_select = c(9,9))
+                                   depth_select = c(8,9))
+
+  dat_NNETAR <- dat_NNETAR |>
+    filter(site_id == site)
 
   #Set prediction window and forecast horizon
   reference_datetime <- curr_reference_datetime
@@ -127,7 +148,7 @@ for (t in target_variables_deep){
                       target_var = t,
                       reference_datetime = reference_datetime,
                       forecast_horizon = forecast_horizon,
-                      depth_select = c(9,9))
+                      depth_select = c(8,9))
 
   # calculate probability of bloom -- if target variables include chla
   if (t %in% c('Chla_ugL_mean')){
@@ -146,7 +167,11 @@ for (t in target_variables_deep){
     print('Bloom_binary_mean')
   }
 
-  prediction_df_deep <- bind_rows(prediction_df_deep, pred)
+  target_build <- bind_rows(target_build, pred)
+
+  } # end site loop
+
+  prediction_df_deep <- bind_rows(prediction_df_deep, target_build)
 
 } # close variable iteration loop
 
@@ -168,26 +193,37 @@ for (t in target_variables_no_depth){
   reference_datetime <- curr_reference_datetime
   forecast_horizon = 35
 
+  target_build <- data.frame()
 
-  #Format data
-  dat_NNETAR <- format_data_NNETAR(targets = targets,
-                                   target_var = t,
-                                   end_date = end_date,
-                                   depth_select = c(NA, NA))
-  #Predict variable
-  pred <- fableNNETAR(data = dat_NNETAR,
-                      target_var = t,
-                      reference_datetime = reference_datetime,
-                      forecast_horizon = forecast_horizon,
-                      depth_select = c(NA, NA))
+  for (site in c('fcre', 'bvre')){
 
-  prediction_df_no_depth <- bind_rows(prediction_df_no_depth, pred)
+    #Format data
+    dat_NNETAR <- format_data_NNETAR(targets = targets,
+                                     target_var = t,
+                                     end_date = end_date,
+                                     depth_select = c(NA,NA))
+
+    dat_NNETAR <- dat_NNETAR |>
+      filter(site_id == site)
+
+    #Predict variable
+    pred <- fableNNETAR(data = dat_NNETAR,
+                        target_var = t,
+                        reference_datetime = reference_datetime,
+                        forecast_horizon = forecast_horizon,
+                        depth_select = c(NA,NA))
+
+    target_build <- bind_rows(target_build, pred)
+
+  } # end site loop
+
+  prediction_df_deep <- bind_rows(prediction_df_deep, target_build)
 
 } # close variable iteration loop
 
 
 
-## non-depth variables
+## inflow non-depth variables
 target_variables_inflow <- c("Flow_cms_mean", "Temp_C_mean")
 
 
@@ -204,26 +240,37 @@ for (t in target_variables_inflow){
   reference_datetime <- curr_reference_datetime
   forecast_horizon = 35
 
+  target_build <- data.frame()
 
-  #Format data
-  dat_NNETAR <- format_data_NNETAR(targets = inflow_targets,
-                                   target_var = t,
-                                   end_date = end_date,
-                                   depth_select = c(NA, NA))
-  #Predict variable
-  pred <- fableNNETAR(data = dat_NNETAR,
-                      target_var = t,
-                      reference_datetime = reference_datetime,
-                      forecast_horizon = forecast_horizon,
-                      depth_select = c(NA, NA))
+  for (site in c('tubr')){
 
-  prediction_df_inflow <- bind_rows(prediction_df_inflow, pred)
+    #Format data
+    dat_NNETAR <- format_data_NNETAR(targets = inflow_targets,
+                                     target_var = t,
+                                     end_date = end_date,
+                                     depth_select = c(NA,NA))
+
+    dat_NNETAR <- dat_NNETAR |>
+      filter(site_id == site)
+
+    #Predict variable
+    pred <- fableNNETAR(data = dat_NNETAR,
+                        target_var = t,
+                        reference_datetime = reference_datetime,
+                        forecast_horizon = forecast_horizon,
+                        depth_select = c(NA,NA))
+
+    target_build <- bind_rows(target_build, pred)
+
+  } # end site loop
+
+  prediction_df_inflow <- bind_rows(prediction_df_inflow, target_build)
 
 } # close variable iteration loop
 
 
 
-prediction_df <- bind_rows(prediction_df_shallow, prediction_df_deep, prediction_df_no_depth)
+prediction_df <- bind_rows(prediction_df_shallow, prediction_df_deep, prediction_df_no_depth, prediction_df_inflow)
 
 # Submit forecasts
 theme <- 'daily'
