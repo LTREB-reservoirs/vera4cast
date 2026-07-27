@@ -30,7 +30,7 @@ generate_prophet_forecast <- function(targets,
   m <- prophet::prophet(prophet_df, daily.seasonality = "auto")
 
   # Create a 35-day forecast horizon
-  future <- make_future_dataframe(m, periods = h)
+  future <- prophet::make_future_dataframe(m, periods = h)
   forecast_raw <- predict(m, future)
 
   # Format output to vera4cast standard
