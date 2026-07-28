@@ -27,66 +27,66 @@ jobs:
           remotes::install_github("LTREB-reservoirs/vera4castHelpers")
           install.packages(c("imputeTS", "tsibble", "fable", "feasts", "prophet", "rEDM"))
 
-      # - name: Generate persistence
-      #   if: always()
-      #   shell: Rscript {0}
-      #   run: |
-      #      source("baseline_models/run_persistence.R")
-      #
-      # - name: Generate climatology
-      #   if: always()
-      #   shell: Rscript {0}
-      #   run: |
-      #      source("baseline_models/run_climatology.R")
-      #
-      # - name: Generate historic mean
-      #   if: always()
-      #   shell: Rscript {0}
-      #   run: |
-      #      source("baseline_models/run_historic_mean.R")
-      #
-      # - name: Generate monthly mean
-      #   if: always()
-      #   shell: Rscript {0}
-      #   run: |
-      #      source("baseline_models/run_monthly_mean.R")
-      #
-      # - name: Generate persistence constant SD
-      #   if: always()
-      #   shell: Rscript {0}
-      #   run: |
-      #      source("baseline_models/run_persistence_constant_sd.R")
+      - name: Generate persistence
+        if: always()
+        shell: Rscript {0}
+        run: |
+           source("baseline_models/run_persistence.R")
 
-      # - name: Generate arima no covariate
-      #   if: always()
-      #   shell: Rscript {0}
-      #   run: |
-      #      source("baseline_models/run_arima_no_covariate.R")
+      - name: Generate climatology
+        if: always()
+        shell: Rscript {0}
+        run: |
+           source("baseline_models/run_climatology.R")
+
+      - name: Generate historic mean
+        if: always()
+        shell: Rscript {0}
+        run: |
+           source("baseline_models/run_historic_mean.R")
+
+      - name: Generate monthly mean
+        if: always()
+        shell: Rscript {0}
+        run: |
+           source("baseline_models/run_monthly_mean.R")
+
+      - name: Generate persistence constant SD
+        if: always()
+        shell: Rscript {0}
+        run: |
+           source("baseline_models/run_persistence_constant_sd.R")
+
+      - name: Generate arima no covariate
+        if: always()
+        shell: Rscript {0}
+        run: |
+           source("baseline_models/run_arima_no_covariate.R")
 
 
-      # - name: Generate NNETAR
-      #   if: always()
-      #   shell: Rscript {0}
-      #   run: |
-      #      source("baseline_models/nnetar_workflow.R")
-      #
-      # # - name: Generate ETS
-      # #   if: always()
-      # #   shell: Rscript {0}
-      # #   run: |
-      # #      source("baseline_models/run_ETS_model.R")
-      #
-      # - name: Generate prophet
-      #   if: always()
-      #   shell: Rscript {0}
-      #   run: |
-      #      source("baseline_models/run_prophet.R")
-      #
-      # - name: Generate EDM
-      #   if: always()
-      #   shell: Rscript {0}
-      #   run: |
-      #      source("baseline_models/run_edm.R")
+      - name: Generate NNETAR
+        if: always()
+        shell: Rscript {0}
+        run: |
+           source("baseline_models/nnetar_workflow.R")
+
+      - name: Generate ETS
+        if: always()
+        shell: Rscript {0}
+        run: |
+           source("baseline_models/run_ETS_model.R")
+
+      - name: Generate prophet
+        if: always()
+        shell: Rscript {0}
+        run: |
+           source("baseline_models/run_prophet.R")
+
+      - name: Generate EDM
+        if: always()
+        shell: Rscript {0}
+        run: |
+           source("baseline_models/run_edm.R")
 
       - name: Install system Python tooling
         if: always()
