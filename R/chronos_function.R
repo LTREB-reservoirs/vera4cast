@@ -1,10 +1,12 @@
 
-# Requires the Python package 'chronos-forecasting' to be installed in the
-# active reticulate environment:
-#   reticulate::py_install("chronos-forecasting", pip = TRUE)
+# Requires the Python packages 'torch' and 'chronos-forecasting' to be installed.
+# The py_require() call below declares these as requirements so reticulate
+# installs them when Python is first initialized in the session.
 #
 # Chronos-Bolt (Chronos2) model card: https://huggingface.co/amazon/chronos-bolt-small
 # Available model sizes: chronos-bolt-tiny, -mini, -small, -base, -large
+
+reticulate::py_require(c("torch", "chronos-forecasting"))
 
 generate_chronos_forecast <- function(targets,
                                       site,
