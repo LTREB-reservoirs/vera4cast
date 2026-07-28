@@ -28,7 +28,8 @@ generate_chronos_forecast <- function(targets,
            depth_m %in% target_depths,
            datetime < forecast_date) |>
     drop_na(observation) |>
-    arrange(datetime)
+    arrange(datetime) |>
+    mutate(datetime = lubridate::as_datetime(as.Date(datetime)))
 
   if (nrow(target_ts) == 0) {
     message('No targets available for ', var, ' at ', site)
