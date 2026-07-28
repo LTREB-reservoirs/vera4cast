@@ -100,7 +100,7 @@ jobs:
         run: |
           install.packages("reticulate")
           reticulate::py_install(
-            packages = c("torch", "numpy", "chronos"),
+            packages = c("torch", "numpy", "chronos-forecasting"),
             pip = TRUE
           )
 
