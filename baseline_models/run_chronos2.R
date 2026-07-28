@@ -18,6 +18,18 @@ Sys.setenv("TRANSFORMERS_NO_ADVISORY_WARNINGS" = "1")
 config <- yaml::read_yaml("challenge_configuration.yaml")
 team_name <- 'chronos2'
 
+# --- Python setup via reticulate ---
+print('set up torch')
+torch   <- reticulate::import("torch")
+
+# Disable torchdynamo tracing to avoid trace_length errors in containers
+torch_dynamo <- reticulate::import("torch._dynamo", convert = FALSE)
+torch_dynamo$config$suppress_errors <- TRUE
+
+print('set up chronos')
+chronos <- reticulate::import("chronos")
+
+
 source('R/chronos_function.R')
 source('R/convert2binary.R')
 

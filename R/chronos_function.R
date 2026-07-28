@@ -47,16 +47,16 @@ generate_chronos_forecast <- function(targets,
   message('Running Chronos forecast for ', var, ' at ', site,
           ' using model: ', chronos_model)
 
-  # --- Python setup via reticulate ---
-  print('set up torch')
-  torch   <- reticulate::import("torch")
-
-  # Disable torchdynamo tracing to avoid trace_length errors in containers
-  torch_dynamo <- reticulate::import("torch._dynamo", convert = FALSE)
-  torch_dynamo$config$suppress_errors <- TRUE
-
-  print('set up chronos')
-  chronos <- reticulate::import("chronos")
+  # # --- Python setup via reticulate ---
+  # print('set up torch')
+  # torch   <- reticulate::import("torch")
+  #
+  # # Disable torchdynamo tracing to avoid trace_length errors in containers
+  # torch_dynamo <- reticulate::import("torch._dynamo", convert = FALSE)
+  # torch_dynamo$config$suppress_errors <- TRUE
+  #
+  # print('set up chronos')
+  # chronos <- reticulate::import("chronos")
 
   # Load the pretrained Chronos-Bolt pipeline (downloads on first call, then cached)
   pipeline <- chronos$BaseChronosPipeline$from_pretrained(
