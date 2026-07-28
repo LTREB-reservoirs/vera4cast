@@ -63,29 +63,30 @@ jobs:
       #   run: |
       #      source("baseline_models/run_arima_no_covariate.R")
 
-      - name: Generate NNETAR
-        if: always()
-        shell: Rscript {0}
-        run: |
-           source("baseline_models/nnetar_workflow.R")
 
-      # - name: Generate ETS
+      # - name: Generate NNETAR
       #   if: always()
       #   shell: Rscript {0}
       #   run: |
-      #      source("baseline_models/run_ETS_model.R")
-
-      - name: Generate prophet
-        if: always()
-        shell: Rscript {0}
-        run: |
-           source("baseline_models/run_prophet.R")
-
-      - name: Generate EDM
-        if: always()
-        shell: Rscript {0}
-        run: |
-           source("baseline_models/run_edm.R")
+      #      source("baseline_models/nnetar_workflow.R")
+      #
+      # # - name: Generate ETS
+      # #   if: always()
+      # #   shell: Rscript {0}
+      # #   run: |
+      # #      source("baseline_models/run_ETS_model.R")
+      #
+      # - name: Generate prophet
+      #   if: always()
+      #   shell: Rscript {0}
+      #   run: |
+      #      source("baseline_models/run_prophet.R")
+      #
+      # - name: Generate EDM
+      #   if: always()
+      #   shell: Rscript {0}
+      #   run: |
+      #      source("baseline_models/run_edm.R")
 
       - name: Generate Chronos2
         if: always()
