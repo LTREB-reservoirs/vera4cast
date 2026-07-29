@@ -8,6 +8,9 @@
 library(tidyverse)
 library(lubridate)
 
+## set EDI API Key
+edi_access_key = Sys.getenv('EDI_ACCESS_KEY')
+
 # source functions ----
 source("./R/target_generation_chemistry_daily.R")
 source("./R/climatology_interpolation/fit_climatology_chem.R")
@@ -26,7 +29,7 @@ current_file <- NULL # not ready yet
 # generate targets ----
 targets <- target_generation_chemistry_daily(
  current_data_file=NULL,
- historic_data_file="https://pasta.lternet.edu/package/data/eml/edi/199/11/509f39850b6f95628d10889d66885b76")
+ historic_data_file=paste0("https://pasta.lternet.edu/package/data/eml/edi/199/11/509f39850b6f95628d10889d66885b76?key=",edi_access_key))
 
 # define arguments for DOY model function ----
 data <- targets

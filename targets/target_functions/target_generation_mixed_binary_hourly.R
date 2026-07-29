@@ -1,10 +1,13 @@
 # FO
 
+## set EDI API Key
+edi_access_key = Sys.getenv('EDI_ACCESS_KEY')
+
 bvr_current <- c("https://raw.githubusercontent.com/FLARE-forecast/BVRE-data/bvre-platform-data-qaqc/bvre-waterquality_L1.csv")
-bvr_historic <- c("https://pasta.lternet.edu/package/data/eml/edi/725/3/a9a7ff6fe8dc20f7a8f89447d4dc2038")
+bvr_historic <- c(paste0("https://pasta.lternet.edu/package/data/eml/edi/725/3/a9a7ff6fe8dc20f7a8f89447d4dc2038?key=",edi_access_key))
 
 fcr_current <- "https://raw.githubusercontent.com/FLARE-forecast/FCRE-data/fcre-catwalk-data-qaqc/fcre-waterquality_L1.csv"
-fcr_historic <- "https://pasta.lternet.edu/package/data/eml/edi/271/7/71e6b946b751aa1b966ab5653b01077f"
+fcr_historic <- paste0("https://pasta.lternet.edu/package/data/eml/edi/271/7/71e6b946b751aa1b966ab5653b01077f?key=",edi_access_key)
 
 target_generation_mixed_binary_hourly <- function(current_file, historic_file){
   ## read in current data file
