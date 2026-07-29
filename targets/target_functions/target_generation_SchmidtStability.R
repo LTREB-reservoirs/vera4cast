@@ -2,6 +2,9 @@
 
 generate_schmidt.stability <- function(current_file, historic_file) {
 
+  ## set EDI API Key
+  edi_access_key = Sys.getenv('EDI_ACCESS_KEY')
+
   source('targets/target_functions/find_depths.R')
   ## read in current data file
   # Github, Googlesheet, etc.
@@ -136,7 +139,7 @@ generate_schmidt.stability <- function(current_file, historic_file) {
   # if (is.na(file.size(infile2))) download.file("https://pasta.lternet.edu/package/data/eml/edi/1254/1/f7fa2a06e1229ee75ea39eb586577184",
   #                                              infile2,method="auto")
 
-  bathymetry <- readr::read_csv('https://pasta.lternet.edu/package/data/eml/edi/1254/1/f7fa2a06e1229ee75ea39eb586577184', show_col_types = F)  |>
+  bathymetry <- readr::read_csv(paste0('https://pasta.lternet.edu/package/data/eml/edi/1254/1/f7fa2a06e1229ee75ea39eb586577184?key=',edi_access_key), show_col_types = F)  |>
     dplyr::select(Reservoir, Depth_m, SA_m2) |>
     # dplyr::rename(depths = Depth_m,
     #               areas = SA_m2) |>
