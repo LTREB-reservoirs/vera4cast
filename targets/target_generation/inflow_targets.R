@@ -1,6 +1,9 @@
 library(tidyverse)
 library(RCurl)
 
+## set EDI API Key
+edi_access_key = Sys.getenv('EDI_ACCESS_KEY')
+
 ## set destination s3 paths
 s3 <- arrow::s3_bucket("bio230121-bucket01", endpoint_override = "amnh1.osn.mghpcc.org")
 #s3$CreateDir("vera4cast/targets/duration=P1D")
@@ -22,13 +25,13 @@ source('targets/target_functions/inflow/target_generation_inflows.R')
 
 current_inflow <- 'https://raw.githubusercontent.com/FLARE-forecast/FCRE-data/fcre-weir-data-qaqc/FCRWeir_L1.csv'
 
-historic_inflow <- "https://pasta.lternet.edu/package/data/eml/edi/202/14/91713d7c24533b742efa21cb3acf8f8a"
+historic_inflow <- paste0("https://pasta.lternet.edu/package/data/eml/edi/202/14/91713d7c24533b742efa21cb3acf8f8a?key=",edi_access_key)
 
-historic_silica <- 'https://pasta.lternet.edu/package/data/eml/edi/542/1/791ec9ca0f1cb9361fa6a03fae8dfc95'
+historic_silica <- paste0('https://pasta.lternet.edu/package/data/eml/edi/542/1/791ec9ca0f1cb9361fa6a03fae8dfc95?key=',edi_access_key)
 
-historic_nutrients <- "https://pasta.lternet.edu/package/data/eml/edi/199/13/3f09a3d23b7b5dd32ed7d28e9bc1b081"
+historic_nutrients <- paste0("https://pasta.lternet.edu/package/data/eml/edi/199/13/3f09a3d23b7b5dd32ed7d28e9bc1b081?key=",edi_access_key)
 
-historic_ghg <- "https://pasta.lternet.edu/package/data/eml/edi/551/10/ee8e65a2a380c9fb63bbf7f4a542c895"
+historic_ghg <- paste0("https://pasta.lternet.edu/package/data/eml/edi/551/10/ee8e65a2a380c9fb63bbf7f4a542c895?key=",edi_access_key)
 
 current_ghg <-  "https://raw.githubusercontent.com/CareyLabVT/Reservoirs/master/Data/DataNotYetUploadedToEDI/Raw_GHG/L1_manual_GHG.csv"
 
