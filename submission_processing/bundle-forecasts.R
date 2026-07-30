@@ -30,6 +30,7 @@ model_paths <-
   unique()
 
 arima_chla_model_path_removed <- model_paths[!grepl('variable=Chla_ugL_mean/model_id=fableARIMA/', model_paths)]
+arima_chla_model_path_removed <- arima_chla_model_path_removed[!grepl('variable=DO_mgL_mean/model_id=fableNNETAR', arima_chla_model_path_removed)]
 
 print(arima_chla_model_path_removed)
 #print(model_paths)
