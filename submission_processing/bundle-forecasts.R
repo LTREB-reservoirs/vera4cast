@@ -29,10 +29,10 @@ model_paths <-
   str_replace("^osn\\/", "s3://") |>
   unique()
 
-arima_chla_model_path_removed <- model_paths[!grepl('variable=Chla_ugL_mean/model_id=fableARIMA/', model_paths)]
-arima_chla_model_path_removed <- arima_chla_model_path_removed[!grepl('variable=DO_mgL_mean/model_id=fableNNETAR', arima_chla_model_path_removed)]
+model_paths_w_temporary_removal <- model_paths[!grepl('variable=Chla_ugL_mean/model_id=fableARIMA/', model_paths)]
+model_paths_w_temporary_removal <- model_paths_w_temporary_removal[!grepl('model_id=fableNNETAR', model_paths_w_temporary_removal)]
 
-print(arima_chla_model_path_removed)
+print(model_paths_w_temporary_removal)
 #print(model_paths)
 # bundled count at start
 open_dataset("s3://bio230121-bucket01/vera4cast/forecasts/bundled-parquet",
@@ -170,7 +170,7 @@ bundle_me <- function(path) {
 #})
 
 bench::bench_time({
-  out <- purrr::map(arima_chla_model_path_removed, bundle_me)
+  out <- purrr::map(model_paths_w_temporary_removal, bundle_me)
 })
 
 # bundled count at end
