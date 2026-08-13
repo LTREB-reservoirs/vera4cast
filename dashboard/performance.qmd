@@ -90,7 +90,7 @@ if("Chla_ugL_mean" %in% unique(df$variable)){
 df |> 
   filter(variable == c("Chla_ugL_mean")) |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots(ylabel = 'Chla (ugL)')
+  forecast_plots_mean(ylabel = 'Chla (ugL)')
 }
 ```
 
@@ -134,7 +134,7 @@ df |>
   filter(variable == c("Temp_C_mean"), 
          site_id != 'tubr')  |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots(ylabel = 'Temp (degC)')
+  forecast_plots_mean(ylabel = 'Temp (degC)')
 ```
 
 ### Dissolved oxygen
@@ -145,7 +145,7 @@ df |>
   filter(variable == c("DO_mgL_mean"),
          site_id != 'tubr') |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots(ylabel = 'DO (mgL)')
+  forecast_plots_mean(ylabel = 'DO (mgL)')
 }
 ```
 
@@ -155,7 +155,7 @@ df |>
 df |> 
   filter(variable == c("AirTemp_C_mean"))  |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots(ylabel = 'Temp (degC)')
+  forecast_plots_mean(ylabel = 'Temp (degC)')
 ```
 
 ### fDOM
@@ -167,7 +167,7 @@ if("fDOM_QSU_mean" %in% unique(df$variable)){
 df |> 
   filter(variable == c("fDOM_QSU_mean"))  |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots(ylabel = 'fDOM (QSU)')
+  forecast_plots_mean(ylabel = 'fDOM (QSU)')
 }
 ```
 
@@ -180,7 +180,7 @@ df |>
   filter(variable == c("Secchi_m_sample")) |>
     #filter(!model_id == 'secchi_last3obs_mean') |> ## remove KKH secchi model for now
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots(ylabel = 'Secchi Depth (m)')
+  forecast_plots_mean(ylabel = 'Secchi Depth (m)')
   
 }
 ```
@@ -193,7 +193,7 @@ df |>
   filter(variable == c("CH4_umolL_sample"),
          site_id != 'tubr')  |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots(ylabel = 'CH4 (umolL)')
+  forecast_plots_mean(ylabel = 'CH4 (umolL)')
 }
 ```
 
@@ -205,7 +205,7 @@ df |>
   filter(variable == c("CH4flux_umolm2s_mean"))  |> 
     #dplyr::mutate(duration = ifelse(model_id == 'persistenceRW', 'P1D', duration)) |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots(ylabel = 'CH4 Flux (umolm2s)')
+  forecast_plots_mean(ylabel = 'CH4 Flux (umolm2s)')
 }
 ```
 
@@ -216,7 +216,7 @@ if("CO2flux_umolm2s_mean" %in% unique(df$variable)){
 df |> 
   filter(variable == c("CO2flux_umolm2s_mean"))  |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots(ylabel = 'CO2 Flux (umolm2s)')
+  forecast_plots_mean(ylabel = 'CO2 Flux (umolm2s)')
 }
 ```
 ### Inflow discharge
@@ -227,7 +227,7 @@ df |>
   filter(variable == c("Flow_cms_mean"))  |> 
     filter(!model_id == 'persistenceRW') |> ## uncertainty is too high -- remove for now
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots(ylabel = 'Flow (cms)')
+  forecast_plots_mean(ylabel = 'Flow (cms)')
 }
 ```
 :::

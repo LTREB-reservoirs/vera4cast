@@ -74,7 +74,7 @@ df <- duckdbfs::open_dataset(paste0("s3://",config$forecasts_bucket,
          #depth_m == 0.1, lubridate::as_date(datetime) > lubridate::as_date(reference_datetime)) |> 
           depth_m == 0.1, datetime > reference_datetime) |> 
 
-  filter(model_id %in% c('climatology','persistenceRW')) |> 
+  #filter(model_id %in% c('climatology','persistenceRW')) |> 
   collect()
 
 #reference_date <- max(lubridate::as_date(df$reference_datetime))
@@ -93,7 +93,7 @@ df |>
   filter(variable == c("Temp_C_mean"), 
          site_id != 'tubr')  |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots_w_persistence(ylabel = 'Temp (degC)')
+  forecast_plots(ylabel = 'Temp (degC)')
 ```
 
 ### Dissolved oxygen
@@ -104,7 +104,7 @@ df |>
   filter(variable == c("DO_mgL_mean"),
          site_id != 'tubr') |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots_w_persistence(ylabel = 'DO (mgL)')
+  forecast_plots(ylabel = 'DO (mgL)')
 }
 ```
 
@@ -116,7 +116,7 @@ df |>
   filter(variable == c("DOsat_percent_mean"),
          site_id != 'tubr') |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots_w_persistence(ylabel = 'DO_sat (%)')
+  forecast_plots(ylabel = 'DO_sat (%)')
 }
 ```
 
@@ -129,7 +129,7 @@ df |>
   filter(variable == c("Secchi_m_sample")) |>
     #filter(!model_id == 'secchi_last3obs_mean') |> ## remove KKH secchi model for now
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots_w_persistence(ylabel = 'Secchi Depth (m)')
+  forecast_plots(ylabel = 'Secchi Depth (m)')
   
 }
 ```
@@ -142,7 +142,7 @@ df |>
   filter(variable == c("Flow_cms_mean"))  |> 
     #filter(!model_id == 'persistenceRW') |> ## uncertainty is too high -- remove for now
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots_w_persistence(ylabel = 'Flow (cms)')
+  forecast_plots(ylabel = 'Flow (cms)')
 }
 ```
 
@@ -154,7 +154,7 @@ df |>
   filter(variable == c("SpCond_uScm_mean"), 
          site_id != 'tubr')  |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots_w_persistence(ylabel = 'Cond (uScm)')
+  forecast_plots(ylabel = 'Cond (uScm)')
 }
 ```
 
@@ -166,7 +166,7 @@ df |>
   filter(variable == c("Turbidity_FNU_mean"), 
          site_id != 'tubr')  |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots_w_persistence(ylabel = 'Turbidity (FNU)')
+  forecast_plots(ylabel = 'Turbidity (FNU)')
 }
 ```
 
@@ -209,7 +209,7 @@ df |>
   filter(variable == c("ThermoclineDepth_m_mean"), 
          site_id != 'tubr')  |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots_w_persistence(ylabel = 'Depth (m)')
+  forecast_plots(ylabel = 'Depth (m)')
 }
 ```
 
@@ -221,7 +221,7 @@ df |>
   filter(variable == c("SchmidtStability_Jm2_mean"), 
          site_id != 'tubr')  |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots_w_persistence(ylabel = 'Stability (Jm2)')
+  forecast_plots(ylabel = 'Stability (Jm2)')
 }
 ```
 :::
@@ -240,7 +240,7 @@ if("Chla_ugL_mean" %in% unique(df$variable)){
 df |> 
   filter(variable == c("Chla_ugL_mean")) |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots_w_persistence(ylabel = 'Chla (ugL)')
+  forecast_plots(ylabel = 'Chla (ugL)')
 }
 ```
 
@@ -285,7 +285,7 @@ df |>
   filter(variable == c("GreenAlgae_ugL_sample"), 
          site_id != 'tubr')  |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots_w_persistence(ylabel = 'Algae (ugL)')
+  forecast_plots(ylabel = 'Algae (ugL)')
 }
 ```
 
@@ -297,7 +297,7 @@ df |>
   filter(variable == c("Bluegreens_ugL_sample"), 
          site_id != 'tubr')  |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots_w_persistence(ylabel = 'Algae (ugL)')
+  forecast_plots(ylabel = 'Algae (ugL)')
 }
 ```
 
@@ -309,7 +309,7 @@ df |>
   filter(variable == c("BrownAlgae_ugL_sample"), 
          site_id != 'tubr')  |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots_w_persistence(ylabel = 'Algae (ugL)')
+  forecast_plots(ylabel = 'Algae (ugL)')
 }
 ```
 
@@ -321,7 +321,7 @@ df |>
   filter(variable == c("MixedAlgae_ugL_sample"), 
          site_id != 'tubr')  |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots_w_persistence(ylabel = 'Algae (ugL)')
+  forecast_plots(ylabel = 'Algae (ugL)')
 }
 ```
 
@@ -333,7 +333,7 @@ df |>
   filter(variable == c("GreenAlgaeCM_ugL_sample"), 
          site_id != 'tubr')  |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots_w_persistence(ylabel = 'Algae (ugL)')
+  forecast_plots(ylabel = 'Algae (ugL)')
 }
 ```
 
@@ -345,7 +345,7 @@ df |>
   filter(variable == c("BluegreensCM_ugL_sample"), 
          site_id != 'tubr')  |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots_w_persistence(ylabel = 'Algae (ugL)')
+  forecast_plots(ylabel = 'Algae (ugL)')
 }
 ```
 
@@ -357,7 +357,7 @@ df |>
   filter(variable == c("BrownAlgaeCM_ugL_sample"), 
          site_id != 'tubr')  |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots_w_persistence(ylabel = 'Algae (ugL)')
+  forecast_plots(ylabel = 'Algae (ugL)')
 }
 ```
 
@@ -369,7 +369,7 @@ df |>
   filter(variable == c("MixedAlgaeCM_ugL_sample"), 
          site_id != 'tubr')  |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots_w_persistence(ylabel = 'Algae (ugL)')
+  forecast_plots(ylabel = 'Algae (ugL)')
 }
 ```
 
@@ -381,7 +381,7 @@ df |>
   filter(variable == c("ChlorophyllMaximum_depth_sample"), 
          site_id != 'tubr')  |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots_w_persistence(ylabel = 'Depth (m)')
+  forecast_plots(ylabel = 'Depth (m)')
 }
 ```
 
@@ -439,7 +439,7 @@ if("fDOM_QSU_mean" %in% unique(df$variable)){
 df |> 
   filter(variable == c("fDOM_QSU_mean"))  |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots_w_persistence(ylabel = 'fDOM (QSU)')
+  forecast_plots(ylabel = 'fDOM (QSU)')
 }
 ```
 
@@ -451,7 +451,7 @@ df |>
   filter(variable == c("CH4_umolL_sample"),
          site_id != 'tubr')  |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots_w_persistence(ylabel = 'CH4 (umolL)')
+  forecast_plots(ylabel = 'CH4 (umolL)')
 }
 ```
 
@@ -463,7 +463,7 @@ df |>
   filter(variable == c("CH4flux_umolm2s_mean"))  |> 
     #dplyr::mutate(duration = ifelse(model_id == 'persistenceRW', 'P1D', duration)) |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots_w_persistence(ylabel = 'CH4 Flux (umolm2s)')
+  forecast_plots(ylabel = 'CH4 Flux (umolm2s)')
 }
 ```
 
@@ -474,7 +474,7 @@ if("CO2flux_umolm2s_mean" %in% unique(df$variable)){
 df |> 
   filter(variable == c("CO2flux_umolm2s_mean"))  |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots_w_persistence(ylabel = 'CO2 Flux (umolm2s)')
+  forecast_plots(ylabel = 'CO2 Flux (umolm2s)')
 }
 ```
 
@@ -486,7 +486,7 @@ df |>
   filter(variable == c("TN_ugL_sample"), 
          site_id != 'tubr')  |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots_w_persistence(ylabel = 'Nitrogen (ugL)')
+  forecast_plots(ylabel = 'Nitrogen (ugL)')
 }
 ```
 
@@ -498,7 +498,7 @@ df |>
   filter(variable == c("TP_ugL_sample"), 
          site_id != 'tubr')  |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots_w_persistence(ylabel = 'Phosphorus (ugL)')
+  forecast_plots(ylabel = 'Phosphorus (ugL)')
 }
 ```
 
@@ -510,7 +510,7 @@ df |>
   filter(variable == c("NH4_ugL_sample"), 
          site_id != 'tubr')  |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots_w_persistence(ylabel = 'Nitrogen (ugL)')
+  forecast_plots(ylabel = 'Nitrogen (ugL)')
 }
 ```
 
@@ -522,7 +522,7 @@ df |>
   filter(variable == c("NO3NO2_ugL_sample"), 
          site_id != 'tubr')  |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots_w_persistence(ylabel = 'Nitrogen (ugL)')
+  forecast_plots(ylabel = 'Nitrogen (ugL)')
 }
 ```
 
@@ -534,7 +534,7 @@ df |>
   filter(variable == c("SRP_ugL_sample"), 
          site_id != 'tubr')  |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots_w_persistence(ylabel = 'SRP (ugL)')
+  forecast_plots(ylabel = 'SRP (ugL)')
 }
 ```
 
@@ -546,7 +546,7 @@ df |>
   filter(variable == c("DOC_mgL_sample"), 
          site_id != 'tubr')  |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots_w_persistence(ylabel = 'DOC (ugL)')
+  forecast_plots(ylabel = 'DOC (ugL)')
 }
 ```
 
@@ -558,7 +558,7 @@ df |>
   filter(variable == c("CO2_umolL_sample"), 
          site_id != 'tubr')  |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots_w_persistence(ylabel = 'CO2 (umolL)')
+  forecast_plots(ylabel = 'CO2 (umolL)')
 }
 ```
 
@@ -570,7 +570,7 @@ df |>
   filter(variable == c("DRSI_mgL_sample"), 
          site_id != 'tubr')  |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots_w_persistence(ylabel = 'DRSi (mgL)')
+  forecast_plots(ylabel = 'DRSi (mgL)')
 }
 ```
 
@@ -582,7 +582,7 @@ df |>
   filter(variable == c("DIC_mgL_sample"), 
          site_id != 'tubr')  |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots_w_persistence(ylabel = 'DIC (mgL)')
+  forecast_plots(ylabel = 'DIC (mgL)')
 }
 ```
 
@@ -594,7 +594,7 @@ df |>
   filter(variable == c("DC_mgL_sample"), 
          site_id != 'tubr')  |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots_w_persistence(ylabel = 'DC (mgL)')
+  forecast_plots(ylabel = 'DC (mgL)')
 }
 ```
 
@@ -606,7 +606,7 @@ df |>
   filter(variable == c("DN_mgL_sample"), 
          site_id != 'tubr')  |> 
     mutate(observation = as.numeric(NA)) |> 
-  forecast_plots_w_persistence(ylabel = 'DN (mgL)')
+  forecast_plots(ylabel = 'DN (mgL)')
 }
 ```
 

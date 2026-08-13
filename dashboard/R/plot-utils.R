@@ -23,10 +23,28 @@ forecast_ggobj <- function(df, ncol = NULL, show.legend = TRUE, ylabel = 'predic
     theme_bw()
 }
 
+forecast_ggobj_mean <- function(df, ncol = NULL, show.legend = TRUE, ylabel = 'predicted', binary = FALSE) {
+
+  p <- df |> collect() |>
+    ggplot() +
+    geom_point(aes(datetime, observation))
+
+  # if(!binary){
+  #   p <- p + geom_ribbon_interactive(aes(x = datetime, ymin = quantile02.5, ymax = quantile97.5,
+  #                                        fill = model_id, data_id = model_id, tooltip = model_id),
+  #                                    alpha = 0.2, show.legend=FALSE)
+  # }
+  p + geom_line_interactive(aes(datetime, mean, col = model_id,
+                                tooltip = model_id, data_id = model_id), show.legend=show.legend) +
+    labs(x = 'datetime', y = ylabel) +
+    facet_wrap(~site_id, scales = "free", ncol=ncol) +
+    guides(x =  guide_axis(angle = 45)) +
+    theme_bw()
+}
 
 forecast_plots <- function(df, ncol = NULL, show.legend = TRUE, ylabel = 'predicted', binary = FALSE) {
 
-  df <- df |> filter(model_id != 'persistenceRW')
+  #df <- df |> filter(model_id != 'persistenceRW')
 
   if (nrow(df) == 0){
     print('No scored forecasts are available for this period')
@@ -41,6 +59,25 @@ forecast_plots <- function(df, ncol = NULL, show.legend = TRUE, ylabel = 'predic
          ))
 
 }
+}
+
+forecast_plots_mean <- function(df, ncol = NULL, show.legend = TRUE, ylabel = 'predicted', binary = FALSE) {
+
+  #df <- df |> filter(model_id != 'persistenceRW')
+
+  if (nrow(df) == 0){
+    print('No scored forecasts are available for this period')
+  } else{
+    ggobj <- forecast_ggobj_mean(df, ncol, show.legend, ylabel, binary = binary)
+    girafe(ggobj = ggobj,
+           width_svg = 8, height_svg = 4,
+           options = list(
+             opts_hover_inv(css = "opacity:0.20;"),
+             opts_hover(css = "stroke-width:2;"),
+             opts_zoom(max = 4)
+           ))
+
+  }
 }
 
 forecast_plots_w_persistence <- function(df, ncol = NULL, show.legend = TRUE, ylabel = 'predicted', binary = FALSE) {
