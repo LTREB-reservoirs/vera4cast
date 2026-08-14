@@ -91,7 +91,7 @@ targets <-
   mutate(
     depth_m = as.numeric(depth_m),
     depth_m = ifelse(is.na(depth_m), -999999, depth_m),
-    datetime = cast(datetime, 'TIMESTAMP')) |>
+    datetime = sql("CAST(datetime AS TIMESTAMP)")) |>
     #datetime = lubridate::floor_date(lubridate::as_datetime(datetime), "day")) |>
     #datetime = lubridate::as_datetime(as.Date(datetime))) |> ### THIS SHOULD FIX THE DATETIME INNER-JOIN ISSUE
   filter(project_id == {project},
