@@ -12,6 +12,11 @@ library(DBI)
 con <- duckdbfs::cached_connection(tempfile())
 #DBI::dbExecute(con, "SET THREADS=64;")
 
+# Load the ICU timezone extension so any TIMESTAMP WITH TIME ZONE columns
+# embedded in the union of bundled-parquet files are castable to TIMESTAMP
+# (avoids "Unimplemented type for cast (TIMESTAMP WITH TIME ZONE -> DATE)").
+DBI::dbExecute(con, "INSTALL icu; LOAD icu; SET TimeZone='UTC';")
+
 library(minioclient)
 
 install_mc()
@@ -117,7 +122,13 @@ forecasts <-
                anonymous=TRUE) |>
   mutate(
     depth_m = as.numeric(depth_m),
-    depth_m = ifelse(is.na(depth_m), -999999, depth_m)) |>
+    depth_m = ifelse(is.na(depth_m), -999999, depth_m),
+    # Normalize mixed DATE / TIMESTAMPTZ parquet datetime columns to TIMESTAMP
+    # before any filter or horizon calc — some bundle files surface datetime
+    # as TIMESTAMPTZ, and a later DATE cast otherwise fails with
+    # "Unimplemented type for cast (TIMESTAMP WITH TIME ZONE -> DATE)".
+    datetime = sql("CAST(datetime AS TIMESTAMP)"),
+    reference_datetime = sql("CAST(reference_datetime AS TIMESTAMP)")) |>
   filter(project_id == {project},
          datetime > {cut_off_date},
          datetime <= {last_observed_date},
@@ -128,8 +139,15 @@ forecasts <-
   ) |>
   # if necessary, enforce naming convention on "family" to avoid perpetual rescoring
   mutate(family = ifelse(family == 'ensemble', "sample", family)) |>
-  # enforce horizon filter
-  mutate(horizon = date_diff('day', as.POSIXct(reference_datetime), as.POSIXct(datetime))) |>
+  # enforce horizon filter.
+  # Both sides are CAST to TIMESTAMP before DATE_DIFF: the parquet files mix
+  # DATE / TIMESTAMP / TIMESTAMPTZ datetime storage across bundles, and
+  # native subtraction (TIMESTAMP - TIMESTAMP -> INTERVAL) or EXTRACT(DAY
+  # FROM interval) on a TIMESTAMPTZ column triggers duckdb's
+  # "Unimplemented type for cast (TIMESTAMP WITH TIME ZONE -> DATE)".
+  mutate(horizon = sql(
+    "DATE_DIFF('day', CAST(reference_datetime AS TIMESTAMP), CAST(datetime AS TIMESTAMP))"
+  )) |>
   filter(! (duration == "P1D" & horizon > 35))
 
 # THIS ONLY SCORES EARLIEST SUBMISSION OF A REFERENCE DATETIME.  SO A RESUBMISSION WILL NOT
