@@ -153,7 +153,21 @@ forecasts <-
 # THIS ONLY SCORES EARLIEST SUBMISSION OF A REFERENCE DATETIME.  SO A RESUBMISSION WILL NOT
 # BE SCORED.  CHANGGING slice_min(pub_datetime) to slice_max(pub_datetime) WILL SCORE THE MOST
 # RECENT SUBMITTED FORECAST
-variable_ids <- forecasts |> distinct(variable) |> collect() |> pull(variable)
+## DuckDB's parquet_scan on bundled-parquet caches the file list at view
+## creation; in-flight bundle rewrites (bundle-forecasts.R) can then trigger a
+## spurious "HTTP 404 Not Found / NoSuchKey" on read.  Get distinct variable
+## names instead from a fresh directory listing of the hive-style
+## 'variable=<name>' partition folders via minioclient, which never reads the
+## parquet files.
+variable_ids <-
+  minioclient::mc_ls("osn/bio230121-bucket01/vera4cast/forecasts/bundled-parquet/project_id=vera4cast/",
+                     recursive = TRUE) |>
+  stringr::str_extract("variable=[^/]+") |>
+  stringr::str_remove("^variable=") |>
+  unique() |>
+  sort()
+# Previous (fragile) duckdbfs approach:
+# variable_ids <- forecasts |> distinct(variable) |> collect() |> pull(variable)
 
 for(i in 1:length(variable_ids)){
   curr_variable_id<- variable_ids[i]
