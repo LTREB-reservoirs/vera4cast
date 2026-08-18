@@ -1,14 +1,22 @@
 # Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
+# Scoring must not overlap bundling: prep_scoring.R builds a DuckDB
+# parquet_scan view whose file list is frozen at view creation, while
+# bundle-forecasts.R rewrites/deletes data_0.parquet keys in place, which
+# causes spurious "HTTP 404 Not Found / NoSuchKey" read errors mid-scan.
+# Trigger scoring only after the bundling workflow completes successfully.
 on:
-  schedule:
-    - cron: '0 20 * * *'
+  workflow_run:
+    workflows: ["bundling"]
+    types: [completed]
   workflow_dispatch:
 
 name: scoring
 
 jobs:
   docker:
+    # workflow_dispatch has no workflow_run payload; allow manual runs too
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     #runs-on: self-hosted
     env:
