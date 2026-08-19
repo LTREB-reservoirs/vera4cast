@@ -170,7 +170,7 @@ bundle_me <- function(path) {
 #})
 
 bench::bench_time({
-  out <- purrr::map(model_paths_w_temporary_removal, bundle_me)
+  out <- purrr::map(model_paths, bundle_me)
 })
 
 # bundled count at end
