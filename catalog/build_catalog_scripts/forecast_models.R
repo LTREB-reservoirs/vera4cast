@@ -24,6 +24,13 @@ forecast_description_create <- data.frame(datetime = 'datetime of the forecasted
                                           reference_date = 'date that the forecast was initiated',
                                           project_id = 'unique identifier for the forecast project',
                                           depth_m = 'depth (meters) in water column of prediction',
+                                          mean = 'mean forecast prediction',
+                                          median = 'median forecast prediction',
+                                          sd = 'standard deviation forecasts',
+                                          quantile97.5 = 'upper 97.5 percentile value of forecast',
+                                          quantile02.5 = 'upper 2.5 percentile value of forecast',
+                                          quantile90 = 'upper 90 percentile value of forecast',
+                                          quantile10 = 'upper 10 percentile value of forecast',
                                           duration = 'temporal duration of forecast (hourly, daily, etc.); follows ISO 8601 duration convention')
 
 
