@@ -1,5 +1,54 @@
 [
   {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "VERA Forecasting Challenge",
+    "section": "",
+    "text": "Welcome to the Virginia Ecoforecast Reservoir Analysis (VERA) Forecasting Challenge, hosted by the Virginia Tech Center for Ecosystem Forecasting (CEF) as part of the Virginia Reservoirs LTREB program.\nWe invite you to submit forecasts! Your forecasts will automatically be scored and cataloged using our cyberinfrastructure."
+  },
+  {
+    "objectID": "index.html#why-a-forecasting-challenge",
+    "href": "index.html#why-a-forecasting-challenge",
+    "title": "VERA Forecasting Challenge",
+    "section": "Why a forecasting challenge?",
+    "text": "Why a forecasting challenge?\nWe are using forecasts to compare the predictability of different physical, chemical, and biological variables across varying environmental conditions to identify the fundamental predictability of freshwater ecosystems.\nThe VERA forecasting challenge is one component of the Virginia Reservoirs LTREB project, which is monitoring two connected drinking water supply reservoirs with contrasting dissolved oxygen conditions to broadly advance our understanding of freshwater ecosystem processes.\n \n\n\n\n\n\n\n\n\n\nTotal forecasts submitted to the VERA Challenge\n21209\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMost recent data for model training\n2026-09-04\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNumber of years of data for model training\n13.5\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNumber of variables being forecasted\n51"
+  },
+  {
+    "objectID": "index.html#what-sites-are-being-forecasted",
+    "href": "index.html#what-sites-are-being-forecasted",
+    "title": "VERA Forecasting Challenge",
+    "section": "What sites are being forecasted?",
+    "text": "What sites are being forecasted?\n\n\n\n\n\n\n  This material is based upon work supported by the National Science Foundation under Grant DEB-2327030. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.   Page last updated on 2026-09-04"
+  },
+  {
+    "objectID": "performance.html",
+    "href": "performance.html",
+    "title": "Forecast performance",
+    "section": "",
+    "text": "This page visualizes the forecasts and forecast performance for the focal target variables."
+  },
+  {
+    "objectID": "performance.html#sec-performance",
+    "href": "performance.html#sec-performance",
+    "title": "Forecast performance",
+    "section": "Most recent forecasts for focal variables",
+    "text": "Most recent forecasts for focal variables\nForecasts submitted on 2026-09-01\n\nChlorophyll-aChlorophyll-a bloom probabilityWater temperatureDissolved oxygenAir temperaturefDOMSecchi depthDissolved methaneMethane FluxCO2 FluxInflow discharge\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nClick here to view the baseline forecasts for the complete list of variables"
+  },
+  {
+    "objectID": "performance.html#forecast-analysis",
+    "href": "performance.html#forecast-analysis",
+    "title": "Forecast performance",
+    "section": "Forecast analysis",
+    "text": "Forecast analysis\nBelow are forecasts submitted 30 days ago and include the observations used to evaluate them (black points). Mouse over the figure to see the team id, and scroll to zoom.\n\nChlorophyll-aChlorophyll-a bloom probabilityWater temperatureDissolved oxygenSecchi depthAir TemperaturefDOMDissolved MethaneMethane FluxCO2 FluxInflow Discharge\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n[1] \"No scored forecasts are available for this period\"\n\n\n\n\n\n\n[1] \"No scored forecasts are available for this period\""
+  },
+  {
+    "objectID": "performance.html#aggregated-scores",
+    "href": "performance.html#aggregated-scores",
+    "title": "Forecast performance",
+    "section": "Aggregated scores",
+    "text": "Aggregated scores\nAverage skill scores of each model are shown for each target variable, aggregated across model (top), time of year (middle), and forecast horizon (bottom). The evaluation metrics is the Continuous Ranked Probability Score (CRPS). Lower CRPS values correspond a better performing model. CRPS is similar in concept to Mean Absolute Error (|mean(forecast) - observation|), except that it evaulates the full forecast distribution rather than the mean of the forecast. CRPS is in native units for the variable\n\nScores are shown by reference date and forecast horizon (in days).\n\nScores are averaged across all submissions of the model with a given horizon or a given reference_datetime using submissions made since 2026-08-05.\n\n\nChlorophyll-aChlorophyll-a bloom probabilityWater temperatureDissolved oxygenSecchi depthAir temperaturefDOMDissolved MethaneMethane FluxCO2 FluxInflow Discharge"
+  },
+  {
     "objectID": "performance_variables.html",
     "href": "performance_variables.html",
     "title": "All VERA Variables",
@@ -33,6 +82,27 @@
     "title": "All VERA Variables",
     "section": "Chemical Variables",
     "text": "Chemical Variables\n\nfDOMDissolved methaneMethane FluxCO2 FluxTotal NTotal PNH4NO3NO2SRPDOCDissolved CO2Dissolved SilicaDICDissolved CarbonDissolved Nitrogen"
+  },
+  {
+    "objectID": "catalog.html",
+    "href": "catalog.html",
+    "title": "Forecast catalog",
+    "section": "",
+    "text": "The catalog of submitted forecasts, evaluations of the forecasts (“scores”), and summarized forecasts are available through the SpatioTemporal Asset Catalogs browser (below). The catalog also contains information and access to the metadata for the forecast sites, the NOAA weather forecasts at the forecast sites, and the targets (observational data) collected at the forecast sites. The full-page version can be found here"
+  },
+  {
+    "objectID": "catalog.html#what-types-of-models-are-submitting-forecasts",
+    "href": "catalog.html#what-types-of-models-are-submitting-forecasts",
+    "title": "Forecast catalog",
+    "section": "What types of models are submitting forecasts?",
+    "text": "What types of models are submitting forecasts?"
+  },
+  {
+    "objectID": "catalog.html#sec-spatiotemporal-asset-catalog",
+    "href": "catalog.html#sec-spatiotemporal-asset-catalog",
+    "title": "Forecast catalog",
+    "section": "Catalog of forecast submissions and evaluations",
+    "text": "Catalog of forecast submissions and evaluations"
   },
   {
     "objectID": "targets.html",
@@ -124,76 +194,6 @@
     "title": "How to forecast",
     "section": "8 Questions?",
     "text": "8 Questions?\nThanks for reading this document! If you still have questions about how to submit your forecast to the VERA Forecasting Challenge, we encourage you to email Dr. Quinn Thomas (rqthomas{at}vt.edu)."
-  },
-  {
-    "objectID": "performance.html",
-    "href": "performance.html",
-    "title": "Forecast performance",
-    "section": "",
-    "text": "This page visualizes the forecasts and forecast performance for the focal target variables."
-  },
-  {
-    "objectID": "performance.html#sec-performance",
-    "href": "performance.html#sec-performance",
-    "title": "Forecast performance",
-    "section": "Most recent forecasts for focal variables",
-    "text": "Most recent forecasts for focal variables\nForecasts submitted on 2026-09-01\n\nChlorophyll-aChlorophyll-a bloom probabilityWater temperatureDissolved oxygenAir temperaturefDOMSecchi depthDissolved methaneMethane FluxCO2 FluxInflow discharge\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nClick here to view the baseline forecasts for the complete list of variables"
-  },
-  {
-    "objectID": "performance.html#forecast-analysis",
-    "href": "performance.html#forecast-analysis",
-    "title": "Forecast performance",
-    "section": "Forecast analysis",
-    "text": "Forecast analysis\nBelow are forecasts submitted 30 days ago and include the observations used to evaluate them (black points). Mouse over the figure to see the team id, and scroll to zoom.\n\nChlorophyll-aChlorophyll-a bloom probabilityWater temperatureDissolved oxygenSecchi depthAir TemperaturefDOMDissolved MethaneMethane FluxCO2 FluxInflow Discharge\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n[1] \"No scored forecasts are available for this period\"\n\n\n\n\n\n\n[1] \"No scored forecasts are available for this period\""
-  },
-  {
-    "objectID": "performance.html#aggregated-scores",
-    "href": "performance.html#aggregated-scores",
-    "title": "Forecast performance",
-    "section": "Aggregated scores",
-    "text": "Aggregated scores\nAverage skill scores of each model are shown for each target variable, aggregated across model (top), time of year (middle), and forecast horizon (bottom). The evaluation metrics is the Continuous Ranked Probability Score (CRPS). Lower CRPS values correspond a better performing model. CRPS is similar in concept to Mean Absolute Error (|mean(forecast) - observation|), except that it evaulates the full forecast distribution rather than the mean of the forecast. CRPS is in native units for the variable\n\nScores are shown by reference date and forecast horizon (in days).\n\nScores are averaged across all submissions of the model with a given horizon or a given reference_datetime using submissions made since 2026-08-04.\n\n\nChlorophyll-aChlorophyll-a bloom probabilityWater temperatureDissolved oxygenSecchi depthAir temperaturefDOMDissolved MethaneMethane FluxCO2 FluxInflow Discharge"
-  },
-  {
-    "objectID": "catalog.html",
-    "href": "catalog.html",
-    "title": "Forecast catalog",
-    "section": "",
-    "text": "The catalog of submitted forecasts, evaluations of the forecasts (“scores”), and summarized forecasts are available through the SpatioTemporal Asset Catalogs browser (below). The catalog also contains information and access to the metadata for the forecast sites, the NOAA weather forecasts at the forecast sites, and the targets (observational data) collected at the forecast sites. The full-page version can be found here"
-  },
-  {
-    "objectID": "catalog.html#what-types-of-models-are-submitting-forecasts",
-    "href": "catalog.html#what-types-of-models-are-submitting-forecasts",
-    "title": "Forecast catalog",
-    "section": "What types of models are submitting forecasts?",
-    "text": "What types of models are submitting forecasts?"
-  },
-  {
-    "objectID": "catalog.html#sec-spatiotemporal-asset-catalog",
-    "href": "catalog.html#sec-spatiotemporal-asset-catalog",
-    "title": "Forecast catalog",
-    "section": "Catalog of forecast submissions and evaluations",
-    "text": "Catalog of forecast submissions and evaluations"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "VERA Forecasting Challenge",
-    "section": "",
-    "text": "Welcome to the Virginia Ecoforecast Reservoir Analysis (VERA) Forecasting Challenge, hosted by the Virginia Tech Center for Ecosystem Forecasting (CEF) as part of the Virginia Reservoirs LTREB program.\nWe invite you to submit forecasts! Your forecasts will automatically be scored and cataloged using our cyberinfrastructure."
-  },
-  {
-    "objectID": "index.html#why-a-forecasting-challenge",
-    "href": "index.html#why-a-forecasting-challenge",
-    "title": "VERA Forecasting Challenge",
-    "section": "Why a forecasting challenge?",
-    "text": "Why a forecasting challenge?\nWe are using forecasts to compare the predictability of different physical, chemical, and biological variables across varying environmental conditions to identify the fundamental predictability of freshwater ecosystems.\nThe VERA forecasting challenge is one component of the Virginia Reservoirs LTREB project, which is monitoring two connected drinking water supply reservoirs with contrasting dissolved oxygen conditions to broadly advance our understanding of freshwater ecosystem processes.\n \n\n\n\n\n\n\n\n\n\nTotal forecasts submitted to the VERA Challenge\n21209\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMost recent data for model training\n2026-09-03\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNumber of years of data for model training\n13.5\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNumber of variables being forecasted\n51"
-  },
-  {
-    "objectID": "index.html#what-sites-are-being-forecasted",
-    "href": "index.html#what-sites-are-being-forecasted",
-    "title": "VERA Forecasting Challenge",
-    "section": "What sites are being forecasted?",
-    "text": "What sites are being forecasted?\n\n\n\n\n\n\n  This material is based upon work supported by the National Science Foundation under Grant DEB-2327030. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.   Page last updated on 2026-09-03"
   },
   {
     "objectID": "learn-more.html",
