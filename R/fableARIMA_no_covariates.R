@@ -29,6 +29,7 @@ generate_baseline_arima_no_covariate <- function(targets,
            site_id %in% site,
            depth_m %in% target_depths,
            datetime < forecast_date) |>
+    mutate(observation = ifelse(is.nan(observation), NA, observation)) |>
     group_by(variable, site_id, depth_m, duration, project_id, datetime) |>
     summarise(observation = mean(observation), .groups = 'drop') |>  # get rid of the repeat observations by finding the mean
     as_tsibble(key = c('variable', 'site_id', 'depth_m', 'duration', 'project_id'), index = 'datetime') |>
@@ -48,6 +49,16 @@ generate_baseline_arima_no_covariate <- function(targets,
   targets_use <- targets_ts |>
     dplyr::filter(datetime < forecast_starts$start_date)
 
+  # Identify rows that are NOT completely NA
+  non_empty_rows <- rowSums(!is.na(targets_use)) > 0
+
+  # Find the maximum index of a non-empty row
+  last_valid_row <- max(which(non_empty_rows))
+
+  # Keep everything up to that row
+  targets_use <- targets_use[1:last_valid_row, ]
+
+
   if (nrow(targets_use) == 0) {
     message(paste0('no targets available, no forecast run for ', site, ' ', var, '. Check site_id and variable name'))
     return(NULL)
@@ -60,6 +71,11 @@ generate_baseline_arima_no_covariate <- function(targets,
     # RW_model <- targets_use %>%
     #   fabletools::model(RW = fable::RW(observation))
 
+    # a failed fit (e.g. non-intersecting series) produces a NULL model with no glance rows
+    if (nrow(fabletools::glance(arima_model)) == 0) {
+      message(paste0('ARIMA fit failed, no forecast run for ', site, ' ', var))
+      return(NULL)
+    }
 
     if (bootstrap == T) { ##  THIS MAY NOT BE APPLICABLE FOR CONSTANT SD MODEL
       forecast <- RW_model %>%
