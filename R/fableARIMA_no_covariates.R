@@ -36,6 +36,10 @@ generate_baseline_arima_no_covariate <- function(targets,
     # add NA values up to today (index)
     fill_gaps(.end = forecast_date)
 
+  if (nrow(targets_ts) == 0) {
+    message('No initial targets available. Check that the dates, depths, and sites exist in the target data frame')
+    return(NULL)
+  }
 
   # Work out when the forecast should start
   forecast_starts <- targets %>%
@@ -60,7 +64,7 @@ generate_baseline_arima_no_covariate <- function(targets,
 
 
   if (nrow(targets_use) == 0) {
-    message(paste0('no targets available, no forecast run for ', site, ' ', var, '. Check site_id and variable name'))
+    message(paste0('No targets available after additional cleaning: no forecast run for ', site, ' ', var, '. Check site_id and variable name'))
     return(NULL)
 
   } else {
