@@ -20,6 +20,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: ./.github/actions/install-mc
+
       - name: Install libuv
         shell: bash
         run: |
