@@ -43,4 +43,4 @@ download_ensemble_forecast(model_id, forecast_horizon = 10, sites = "fcre")
 submit_met_forecast(model_id)
 
 ## Call healthcheck
-RCurl::url.exists("https://hc-ping.com/09ad92fc-a41c-496d-96c2-94974dc2dfdb", timeout = 5)
+#RCurl::url.exists("https://hc-ping.com/09ad92fc-a41c-496d-96c2-94974dc2dfdb", timeout = 5)
