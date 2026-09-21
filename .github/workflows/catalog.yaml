@@ -30,6 +30,8 @@ jobs:
         run: |
           git clone --depth 1 https://github.com/LTREB-reservoirs/vera4cast-catalog.git ../vera4cast-catalog
 
+      - uses: ./.github/actions/install-mc
+
       - name: Install
         shell: Rscript {0}
         run: |
