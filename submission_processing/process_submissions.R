@@ -47,7 +47,8 @@ fs::dir_create(local_dir)
 # those out before downloading. That keeps the pipeline correct even if deleting
 # from the submissions bucket stops working again.
 manifest_object <- paste0("s3_store/", config$processed_submissions)
-manifest_local <- file.path(tempdir(), "processed_submissions.csv")
+#manifest_local <- file.path(tempdir(), "processed_submissions.csv")
+manifest_local <- file.path(local_dir, "processed_submissions.csv")
 
 processed <- tryCatch({
   minioclient::mc_cp(manifest_object, manifest_local)
