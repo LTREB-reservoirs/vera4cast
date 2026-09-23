@@ -43,280 +43,354 @@ targets_tubr <- readr::read_csv(paste0("https://", config$endpoint, "/", config$
 sites <- readr::read_csv(config$catalog_config$site_metadata_url, show_col_types = FALSE)
 site_names <- sites$site_id
 
-# Runs the RW forecast for inflow variables
-print('Inflow model')
 
-inflow_var_combinations <- expand.grid(var = c('Flow_cms_mean',
-                                             'Temp_C_mean'),
-                                     site = c('tubr'))
+# check existing forecast dates
+today <- Sys.Date()
+lookback_date <- paste0(lubridate::year(today),'-08-01')
+this_year <- data.frame(date = as.character(paste0(seq.Date(lubridate::as_date(lookback_date), to = lubridate::as_date(today), by = 'day'), ' 00:00:00')),
+                        exists = NA)
 
-chronos_inflow <- purrr::pmap_dfr(inflow_var_combinations,
-                                  .f = ~ generate_chronos_forecast(targets = targets_tubr,
-                                                                   h = 35,
-                                                                   model_name = team_name,
-                                                                   forecast_date = Sys.Date(),
-                                                                   depth = 'target',
-                                                                   ...))
-# met variables
-print('Met model')
+s3 <- arrow::s3_bucket(bucket = glue::glue("bio230121-bucket01/vera4cast/forecasts/archive-parquet/project_id=vera4cast/duration=P1D/variable=Temp_C_mean/model_id={team_name}"),
+                       endpoint_override = "https://amnh1.osn.mghpcc.org",
+                       anonymous = TRUE)
 
-chronos_met <- generate_chronos_forecast(targets = targets_met,
-                                 h = 35,
-                                 model_name = team_name,
-                                 forecast_date = Sys.Date(),
-                                 site = 'fcre',
-                                 depth = 'target',
-                                 var = "AirTemp_C_mean")
+avail_dates <- gsub("reference_date=", "", s3$ls())
 
+this_year$exists <- ifelse(as.Date(this_year$date) %in% as.Date(avail_dates), T, F)
 
-# Insitu variables
-# get all combinations
-print('Insitu model')
+rerun_dates <- this_year |> filter(exists == FALSE) |> pull(date)
 
-site_var_combinations <- expand.grid(var = c('DO_mgL_mean',
-                                             'DOsat_percent_mean',
-                                             'Chla_ugL_mean',
-                                             'Secchi_m_sample',
-                                             'Temp_C_mean',
-                                             'fDOM_QSU_mean',
-                                             'SpCond_uScm_mean',
-                                             'Turbidity_FNU_mean'),
-                                     #'CH4_umolL_sample',
-                                     #'CO2_umolL_sample'),
-                                     # 'NH4_ugL_sample',
-                                     # 'DOC_mgL_sample',
-                                     # 'NO3NO2_ugL_sample',
-                                     # 'TP_ugL_sample',
-                                     # 'TN_ugL_sample',
-                                     # 'DIC_mgL_sample'),
-                                     site = c('fcre',
-                                              'bvre'))
+for (i in rerun_dates){
 
-chronos_insitu <- purrr::pmap_dfr(site_var_combinations,
-                              .f = ~ generate_chronos_forecast(targets = targets_insitu,
-                                                           h = 35,
-                                                           model_name = team_name,
-                                                           forecast_date = Sys.Date(),
-                                                           depth = 'target',
-                                                           ...))
+  print(i)
+
+  curr_reference_datetime <- as.Date(i)
+
+  # Runs the RW forecast for inflow variables
+  print('Inflow model')
+
+  inflow_var_combinations <- expand.grid(var = c('Flow_cms_mean',
+                                               'Temp_C_mean'),
+                                       site = c('tubr'))
+
+  chronos_inflow <- purrr::pmap_dfr(inflow_var_combinations,
+                                    .f = ~ generate_chronos_forecast(targets = targets_tubr,
+                                                                     h = 35,
+                                                                     model_name = team_name,
+                                                                     forecast_date = curr_reference_datetime,
+                                                                     depth = 'target',
+                                                                     ...))
+  # met variables
+  print('Met model')
+
+  chronos_met <- generate_chronos_forecast(targets = targets_met,
+                                   h = 35,
+                                   model_name = team_name,
+                                   forecast_date = curr_reference_datetime,
+                                   site = 'fcre',
+                                   depth = 'target',
+                                   var = "AirTemp_C_mean")
 
 
-### INSITU VARIABLES AT DEEPER DEPTH ##
-print('Insitu model deeper...')
-site_var_combinations_deeper_depth_fcr <- expand.grid(var = c('DO_mgL_mean',
-                                                              'Temp_C_mean',
-                                                              'CH4_umolL_sample'),
-                                                      site = 'fcre',
-                                                      depth = 9)
-chronos_insitu_deeper_fcr <- purrr::pmap_dfr(site_var_combinations_deeper_depth_fcr,
-                                         .f = ~ generate_chronos_forecast(targets = targets_insitu,
-                                                                      h = 35,
-                                                                      model_name = team_name,
-                                                                      forecast_date = Sys.Date(),
-                                                                      #depth = 'target',
-                                                                      ...))
+  # Insitu variables
+  # get all combinations
+  print('Insitu model')
 
-site_var_combinations_deeper_depth_bvr <- expand.grid(var = c('DO_mgL_mean',
-                                                              'Temp_C_mean',
-                                                              'CH4_umolL_sample'),
-                                                      site = 'bvre',
-                                                      depth = 8)
+  site_var_combinations <- expand.grid(var = c('DO_mgL_mean',
+                                               'DOsat_percent_mean',
+                                               'Chla_ugL_mean',
+                                               'Secchi_m_sample',
+                                               'Temp_C_mean',
+                                               'fDOM_QSU_mean',
+                                               'SpCond_uScm_mean',
+                                               'Turbidity_FNU_mean'),
+                                       #'CH4_umolL_sample',
+                                       #'CO2_umolL_sample'),
+                                       # 'NH4_ugL_sample',
+                                       # 'DOC_mgL_sample',
+                                       # 'NO3NO2_ugL_sample',
+                                       # 'TP_ugL_sample',
+                                       # 'TN_ugL_sample',
+                                       # 'DIC_mgL_sample'),
+                                       site = c('fcre',
+                                                'bvre'))
 
-chronos_insitu_deeper_bvr <- purrr::pmap_dfr(site_var_combinations_deeper_depth_bvr,
-                                         .f = ~ generate_chronos_forecast(targets = targets_insitu,
-                                                                      h = 35,
-                                                                      model_name = team_name,
-                                                                      forecast_date = Sys.Date(),
-                                                                      #depth = 'target',
-                                                                      ...))
+  chronos_insitu <- purrr::pmap_dfr(site_var_combinations,
+                                .f = ~ generate_chronos_forecast(targets = targets_insitu,
+                                                             h = 35,
+                                                             model_name = team_name,
+                                                             forecast_date = curr_reference_datetime,
+                                                             depth = 'target',
+                                                             ...))
 
 
-## GHG VARIABLES (TAKEN FROM DIFFERENT DEPTH)
-site_var_combinations_ghg_insitu <- expand.grid(var = c('CH4_umolL_sample',
-                                                        'CO2_umolL_sample'),
+  ### INSITU VARIABLES AT DEEPER DEPTH ##
+  print('Insitu model deeper...')
+  site_var_combinations_deeper_depth_fcr <- expand.grid(var = c('DO_mgL_mean',
+                                                                'Temp_C_mean',
+                                                                'CH4_umolL_sample'),
+                                                        site = 'fcre',
+                                                        depth = 9)
+  chronos_insitu_deeper_fcr <- purrr::pmap_dfr(site_var_combinations_deeper_depth_fcr,
+                                           .f = ~ generate_chronos_forecast(targets = targets_insitu,
+                                                                        h = 35,
+                                                                        model_name = team_name,
+                                                                        forecast_date = curr_reference_datetime,
+                                                                        #depth = 'target',
+                                                                        ...))
+
+  site_var_combinations_deeper_depth_bvr <- expand.grid(var = c('DO_mgL_mean',
+                                                                'Temp_C_mean',
+                                                                'CH4_umolL_sample'),
+                                                        site = 'bvre',
+                                                        depth = 8)
+
+  chronos_insitu_deeper_bvr <- purrr::pmap_dfr(site_var_combinations_deeper_depth_bvr,
+                                           .f = ~ generate_chronos_forecast(targets = targets_insitu,
+                                                                        h = 35,
+                                                                        model_name = team_name,
+                                                                        forecast_date = curr_reference_datetime,
+                                                                        #depth = 'target',
+                                                                        ...))
+
+
+  ## GHG VARIABLES (TAKEN FROM DIFFERENT DEPTH)
+  site_var_combinations_ghg_insitu <- expand.grid(var = c('CH4_umolL_sample',
+                                                          'CO2_umolL_sample'),
+                                                  site = c('fcre',
+                                                           'bvre'))
+
+  chronos_ghg_insitu <- purrr::pmap_dfr(site_var_combinations_ghg_insitu,
+                                    .f = ~ generate_chronos_forecast(targets = targets_insitu,
+                                                                 h = 35,
+                                                                 model_name = team_name,
+                                                                 forecast_date = curr_reference_datetime,
+                                                                 depth = c(0.1),
+                                                                 ...))
+
+  ## Productivity variables
+  site_var_combinations_productivity <- expand.grid(var = c(#'DeepChlorophyllMaximum_binary',
+    'TotalConc_ugL_sample',
+    'GreenAlgae_ugL_sample',
+    'Bluegreens_ugL_sample',
+    'BrownAlgae_ugL_sample',
+    'MixedAlgae_ugL_sample'),
+    # 'TotalConcCM_ugL_sample',
+    # 'GreenAlgaeCM_ugL_sample',
+    # 'BluegreensCM_ugL_sample',
+    # 'BrownAlgaeCM_ugL_sample',
+    # 'MixedAlgaeCM_ugL_sample',
+    # 'ChlorophyllMaximum_depth_sample',
+    # 'MOM_binary_sample',
+    # 'MOM_min_sample',
+    # 'MOM_max_sample'),
+    site = c('fcre',
+             'bvre'))
+
+  chronos_insitu_productivity <- purrr::pmap_dfr(site_var_combinations_productivity,
+                                             .f = ~ generate_chronos_forecast(targets = targets_insitu,
+                                                                          h = 35,
+                                                                          forecast_date = curr_reference_datetime,
+                                                                          depth = 'target',
+                                                                          ...))
+
+  ## CHLA maxiumum variables
+  cmax_vars <- c('DeepChlorophyllMaximum_binary_sample',
+                 'TotalConcCM_ugL_sample',
+                 'GreenAlgaeCM_ugL_sample',
+                 'BluegreensCM_ugL_sample',
+                 'BrownAlgaeCM_ugL_sample',
+                 'MixedAlgaeCM_ugL_sample',
+                 'ChlorophyllMaximum_depth_sample',
+                 'MOM_binary_sample',
+                 'MOM_min_sample',
+                 'MOM_max_sample')
+
+  targets_cmax <- targets_insitu |> dplyr::filter(variable %in% cmax_vars) |>
+    mutate(depth_m = NA)
+
+  site_var_combinations_chla_max <- expand.grid(var = cmax_vars,
                                                 site = c('fcre',
                                                          'bvre'))
 
-chronos_ghg_insitu <- purrr::pmap_dfr(site_var_combinations_ghg_insitu,
-                                  .f = ~ generate_chronos_forecast(targets = targets_insitu,
-                                                               h = 35,
-                                                               model_name = team_name,
-                                                               forecast_date = Sys.Date(),
-                                                               depth = c(0.1),
-                                                               ...))
-
-## Productivity variables
-site_var_combinations_productivity <- expand.grid(var = c(#'DeepChlorophyllMaximum_binary',
-  'TotalConc_ugL_sample',
-  'GreenAlgae_ugL_sample',
-  'Bluegreens_ugL_sample',
-  'BrownAlgae_ugL_sample',
-  'MixedAlgae_ugL_sample'),
-  # 'TotalConcCM_ugL_sample',
-  # 'GreenAlgaeCM_ugL_sample',
-  # 'BluegreensCM_ugL_sample',
-  # 'BrownAlgaeCM_ugL_sample',
-  # 'MixedAlgaeCM_ugL_sample',
-  # 'ChlorophyllMaximum_depth_sample',
-  # 'MOM_binary_sample',
-  # 'MOM_min_sample',
-  # 'MOM_max_sample'),
-  site = c('fcre',
-           'bvre'))
-
-chronos_insitu_productivity <- purrr::pmap_dfr(site_var_combinations_productivity,
-                                           .f = ~ generate_chronos_forecast(targets = targets_insitu,
-                                                                        h = 35,
-                                                                        forecast_date = Sys.Date(),
-                                                                        depth = 'target',
-                                                                        ...))
-
-## CHLA maxiumum variables
-cmax_vars <- c('DeepChlorophyllMaximum_binary_sample',
-               'TotalConcCM_ugL_sample',
-               'GreenAlgaeCM_ugL_sample',
-               'BluegreensCM_ugL_sample',
-               'BrownAlgaeCM_ugL_sample',
-               'MixedAlgaeCM_ugL_sample',
-               'ChlorophyllMaximum_depth_sample',
-               'MOM_binary_sample',
-               'MOM_min_sample',
-               'MOM_max_sample')
-
-targets_cmax <- targets_insitu |> dplyr::filter(variable %in% cmax_vars) |>
-  mutate(depth_m = NA)
-
-site_var_combinations_chla_max <- expand.grid(var = cmax_vars,
-                                              site = c('fcre',
-                                                       'bvre'))
-
-chronos_insitu_chla_max <- purrr::pmap_dfr(site_var_combinations_chla_max,
-                                       .f = ~ generate_chronos_forecast(targets = targets_cmax,
-                                                                    h = 35,
-                                                                    forecast_date = Sys.Date(),
-                                                                    depth = 'target',
-                                                                    ...))
-## CHEM variables
-site_var_combinations_chem <- expand.grid(var = c('TN_ugL_sample',
-                                                  'TP_ugL_sample',
-                                                  'SRP_ugL_sample',
-                                                  'NO3NO2_ugL_sample',
-                                                  'NH4_ugL_sample',
-                                                  'DOC_mgL_sample',
-                                                  'DRSI_mgL_sample',
-                                                  #'DIC_mgL_sample',
-                                                  'DC_mgL_sample',
-                                                  'DN_mgL_sample'),
-                                          site = c('fcre',
-                                                   'bvre'))
-
-targets_insitu <- targets_insitu |>
-  mutate(depth_m = ifelse(variable %in% c('TN_ugL_sample',
-                                          'TP_ugL_sample',
-                                          'SRP_ugL_sample',
-                                          'NO3NO2_ugL_sample',
-                                          'NH4_ugL_sample',
-                                          'DOC_mgL_sample',
-                                          'DC_mgL_sample',
-                                          'DN_mgL_sample') & site_id == 'bvre',
-                          1.5,
-                          depth_m))
-
-# targets_insitu <- targets_insitu |>
-#   mutate(depth_m = ifelse(variable %in% c('TN_ugL_sample',
-#                                           'TP_ugL_sample',
-#                                           'SRP_ugL_sample',
-#                                           'NO3NO2_ugL_sample',
-#                                           'NH4_ugL_sample',
-#                                           'DOC_mgL_sample') & site_id == 'bvre',
-#                           1.5,
-#                           depth_m))
-
-targets_insitu <- targets_insitu |>
-  mutate(depth_m = ifelse(variable == 'DRSI_mgL_sample' & depth_m %in% c(0.1, 4, 5),
-                          1.5,
-                          depth_m))
-
-chronos_insitu_chem <- purrr::pmap_dfr(site_var_combinations_chem,
-                                   .f = ~ generate_chronos_forecast(targets = targets_insitu,
-                                                                h = 35,
-                                                                forecast_date = Sys.Date(),
-                                                                depth = 'target',
-                                                                ...))
-
-## Physical variables
-site_var_combinations_physical <- expand.grid(var = c('ThermoclineDepth_m_mean',
-                                                      'SchmidtStability_Jm2_mean'),
-                                              site = c('fcre',
-                                                       'bvre'))
-
-chronos_insitu_physical <- purrr::pmap_dfr(site_var_combinations_physical,
-                                       .f = ~ generate_chronos_forecast(targets = targets_insitu,
-                                                                    h = 35,
-                                                                    forecast_date = Sys.Date(),
-                                                                    depth = 'target',
-                                                                    ...))
-
-# ## Generate Metals
-print('Metals model')
-
-site_var_combinations_metals <- expand.grid(var = c('TFe_mgL_sample',
-                                                    'SFe_mgL_sample',
-                                                    'TMn_mgL_sample',
-                                                    'SMn_mgL_sample'),
+  chronos_insitu_chla_max <- purrr::pmap_dfr(site_var_combinations_chla_max,
+                                         .f = ~ generate_chronos_forecast(targets = targets_cmax,
+                                                                      h = 35,
+                                                                      forecast_date = curr_reference_datetime,
+                                                                      depth = 'target',
+                                                                      ...))
+  ## CHEM variables
+  site_var_combinations_chem <- expand.grid(var = c('TN_ugL_sample',
+                                                    'TP_ugL_sample',
+                                                    'SRP_ugL_sample',
+                                                    'NO3NO2_ugL_sample',
+                                                    'NH4_ugL_sample',
+                                                    'DOC_mgL_sample',
+                                                    'DRSI_mgL_sample',
+                                                    #'DIC_mgL_sample',
+                                                    'DC_mgL_sample',
+                                                    'DN_mgL_sample'),
                                             site = c('fcre',
                                                      'bvre'))
 
-chronos_insitu_metals <- purrr::pmap_dfr(site_var_combinations_metals,
+  targets_insitu <- targets_insitu |>
+    mutate(depth_m = ifelse(variable %in% c('TN_ugL_sample',
+                                            'TP_ugL_sample',
+                                            'SRP_ugL_sample',
+                                            'NO3NO2_ugL_sample',
+                                            'NH4_ugL_sample',
+                                            'DOC_mgL_sample',
+                                            'DC_mgL_sample',
+                                            'DN_mgL_sample') & site_id == 'bvre',
+                            1.5,
+                            depth_m))
+
+  chronos_insitu_chem <- purrr::pmap_dfr(site_var_combinations_chem,
+                                             .f = ~ generate_chronos_forecast(targets = targets_insitu,
+                                                                              h = 35,
+                                                                              model_name = team_name,
+                                                                              forecast_date = curr_reference_datetime,
+                                                                              #depth = 'target',
+                                                                              ...))
+
+
+
+  ### CHEM VARIABLES AT DEEPER DEPTH ##
+  print('Chem model deeper...')
+  site_var_combinations_deeper_depth_fcr <- expand.grid(var = c('TN_ugL_sample',
+                                                                'TP_ugL_sample',
+                                                                'SRP_ugL_sample',
+                                                                'NO3NO2_ugL_sample',
+                                                                'NH4_ugL_sample',
+                                                                'DOC_mgL_sample',
+                                                                'DC_mgL_sample',
+                                                                'DN_mgL_sample'),
+                                                        site = 'fcre',
+                                                        depth = 9)
+  chronos_chem_deeper_fcr <- purrr::pmap_dfr(site_var_combinations_deeper_depth_fcr,
+                                               .f = ~ generate_chronos_forecast(targets = targets_insitu,
+                                                                                h = 35,
+                                                                                model_name = team_name,
+                                                                                forecast_date = curr_reference_datetime,
+                                                                                #depth = 'target',
+                                                                                ...))
+
+  site_var_combinations_deeper_depth_bvr <- expand.grid(var = c('TN_ugL_sample',
+                                                                'TP_ugL_sample',
+                                                                'SRP_ugL_sample',
+                                                                'NO3NO2_ugL_sample',
+                                                                'NH4_ugL_sample',
+                                                                'DOC_mgL_sample',
+                                                                'DC_mgL_sample',
+                                                                'DN_mgL_sample'),
+                                                        site = 'bvre',
+                                                        depth = 8)
+
+  chronos_chem_deeper_bvr <- purrr::pmap_dfr(site_var_combinations_deeper_depth_bvr,
+                                               .f = ~ generate_chronos_forecast(targets = targets_insitu,
+                                                                                h = 35,
+                                                                                model_name = team_name,
+                                                                                forecast_date = curr_reference_datetime,
+                                                                                #depth = 'target',
+                                                                                ...))
+
+  # targets_insitu <- targets_insitu |>
+  #   mutate(depth_m = ifelse(variable %in% c('TN_ugL_sample',
+  #                                           'TP_ugL_sample',
+  #                                           'SRP_ugL_sample',
+  #                                           'NO3NO2_ugL_sample',
+  #                                           'NH4_ugL_sample',
+  #                                           'DOC_mgL_sample') & site_id == 'bvre',
+  #                           1.5,
+  #                           depth_m))
+
+  targets_insitu <- targets_insitu |>
+    mutate(depth_m = ifelse(variable == 'DRSI_mgL_sample' & depth_m %in% c(0.1, 4, 5),
+                            1.5,
+                            depth_m))
+
+  chronos_insitu_chem <- purrr::pmap_dfr(site_var_combinations_chem,
                                      .f = ~ generate_chronos_forecast(targets = targets_insitu,
                                                                   h = 35,
-                                                                  forecast_date = Sys.Date(),
+                                                                  forecast_date = curr_reference_datetime,
                                                                   depth = 'target',
                                                                   ...))
-chronos_insitu_metals$duration <- 'P1D'
 
-# Flux variables
-# get all combinations
-print('Flux model')
+  ## Physical variables
+  site_var_combinations_physical <- expand.grid(var = c('ThermoclineDepth_m_mean',
+                                                        'SchmidtStability_Jm2_mean'),
+                                                site = c('fcre',
+                                                         'bvre'))
 
-site_var_combinations <- expand.grid(var = c('CO2flux_umolm2s_mean',
-                                             'CH4flux_umolm2s_mean'),
-                                     site = c('fcre'))
+  chronos_insitu_physical <- purrr::pmap_dfr(site_var_combinations_physical,
+                                         .f = ~ generate_chronos_forecast(targets = targets_insitu,
+                                                                      h = 35,
+                                                                      forecast_date = curr_reference_datetime,
+                                                                      depth = 'target',
+                                                                      ...))
 
-chronos_flux <- purrr::pmap_dfr(site_var_combinations,
-                            .f = ~ generate_chronos_forecast(targets = targets_insitu,
-                                                         h = 35,
-                                                         model_name = team_name,
-                                                         forecast_date = Sys.Date(),
-                                                         depth = 'target',
-                                                         ...))
+  # ## Generate Metals
+  print('Metals model')
 
-# Generate binary forecasts from continuous
-binary_site_var_comb <- data.frame(site = c('fcre', 'bvre'),
-                                   depth = c(1.6, 1.5))
+  site_var_combinations_metals <- expand.grid(var = c('TFe_mgL_sample',
+                                                      'SFe_mgL_sample',
+                                                      'TMn_mgL_sample',
+                                                      'SMn_mgL_sample'),
+                                              site = c('fcre',
+                                                       'bvre'))
 
-chronos_insitu_binary <- purrr::pmap_dfr(binary_site_var_comb,
-                                     .f = ~convert_continuous_binary(continuous_var = 'Chla_ugL_mean',
-                                                                     binary_var = 'Bloom_binary_mean',
-                                                                     forecast = chronos_insitu,
-                                                                     targets = targets_insitu,
-                                                                     threshold = 20,
-                                                                     ...))
+  chronos_insitu_metals <- purrr::pmap_dfr(site_var_combinations_metals,
+                                       .f = ~ generate_chronos_forecast(targets = targets_insitu,
+                                                                    h = 35,
+                                                                    forecast_date = curr_reference_datetime,
+                                                                    depth = 'target',
+                                                                    ...))
+  chronos_insitu_metals$duration <- 'P1D'
 
-# combine and submit
-combined_chronos <- bind_rows(chronos_inflow, chronos_insitu, chronos_met, chronos_flux, chronos_insitu_binary,
-                          chronos_ghg_insitu, chronos_insitu_productivity, chronos_insitu_chem, chronos_insitu_physical, chronos_insitu_metals,
-                          chronos_insitu_chla_max, chronos_insitu_deeper_fcr, chronos_insitu_deeper_bvr)
+  # Flux variables
+  # get all combinations
+  print('Flux model')
 
-# write forecast file
-file_date <- combined_chronos$reference_datetime[1]
+  site_var_combinations <- expand.grid(var = c('CO2flux_umolm2s_mean',
+                                               'CH4flux_umolm2s_mean'),
+                                       site = c('fcre'))
 
-forecast_file <- paste0(paste("daily", file_date, team_name, sep = "-"), ".csv.gz")
+  chronos_flux <- purrr::pmap_dfr(site_var_combinations,
+                              .f = ~ generate_chronos_forecast(targets = targets_insitu,
+                                                           h = 35,
+                                                           model_name = team_name,
+                                                           forecast_date = curr_reference_datetime,
+                                                           depth = 'target',
+                                                           ...))
 
-write_csv(combined_chronos, forecast_file)
+  # Generate binary forecasts from continuous
+  binary_site_var_comb <- data.frame(site = c('fcre', 'bvre'),
+                                     depth = c(1.6, 1.5))
 
-vera4castHelpers::submit(forecast_file = forecast_file,
-                         ask = FALSE,
-                         first_submission = FALSE)
+  chronos_insitu_binary <- purrr::pmap_dfr(binary_site_var_comb,
+                                       .f = ~convert_continuous_binary(continuous_var = 'Chla_ugL_mean',
+                                                                       binary_var = 'Bloom_binary_mean',
+                                                                       forecast = chronos_insitu,
+                                                                       targets = targets_insitu,
+                                                                       threshold = 20,
+                                                                       ...))
 
-unlink(forecast_file)
+  # combine and submit
+  combined_chronos <- bind_rows(chronos_inflow, chronos_insitu, chronos_met, chronos_flux, chronos_insitu_binary,
+                            chronos_ghg_insitu, chronos_insitu_productivity, chronos_insitu_chem, chronos_insitu_physical, chronos_insitu_metals,
+                            chronos_insitu_chla_max, chronos_insitu_deeper_fcr, chronos_insitu_deeper_bvr, chronos_chem_deeper_bvr, chronos_chem_deeper_fcr)
+
+  # write forecast file
+  file_date <- combined_chronos$reference_datetime[1]
+
+  forecast_file <- paste0(paste("daily", file_date, team_name, sep = "-"), ".csv.gz")
+
+  write_csv(combined_chronos, forecast_file)
+
+  vera4castHelpers::submit(forecast_file = forecast_file,
+                           ask = FALSE,
+                           first_submission = FALSE)
+
+  unlink(forecast_file)
+
+} ## end date wrapper

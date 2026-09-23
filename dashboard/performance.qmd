@@ -231,7 +231,7 @@ df |>
 }
 ```
 :::
-Click [here](performance_variables.qmd) to view the baseline forecasts for the complete list of variables  
+Click [here](performance_variables.qmd) to view the baseline forecasts with uncertainty for the complete list of variables  
 
 
 ## Forecast analysis

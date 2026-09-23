@@ -4,7 +4,7 @@ generate_prophet_forecast <- function(targets,
                                       forecast_date = Sys.Date(),
                                       h,
                                       depth = 'target',
-                                      model_name = 'prophet',
+                                      model_name = 'vera_prophet',
                                       ...) {
 
   if (depth == 'target') {
@@ -34,15 +34,15 @@ generate_prophet_forecast <- function(targets,
   # Fit the prophet model
   m <- prophet::prophet(prophet_df, daily.seasonality = "auto")
 
-  # Create a 35-day forecast horizon
-  future <- prophet::make_future_dataframe(m, periods = h)
+  # Build the horizon explicitly from forecast_date so predictions start there
+  # (and extend h days) regardless of how outdated the targets are
+  future <- tibble(ds = seq(as_date(forecast_date), as_date(forecast_date) + h - 1, by = "day"))
   forecast_raw <- predict(m, future)
 
   # Format output to vera4cast standard
   model_depth <- unique(target_ts$depth_m)
 
   prophet_forecast <- forecast_raw |>
-    filter(as_date(ds) >= forecast_date) |>
     mutate(
       mu = yhat,
       sigma = (yhat_upper - yhat_lower) / (2 * qnorm(0.9))  # convert 80% CI to SD
