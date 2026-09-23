@@ -16,7 +16,7 @@ name: scoring
 jobs:
   docker:
     # workflow_dispatch has no workflow_run payload; allow manual runs too
-    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    #if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     #runs-on: self-hosted
     env:
