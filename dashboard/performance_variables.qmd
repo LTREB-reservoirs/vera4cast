@@ -170,7 +170,7 @@ df |>
 }
 ```
 
-### MOM binary
+### MOM presence
 
 ```{r}
 if("MOM_binary_sample" %in% unique(df$variable)){
@@ -562,16 +562,18 @@ df |>
 }
 ```
 
+
+<!-- 
 ### Dissolved Silica
 
 ```{r}
-if("DRSI_mgL_sample" %in% unique(df$variable)){
-df |> 
-  filter(variable == c("DRSI_mgL_sample"), 
-         site_id != 'tubr')  |> 
-    mutate(observation = as.numeric(NA)) |> 
-  forecast_plots(ylabel = 'DRSi (mgL)')
-}
+# if("DRSI_mgL_sample" %in% unique(df$variable)){
+# df |> 
+#   filter(variable == c("DRSI_mgL_sample"), 
+#          site_id != 'tubr')  |> 
+#     mutate(observation = as.numeric(NA)) |> 
+#   forecast_plots(ylabel = 'DRSi (mgL)')
+# }
 ```
 
 ### DIC
@@ -610,5 +612,6 @@ df |>
 }
 ```
 
+-->
 
 :::
