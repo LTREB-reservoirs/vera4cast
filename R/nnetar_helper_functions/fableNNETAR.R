@@ -20,7 +20,7 @@ fableNNETAR <- function(data, target_var, reference_datetime, forecast_horizon, 
     as_tsibble(key = site_id, index = datetime) |>
     tsibble::fill_gaps(.full = TRUE) |>
     group_by(site_id) |>
-    mutate(observation = na.locf(observation, fromLast = FALSE, na.rm = FALSE)) |>
+    mutate(observation = na_locf(observation, na_remaining = "mean")) |>
     ungroup()
 
   if (nrow(df) == 0){
@@ -54,7 +54,8 @@ fableNNETAR <- function(data, target_var, reference_datetime, forecast_horizon, 
   sd_resid <- sd(df.out$prediction - df.out$observation, na.rm = T)
 
   #create "new data" dataframe
-  fc_dates <- seq.Date(from = reference_datetime, to = reference_datetime + forecast_horizon, by = "day")
+  forecast_end_date <- as.Date(reference_datetime) + forecast_horizon
+  fc_dates <- seq.Date(from = as.Date(reference_datetime), to = forecast_end_date, by = "day")
   new_data <- tibble(datetime = fc_dates,
                     #datetime = rep(fc_dates,times = 2),
                      site_id = rep(unique(df.out$site_id), each = length(fc_dates)),

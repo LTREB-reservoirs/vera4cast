@@ -206,7 +206,11 @@ for (i in rerun_dates){
                                             'SRP_ugL_sample',
                                             'NO3NO2_ugL_sample',
                                             'NH4_ugL_sample',
-                                            'DOC_mgL_sample') & site_id == 'bvre',
+                                            'DOC_mgL_sample',
+                                            'DRSI_mgL_sample',
+                                            #'DIC_mgL_samlpe',
+                                            'DC_mgL_sample',
+                                            'DN_mgL_sample') & site_id == 'bvre' & depth_m %in% c(0.1,1.6),
                             1.5,
                             depth_m))
 
@@ -316,7 +320,7 @@ for (i in rerun_dates){
   # combine and submit
   combined_historic_mean <- bind_rows(historic_mean_inflow, historic_mean_insitu, historic_mean_met, historic_mean_insitu_binary, historic_flux,
                                       historic_insitu_productivity, historic_mean_ghg_insitu, historic_insitu_chem, historic_insitu_physical, historic_insitu_metals,
-                                      climatology_insitu_chla_max, historic_mean_insitu_deeper_fcr, historic_mean_insitu_deeper_bvr, site_var_combinations_deeper_depth_fcr, site_var_combinations_deeper_depth_bvr)
+                                      climatology_insitu_chla_max, historic_mean_insitu_deeper_fcr, historic_mean_insitu_deeper_bvr, historic_mean_chem_deeper_bvr, historic_mean_chem_deeper_fcr)
 
   # write forecast file
   file_date <- combined_historic_mean$reference_datetime[1]
@@ -325,19 +329,11 @@ for (i in rerun_dates){
 
   write_csv(combined_historic_mean, forecast_file)
 
-  combined_historic_mean %>%
-    filter(family == 'normal') |>
-    pivot_wider(names_from = parameter, values_from = prediction) |>
-    ggplot(aes(x = datetime, y = mu)) +
-    geom_line() +
-    geom_ribbon(aes(ymax = mu+sigma, ymin = mu-sigma), alpha = 0.3, fill = 'blue') +
-    facet_grid(variable~site_id, scales = 'free')
-
-  combined_historic_mean %>%
-    filter(family == 'bernoulli') |>
-    ggplot(aes(x = datetime, y = prediction, colour = as_factor(depth_m))) +
-    geom_line() +
-    facet_grid(variable~site_id, scales = 'free')
+  # combined_historic_mean %>%
+  #   filter(family == 'bernoulli') |>
+  #   ggplot(aes(x = datetime, y = prediction, colour = as_factor(depth_m))) +
+  #   geom_line() +
+  #   facet_grid(variable~site_id, scales = 'free')
 
 
   vera4castHelpers::submit(forecast_file = forecast_file,
