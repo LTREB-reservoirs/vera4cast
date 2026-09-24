@@ -74,7 +74,7 @@ for (i in rerun_dates){
         dat_NNETAR <- format_data_NNETAR(targets = targets,
                                          target_var = t,
                                          end_date = end_date,
-                                         depth_select = c(0.1, 1.6))
+                                         depth_select = c(0.1, 1.6, 1.5))
         dat_NNETAR <- dat_NNETAR |>
           filter(site_id == site)
 
@@ -83,7 +83,7 @@ for (i in rerun_dates){
                             target_var = t,
                             reference_datetime = reference_datetime,
                             forecast_horizon = forecast_horizon,
-                            depth_select = c(0.1, 1.6))
+                            depth_select = c(0.1, 1.6, 1.5))
 
       } else{
         #Format data

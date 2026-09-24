@@ -239,7 +239,7 @@ Click [here](performance_variables.qmd) to view the baseline forecasts with unce
 ```{r scores}
 rm(df)
 
-df <- duckdbfs::open_dataset(paste0("s3://",config$scores_bucket,
+df_scores <- duckdbfs::open_dataset(paste0("s3://",config$scores_bucket,
                                                      "/bundled-parquet/"),
                                               s3_endpoint = "amnh1.osn.mghpcc.org",
                                               anonymous = TRUE) |> 
@@ -252,6 +252,30 @@ df <- duckdbfs::open_dataset(paste0("s3://",config$scores_bucket,
   mutate(reference_datetime = lubridate::as_datetime(reference_datetime),
          datetime = lubridate::as_datetime(datetime)) |> 
   collect()
+
+
+model_active_cutoff_date <- Sys.Date() - lubridate::years(1)
+
+## find models with at least one submission in the last year
+active_models_time_constraint <- df |> 
+  filter(reference_datetime > model_active_cutoff_date) |> 
+  group_by(model_id) |> 
+  summarise(submit_count = n_distinct(reference_datetime)) |> 
+  ungroup() |> 
+  pull(model_id)
+
+## find models with at least 10 submissions
+active_model_submit_constraint <- df |> 
+  group_by(model_id) |> 
+  summarise(submit_count = n_distinct(reference_datetime)) |> 
+  ungroup() |> 
+  filter(submit_count >= 10) |> 
+  pull(model_id)
+
+## filter scores to show only "active" models
+df <- df_scores |> 
+  filter(model_id %in% active_models_time_constraint | 
+           model_id %in% active_model_submit_constraint)
 
 ref <- Sys.Date() - lubridate::days(30)
 
