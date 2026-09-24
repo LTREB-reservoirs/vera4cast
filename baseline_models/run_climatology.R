@@ -69,9 +69,9 @@ for (i in rerun_dates){
                                                'Temp_C_mean',
                                                'fDOM_QSU_mean',
                                                'SpCond_uScm_mean',
-                                               'Turbidity_FNU_mean'),
-                                               #'CH4_umolL_sample',
-                                               #'CO2_umolL_sample'),
+                                               'Turbidity_FNU_mean',
+                                               'CH4_umolL_sample',
+                                               'CO2_umolL_sample'),
                                        site = c('fcre',
                                                 'bvre'))
 
