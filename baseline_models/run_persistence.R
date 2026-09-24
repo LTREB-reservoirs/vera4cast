@@ -239,6 +239,20 @@ for (i in rerun_dates){
                                                 site = c('fcre',
                                                          'bvre'))
 
+  targets_insitu <- targets_insitu |>
+    mutate(depth_m = ifelse(variable %in% c('TN_ugL_sample',
+                                            'TP_ugL_sample',
+                                            'SRP_ugL_sample',
+                                            'NO3NO2_ugL_sample',
+                                            'NH4_ugL_sample',
+                                            'DOC_mgL_sample',
+                                            'DRSI_mgL_sample',
+                                            #'DIC_mgL_samlpe',
+                                            'DC_mgL_sample',
+                                            'DN_mgL_sample') & site_id == 'bvre' & depth_m %in% c(0.1,1.6),
+                            1.5,
+                            depth_m))
+
   persistenceRW_insitu_chem <- purrr::pmap_dfr(site_var_combinations_chem,
                                                    .f = ~ generate_baseline_persistenceRW(targets = targets_insitu,
                                                                                           h = 35,

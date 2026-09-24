@@ -229,8 +229,10 @@ for (i in rerun_dates){
                                             'NO3NO2_ugL_sample',
                                             'NH4_ugL_sample',
                                             'DOC_mgL_sample',
+                                            'DRSI_mgL_sample',
+                                            #'DIC_mgL_samlpe',
                                             'DC_mgL_sample',
-                                            'DN_mgL_sample') & site_id == 'bvre',
+                                            'DN_mgL_sample') & site_id == 'bvre' & depth_m %in% c(0.1,1.6),
                             1.5,
                             depth_m))
 
