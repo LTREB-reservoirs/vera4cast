@@ -94,7 +94,7 @@ for (i in rerun_dates){
                                                         depth = 9)
 
   historic_mean_insitu_deeper_fcr <- purrr::pmap_dfr(site_var_combinations_deeper_depth_fcr,
-                                                   .f = ~ generate_baseline_mean(targets = targets_insitu,
+                                                   .f = ~ generate_baseline_monthly_mean(targets = targets_insitu,
                                                                                         h = 35,
                                                                                         model_id = team_name,
                                                                                         forecast_date = curr_reference_datetime,
@@ -108,7 +108,7 @@ for (i in rerun_dates){
                                                         depth = 8)
 
   historic_mean_insitu_deeper_bvr <- purrr::pmap_dfr(site_var_combinations_deeper_depth_bvr,
-                                                   .f = ~ generate_baseline_mean(targets = targets_insitu,
+                                                   .f = ~ generate_baseline_monthly_mean(targets = targets_insitu,
                                                                                         h = 35,
                                                                                         model_id = team_name,
                                                                                         forecast_date = curr_reference_datetime,
@@ -228,7 +228,7 @@ for (i in rerun_dates){
                                                         depth = 9)
 
   historic_mean_chem_deeper_fcr <- purrr::pmap_dfr(site_var_combinations_deeper_depth_fcr,
-                                                     .f = ~ generate_baseline_mean(targets = targets_insitu,
+                                                     .f = ~ generate_baseline_monthly_mean(targets = targets_insitu,
                                                                                    h = 35,
                                                                                    model_id = team_name,
                                                                                    forecast_date = curr_reference_datetime,
@@ -245,7 +245,7 @@ for (i in rerun_dates){
                                                         depth = 8)
 
   historic_mean_chem_deeper_bvr <- purrr::pmap_dfr(site_var_combinations_deeper_depth_bvr,
-                                                     .f = ~ generate_baseline_mean(targets = targets_insitu,
+                                                     .f = ~ generate_baseline_monthly_mean(targets = targets_insitu,
                                                                                    h = 35,
                                                                                    model_id = team_name,
                                                                                    forecast_date = curr_reference_datetime,
