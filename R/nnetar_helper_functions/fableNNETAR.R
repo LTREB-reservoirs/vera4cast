@@ -7,6 +7,7 @@
 library(fable)
 library(feasts)
 library(urca)
+library(imputeTS)
 
 #'Function to fit day of year model for chla
 #'@param data data frame with columns Date (yyyy-mm-dd) and
@@ -20,7 +21,7 @@ fableNNETAR <- function(data, target_var, reference_datetime, forecast_horizon, 
     as_tsibble(key = site_id, index = datetime) |>
     tsibble::fill_gaps(.full = TRUE) |>
     group_by(site_id) |>
-    mutate(observation = na_locf(observation, na_remaining = "mean")) |>
+    mutate(observation = imputeTS::na_locf(observation, na_remaining = "mean")) |>
     ungroup()
 
   if (nrow(df) == 0){
