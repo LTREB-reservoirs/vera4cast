@@ -42,11 +42,18 @@
     "text": "Most recent baseline forecasts for all variables\nForecasts submitted on 2026-09-23"
   },
   {
+    "objectID": "performance_variables.html#surface-depth-model-forecasts",
+    "href": "performance_variables.html#surface-depth-model-forecasts",
+    "title": "All VERA Variables",
+    "section": "Surface Depth Model Forecasts",
+    "text": "Surface Depth Model Forecasts\nForecasts shown at each reservoir’s respective focal depth (found here)"
+  },
+  {
     "objectID": "performance_variables.html#physical-variables-surface",
     "href": "performance_variables.html#physical-variables-surface",
     "title": "All VERA Variables",
     "section": "Physical Variables (surface)",
-    "text": "Physical Variables (surface)\nForecasts shown at each reservoir’s respective focal depth (found here)\n\nWater temperatureDissolved oxygenDissolved oxygen saturationSecchi depthInflow dischargeConductivityTurbidityMOM presenceThermoclineDepth_m_meanSchmidtStability_Jm2_mean"
+    "text": "Physical Variables (surface)\n\nWater temperatureDissolved oxygenDissolved oxygen saturationSecchi depthInflow dischargeConductivityTurbidityMOM presenceThermoclineDepth_m_meanSchmidtStability_Jm2_mean"
   },
   {
     "objectID": "performance_variables.html#biological-variables",
@@ -63,11 +70,18 @@
     "text": "Chemical Variables\n\nfDOMDissolved methaneMethane FluxCO2 FluxTotal NTotal PNH4NO3NO2SRPDOCDissolved CO2"
   },
   {
-    "objectID": "performance_variables.html#physical-variables-bottom",
-    "href": "performance_variables.html#physical-variables-bottom",
+    "objectID": "performance_variables.html#bottom-depth-model-forecasts",
+    "href": "performance_variables.html#bottom-depth-model-forecasts",
     "title": "All VERA Variables",
-    "section": "Physical Variables (bottom)",
-    "text": "Physical Variables (bottom)\nForecasts shown at one meter off the bottom for each reservoir\n\nWater temperatureDissolved oxygenDissolved oxygen saturation\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n[1] \"No scored forecasts are available for this period\""
+    "section": "Bottom Depth Model Forecasts",
+    "text": "Bottom Depth Model Forecasts\nForecasts shown at one meter off the bottom for each reservoir"
+  },
+  {
+    "objectID": "performance_variables.html#physical-variables",
+    "href": "performance_variables.html#physical-variables",
+    "title": "All VERA Variables",
+    "section": "Physical Variables",
+    "text": "Physical Variables\n\nWater temperatureDissolved oxygenDissolved oxygen saturation\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n[1] \"No scored forecasts are available for this period\""
   },
   {
     "objectID": "performance_variables.html#chemical-variables-1",
