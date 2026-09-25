@@ -87,8 +87,11 @@ reference_date <- lubridate::as_date(recent_forecast_submission_date)
 
 Forecasts submitted on `r reference_date`
 
-## Physical Variables (surface)
+## Surface Depth Model Forecasts 
 Forecasts shown at each reservoir's respective focal depth (found [here](https://www.ltreb-reservoirs.org/vera4cast/targets.html#target-variable-list))
+
+
+## Physical Variables (surface)
 
 ::: panel-tabset
 ### Water temperature
@@ -636,8 +639,11 @@ df_deep <- duckdbfs::open_dataset(paste0("s3://",config$forecasts_bucket,
   collect()
 ```
 
-## Physical Variables (bottom)
+## Bottom Depth Model Forecasts 
 Forecasts shown at one meter off the bottom for each reservoir 
+
+
+## Physical Variables
 
 ::: panel-tabset
 ### Water temperature
