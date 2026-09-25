@@ -51,8 +51,11 @@ reference_datetimes <-
 #   dplyr::summarize(reference_datetime_max = max(reference_datetime)) |>  
 #   dplyr::collect()
 
-reference_datetimes <- reference_datetimes |> 
-  mutate(reference_datetime_max = reference_datetime_max - lubridate::days(1))
+## just use minimum date from full list of max_reference_datetimes
+recent_forecast_submission_date <- min(reference_datetimes$reference_datetime_max)
+
+# reference_datetimes <- reference_datetimes |> 
+#   mutate(reference_datetime_max = reference_datetime_max - lubridate::days(1))
 
 cutoff <- as.character(Sys.Date() - 30)
 
@@ -65,8 +68,9 @@ df <- duckdbfs::open_dataset(paste0("s3://",config$forecasts_bucket,
                                               anonymous = TRUE) |>
   #arrow::open_dataset(s3) |> 
   filter(str_detect(model_id, "example", negate = TRUE)) |>
-  left_join(reference_datetimes, by = "variable", copy = TRUE) |> 
-  filter(reference_datetime == reference_datetime_max) |>
+  #left_join(reference_datetimes, by = "variable", copy = TRUE) |> 
+  #filter(reference_datetime == reference_datetime_max) |>
+  filter(reference_datetime == recent_forecast_submission_date) |> 
   left_join(sites, by = "site_id", copy = TRUE) |> 
   filter(site_id %in% sites$site_id) |> 
   filter((depth_m == 1.6 & site_id == "fcre") | (depth_m == 1.5 & site_id == "bvre") | is.na(depth_m),
@@ -75,8 +79,8 @@ df <- duckdbfs::open_dataset(paste0("s3://",config$forecasts_bucket,
   # filter((depth_m == 1.6 & site_id == "fcre") | (depth_m == 1.5 & site_id == "bvre") | is.na(depth_m),
   #        lubridate::as_date(datetime) > lubridate::as_date(reference_datetime)) 
 
-reference_date <- max(lubridate::as_date(df$reference_datetime))
-#reference_date <- max(lubridate::as_date(df$reference_datetime) - lubridate::days(1))
+#reference_date <- max(lubridate::as_date(df$reference_datetime))
+reference_date <- lubridate::as_date(recent_forecast_submission_date)
 ```
 
 Forecasts submitted on `r reference_date`

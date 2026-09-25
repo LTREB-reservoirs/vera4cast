@@ -55,6 +55,9 @@ cutoff <- as.character(Sys.Date() - 30)
 
 sites <- readr::read_csv(config$catalog_config$site_metadata_url, show_col_types = FALSE)
 
+## just use minimum date from full list of max_reference_datetimes
+recent_forecast_submission_date <- min(reference_datetimes$reference_datetime_max)
+
 df <- duckdbfs::open_dataset(paste0("s3://",config$forecasts_bucket,
                                                      "/bundled-summaries/project_id=",
                                                      config$project_id, "/duration=P1D"),
@@ -64,8 +67,9 @@ df <- duckdbfs::open_dataset(paste0("s3://",config$forecasts_bucket,
   # arrow::open_dataset(arrow::s3_bucket(config$summaries_bucket, endpoint_override = config$endpoint, anonymous = TRUE)) |> 
   # dplyr::filter(duration == 'P1D') |>
   filter(str_detect(model_id, "example", negate = TRUE)) |>
-  left_join(reference_datetimes, by = "variable", copy = TRUE) |> 
-  filter(reference_datetime == reference_datetime_max) |>
+  #left_join(reference_datetimes, by = "variable", copy = TRUE) |> 
+  #filter(reference_datetime == reference_datetime_max) |>
+  filter(reference_datetime == recent_forecast_submission_date) |> 
   left_join(sites, by = "site_id", copy = TRUE) |> 
   filter(site_id %in% sites$site_id) |> 
   # mutate(reference_datetime = lubridate::as_datetime(reference_datetime),
@@ -78,12 +82,13 @@ df <- duckdbfs::open_dataset(paste0("s3://",config$forecasts_bucket,
   collect()
 
 #reference_date <- max(lubridate::as_date(df$reference_datetime))
-reference_date <- max(lubridate::as_date(df$reference_datetime) - lubridate::days(1))
+reference_date <- lubridate::as_date(recent_forecast_submission_date)
 ```
 
 Forecasts submitted on `r reference_date`
 
-## Physical Variables 
+## Physical Variables (surface)
+Forecasts shown at each reservoir's respective focal depth (found [here](https://www.ltreb-reservoirs.org/vera4cast/targets.html#target-variable-list))
 
 ::: panel-tabset
 ### Water temperature
@@ -561,7 +566,7 @@ df |>
   forecast_plots(ylabel = 'CO2 (umolL)')
 }
 ```
-
+:::
 
 <!-- 
 ### Dissolved Silica
@@ -614,4 +619,173 @@ df |>
 
 -->
 
+```{r}
+df_deep <- duckdbfs::open_dataset(paste0("s3://",config$forecasts_bucket,
+                                                     "/bundled-summaries/project_id=",
+                                                     config$project_id, "/duration=P1D"),
+                                              s3_endpoint = "amnh1.osn.mghpcc.org",
+                                              anonymous = TRUE) |> 
+  filter(str_detect(model_id, "example", negate = TRUE)) |>
+  #left_join(reference_datetimes, by = "variable", copy = TRUE) |> 
+  #filter(reference_datetime == reference_datetime_max) |>
+  filter(reference_datetime == recent_forecast_submission_date) |> 
+  left_join(sites, by = "site_id", copy = TRUE) |> 
+  filter(site_id %in% sites$site_id) |>
+  filter((depth_m == 9 & site_id == "fcre") | (depth_m == 8 & site_id == "bvre"), 
+         datetime > reference_datetime) |> 
+  collect()
+```
+
+## Physical Variables (bottom)
+Forecasts shown at one meter off the bottom for each reservoir 
+
+::: panel-tabset
+### Water temperature
+
+```{r}
+df_deep |> 
+  filter(variable == c("Temp_C_mean"), 
+         site_id != 'tubr')  |> 
+    mutate(observation = as.numeric(NA)) |> 
+  forecast_plots(ylabel = 'Temp (degC)')
+```
+
+### Dissolved oxygen
+
+```{r}
+if("DO_mgL_mean" %in% unique(df$variable)){
+df_deep |> 
+  filter(variable == c("DO_mgL_mean"),
+         site_id != 'tubr') |> 
+    mutate(observation = as.numeric(NA)) |> 
+  forecast_plots(ylabel = 'DO (mgL)')
+}
+```
+
+### Dissolved oxygen saturation
+
+```{r}
+if("DOsat_percent_mean" %in% unique(df$variable)){
+df_deep |> 
+  filter(variable == c("DOsat_percent_mean"),
+         site_id != 'tubr') |> 
+    mutate(observation = as.numeric(NA)) |> 
+  forecast_plots(ylabel = 'DO_sat (%)')
+}
+```
 :::
+
+
+## Chemical Variables
+::: panel-tabset
+
+### fDOM
+
+```{r}
+
+if("fDOM_QSU_mean" %in% unique(df$variable)){
+
+df_deep |> 
+  filter(variable == c("fDOM_QSU_mean"))  |> 
+    mutate(observation = as.numeric(NA)) |> 
+  forecast_plots(ylabel = 'fDOM (QSU)')
+}
+```
+
+### Dissolved methane
+
+```{r}
+if("CH4_umolL_sample" %in% unique(df$variable)){
+df_deep |> 
+  filter(variable == c("CH4_umolL_sample"),
+         site_id != 'tubr')  |> 
+    mutate(observation = as.numeric(NA)) |> 
+  forecast_plots(ylabel = 'CH4 (umolL)')
+}
+```
+
+### Total N
+
+```{r}
+if("TN_ugL_sample" %in% unique(df$variable)){
+df_deep |> 
+  filter(variable == c("TN_ugL_sample"), 
+         site_id != 'tubr')  |> 
+    mutate(observation = as.numeric(NA)) |> 
+  forecast_plots(ylabel = 'Nitrogen (ugL)')
+}
+```
+
+### Total P
+
+```{r}
+if("TP_ugL_sample" %in% unique(df$variable)){
+df_deep |> 
+  filter(variable == c("TP_ugL_sample"), 
+         site_id != 'tubr')  |> 
+    mutate(observation = as.numeric(NA)) |> 
+  forecast_plots(ylabel = 'Phosphorus (ugL)')
+}
+```
+
+### NH4
+
+```{r}
+if("NH4_ugL_sample" %in% unique(df$variable)){
+df_deep |> 
+  filter(variable == c("NH4_ugL_sample"), 
+         site_id != 'tubr')  |> 
+    mutate(observation = as.numeric(NA)) |> 
+  forecast_plots(ylabel = 'Nitrogen (ugL)')
+}
+```
+
+### NO3NO2
+
+```{r}
+if("NO3NO2_ugL_sample" %in% unique(df$variable)){
+df_deep |> 
+  filter(variable == c("NO3NO2_ugL_sample"), 
+         site_id != 'tubr')  |> 
+    mutate(observation = as.numeric(NA)) |> 
+  forecast_plots(ylabel = 'Nitrogen (ugL)')
+}
+```
+
+### SRP
+
+```{r}
+if("SRP_ugL_sample" %in% unique(df$variable)){
+df_deep |> 
+  filter(variable == c("SRP_ugL_sample"), 
+         site_id != 'tubr')  |> 
+    mutate(observation = as.numeric(NA)) |> 
+  forecast_plots(ylabel = 'SRP (ugL)')
+}
+```
+
+### DOC
+
+```{r}
+if("DOC_mgL_sample" %in% unique(df$variable)){
+df_deep |> 
+  filter(variable == c("DOC_mgL_sample"), 
+         site_id != 'tubr')  |> 
+    mutate(observation = as.numeric(NA)) |> 
+  forecast_plots(ylabel = 'DOC (ugL)')
+}
+```
+
+### Dissolved CO2
+
+```{r}
+if("CO2_umolL_sample" %in% unique(df$variable)){
+df_deep |> 
+  filter(variable == c("CO2_umolL_sample"), 
+         site_id != 'tubr')  |> 
+    mutate(observation = as.numeric(NA)) |> 
+  forecast_plots(ylabel = 'CO2 (umolL)')
+}
+```
+:::
+
