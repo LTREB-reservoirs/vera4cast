@@ -257,7 +257,7 @@ df_scores <- duckdbfs::open_dataset(paste0("s3://",config$scores_bucket,
 model_active_cutoff_date <- Sys.Date() - lubridate::years(1)
 
 ## find models with at least one submission in the last year
-active_models_time_constraint <- df |> 
+active_models_time_constraint <- df_scores |> 
   filter(reference_datetime > model_active_cutoff_date) |> 
   group_by(model_id) |> 
   summarise(submit_count = n_distinct(reference_datetime)) |> 
@@ -265,7 +265,7 @@ active_models_time_constraint <- df |>
   pull(model_id)
 
 ## find models with at least 10 submissions
-active_model_submit_constraint <- df |> 
+active_model_submit_constraint <- df_scores |> 
   group_by(model_id) |> 
   summarise(submit_count = n_distinct(reference_datetime)) |> 
   ungroup() |> 
@@ -274,7 +274,7 @@ active_model_submit_constraint <- df |>
 
 ## filter scores to show only "active" models
 df <- df_scores |> 
-  filter(model_id %in% active_models_time_constraint | 
+  filter(model_id %in% active_models_time_constraint & 
            model_id %in% active_model_submit_constraint)
 
 ref <- Sys.Date() - lubridate::days(30)
