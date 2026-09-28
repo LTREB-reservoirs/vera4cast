@@ -40,6 +40,18 @@ this_year$exists <- ifelse(as.Date(this_year$date) %in% as.Date(avail_dates), T,
 
 rerun_dates <- this_year |> filter(exists == FALSE) |> pull(date)
 
+## check submission bucket for forecasts already waiting to be processed ##
+s3_submission <- arrow::s3_bucket(bucket = glue::glue("vera4cast-submissions/"),
+                                  endpoint_override = "submit.ltreb-reservoirs.org",
+                                  anonymous = TRUE)
+
+submitted_files <-  str_subset(s3_submission$ls(), model_name)#[!is.na(str_extract(s3_submission$ls(), model_name))]
+
+submitted_dates <-  ymd(str_extract(submitted_files, "\\d{4}-\\d{2}-\\d{2}"))
+
+# remove any dates that have already been submitted
+rerun_dates <- setdiff(rerun_dates, submitted_dates)
+
 for (i in rerun_dates){
 
   print(i)

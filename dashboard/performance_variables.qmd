@@ -55,8 +55,11 @@ cutoff <- as.character(Sys.Date() - 30)
 
 sites <- readr::read_csv(config$catalog_config$site_metadata_url, show_col_types = FALSE)
 
-## just use minimum date from full list of max_reference_datetimes
-recent_forecast_submission_date <- min(reference_datetimes$reference_datetime_max)
+## use the most common date from full list of max_reference_datetimes
+recent_forecast_submission_date <- reference_datetimes |> 
+  dplyr::count(reference_datetime_max, sort = TRUE) |> 
+  dplyr::slice(1) |> 
+  dplyr::pull(reference_datetime_max)
 
 df <- duckdbfs::open_dataset(paste0("s3://",config$forecasts_bucket,
                                                      "/bundled-summaries/project_id=",
@@ -91,7 +94,7 @@ Forecasts submitted on `r reference_date`
 Forecasts shown at each reservoir's respective focal depth (found [here](https://www.ltreb-reservoirs.org/vera4cast/targets.html#target-variable-list))
 
 
-## Physical Variables (surface)
+## Physical Variables
 
 ::: panel-tabset
 ### Water temperature
