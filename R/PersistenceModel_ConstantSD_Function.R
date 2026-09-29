@@ -55,14 +55,16 @@ generate_baseline_persistence_constant_sd <- function(targets,
   } else {
 
     persistence_model <- targets_use |>
-      fabletools::model(arima = fable::ARIMA(observation ~ pdq(0,0,0))) ## d=0 means no differencing (constant sd)
+      fabletools::model(RW = fable::RW(observation))
 
-    # RW_model <- targets_use %>%
-    #   fabletools::model(RW = fable::RW(observation))
-
+    # constant sd = sd of one-step-ahead residuals from the fitted RW model, applied across the whole horizon
+    constant_sigma <- persistence_model |>
+      fabletools::augment() |>
+      dplyr::pull(.resid) |>
+      sd(na.rm = TRUE)
 
     if (bootstrap == T) { ##  THIS MAY NOT BE APPLICABLE FOR CONSTANT SD MODEL
-      forecast <- RW_model %>%
+      forecast <- persistence_model %>%
         fabletools::generate(h = as.numeric(forecast_starts$h),
                              bootstrap = T,
                              times = boot_number) |>
@@ -85,10 +87,11 @@ generate_baseline_persistence_constant_sd <- function(targets,
       forecast <- persistence_model |> fabletools::forecast(h = as.numeric(forecast_starts$h))
       #forecast <- RW_model %>% fabletools::forecast(h = as.numeric(forecast_starts$h))
 
-      # extract parameters
-      parameters <- distributional::parameters(forecast$observation)
+      # extract parameters, overriding sigma so uncertainty stays constant across the horizon
+      parameters <- distributional::parameters(forecast$observation) |>
+        mutate(sigma = constant_sigma)
 
-      # make right format
+      # make right format)
       forecast <- bind_cols(forecast, parameters) |>
         pivot_longer(mu:sigma,
                      names_to = 'parameter',
