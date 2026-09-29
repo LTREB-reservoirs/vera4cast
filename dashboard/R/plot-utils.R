@@ -47,7 +47,7 @@ forecast_plots <- function(df, ncol = NULL, show.legend = TRUE, ylabel = 'predic
   #df <- df |> filter(model_id != 'persistenceRW')
 
   if (nrow(df) == 0){
-    print('No scored forecasts are available for this period')
+    print('No forecasts are available for this period')
   } else{
   ggobj <- forecast_ggobj(df, ncol, show.legend, ylabel, binary = binary)
   girafe(ggobj = ggobj,
