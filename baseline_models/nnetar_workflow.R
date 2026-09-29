@@ -314,7 +314,7 @@ for (i in rerun_dates){
 
   # Submit forecasts
   theme <- 'daily'
-  date <- curr_reference_datetime
+  date <- as.Date(curr_reference_datetime)
 
   forecast_models <- c("fableNNETAR")
 
