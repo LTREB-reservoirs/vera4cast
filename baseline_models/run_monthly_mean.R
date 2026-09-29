@@ -46,7 +46,7 @@ s3_submission <- arrow::s3_bucket(bucket = glue::glue("vera4cast-submissions/"),
                                   endpoint_override = "submit.ltreb-reservoirs.org",
                                   anonymous = TRUE)
 
-submitted_files <-  str_subset(s3_submission$ls(), model_name)#[!is.na(str_extract(s3_submission$ls(), model_name))]
+submitted_files <-  str_subset(s3_submission$ls(), team_name)#[!is.na(str_extract(s3_submission$ls(), model_name))]
 
 submitted_dates <-  ymd(str_extract(submitted_files, "\\d{4}-\\d{2}-\\d{2}"))
 
