@@ -1,0 +1,344 @@
+#devtools::install_version("duckdb", "1.2.2")
+remotes::install_github('cboettig/duckdbfs', upgrade = 'never')
+
+score4cast::ignore_sigpipe()
+
+library(dplyr)
+library(duckdbfs)
+library(progress)
+library(bench)
+
+library(DBI)
+#DBI::dbExecute(con, "SET THREADS=64;")
+
+# Load the ICU timezone extension so any TIMESTAMP WITH TIME ZONE columns
+# embedded in the union of bundled-parquet files are castable to TIMESTAMP
+# (avoids "Unimplemented type for cast (TIMESTAMP WITH TIME ZONE -> DATE)").
+
+library(minioclient)
+
+install_mc()
+mc_alias_set("osn", "amnh1.osn.mghpcc.org", Sys.getenv("OSN_KEY"), Sys.getenv("OSN_SECRET"))
+
+con <- duckdbfs::cached_connection(tempfile())
+DBI::dbExecute(con, "INSTALL icu; LOAD icu; SET TimeZone='UTC';")
+
+
+## identify dates that need to be rerun ##
+
+## find missing score ref dates ##
+ds <- duckdbfs::open_dataset('s3://bio230121-bucket01/vera4cast/forecasts/bundled-parquet/project_id=vera4cast/duration=P1D/',
+                             s3_endpoint = 'amnh1.osn.mghpcc.org', anonymous = TRUE)
+
+
+unique_variables <- ds |>
+  filter(model_id == 'glm_aed_flare_v3',
+         site_id == 'bvre') |>
+  distinct(variable) |>
+  collect()
+
+interest_var <- 'Temp_C_mean'
+
+# distinct() is pushed down to duckdb, so only the unique combinations (not the
+# full dataset) are collected.
+unique_forecast_dates <- ds |>
+  filter(model_id == 'glm_aed_flare_v3',
+         variable == interest_var,
+         site_id == 'bvre') |>
+  distinct(reference_datetime) |>
+  collect()
+
+# # summaries
+# ds_summaries <- duckdbfs::open_dataset('s3://bio230121-bucket01/vera4cast/forecasts/bundled-summaries/project_id=vera4cast/duration=P1D/',
+#                                     s3_endpoint = 'amnh1.osn.mghpcc.org', anonymous = TRUE)
+#
+# # distinct() is pushed down to duckdb, so only the unique combinations (not the
+# # full dataset) are collected.
+# unique_summaries_dates <- ds_summaries |>
+#   filter(model_id == 'glm_aed_flare_v3',
+#          variable == interest_var) |>
+#   distinct(reference_datetime) |>
+#   collect()
+#
+# forecast_summaries_diff <- setdiff(unique_forecast_dates$reference_datetime, unique_summaries_dates$reference_datetime)
+
+
+# scores
+ds_scores <- duckdbfs::open_dataset('s3://bio230121-bucket01/vera4cast/scores/bundled-parquet/project_id=vera4cast/duration=P1D/',
+                                    s3_endpoint = 'amnh1.osn.mghpcc.org', anonymous = TRUE)
+
+# distinct() is pushed down to duckdb, so only the unique combinations (not the
+# full dataset) are collected.
+unique_score_dates <- ds_scores |>
+  filter(model_id == 'glm_aed_flare_v3',
+         variable == interest_var,
+         site_id == 'bvre') |>
+  distinct(reference_datetime) |>
+  collect()
+
+
+
+#rerun_dates <- setdiff(unique_forecast_dates$reference_datetime, unique_score_dates$reference_datetime)
+rerun_dates <- lubridate::as_datetime('2025-05-25')
+
+remove_dir <- function(path) {
+  tryCatch(
+    {
+      minioclient::mc_rm(path, recursive = TRUE)
+      message('directory successfully removed...')
+    },
+    error = function(cond) {
+      message("The removal directory could not be found...")
+      message("Here's the original error message:")
+      message(conditionMessage(cond))
+      # Choose a return value in case of error
+      NA
+    },
+    warning = function(cond) {
+      message('Deleting the directory caused a warning...')
+      message("Here's the original warning message:")
+      message(conditionMessage(cond))
+      # Choose a return value in case of warning
+      NULL
+    },
+    finally = {
+      # NOTE:
+      # Here goes everything that should be executed at the end,
+      # regardless of success or error.
+      # If you want more than one expression to be executed, then you
+      # need to wrap them in curly brackets ({...}); otherwise you could
+      # just have written 'finally = <expression>'
+      message("Finished the delete portion...")
+    }
+  )
+}
+
+remove_dir("osn/bio230121-bucket01/vera4cast/tmp/score_me")
+remove_dir("osn/bio230121-bucket01/vera4cast/tmp/forecasts")
+remove_dir("osn/bio230121-bucket01/vera4cast/tmp/targets")
+remove_dir("osn/bio230121-bucket01/vera4cast/tmp/scores")
+
+
+#fs::dir_create("new_scores")
+
+project <- "vera4cast"
+cut_off_date <- Sys.Date() - lubridate::dmonths(23)
+rescore <- FALSE
+obs_key_cols <- c("project_id", "site_id", "datetime", "duration", "variable", "depth_m")
+score_key_cols <- c(obs_key_cols, "model_id", "family", "reference_datetime", "depth_m")
+
+
+duckdbfs::duckdb_secrets(endpoint = "amnh1.osn.mghpcc.org",
+                         key = Sys.getenv("OSN_KEY"),
+                         secret = Sys.getenv("OSN_SECRET"),
+                         bucket = "bio230121-bucket01/vera4cast")
+
+
+# print('read targets files...')
+#
+target_files <-
+  c("https://amnh1.osn.mghpcc.org/bio230121-bucket01/vera4cast/targets/project_id=vera4cast/duration=P1D/daily-insitu-targets.csv.gz",
+    "https://amnh1.osn.mghpcc.org/bio230121-bucket01/vera4cast/targets/project_id=vera4cast/duration=P1D/daily-inflow-targets.csv.gz",
+    "https://amnh1.osn.mghpcc.org/bio230121-bucket01/vera4cast/targets/project_id=vera4cast/duration=P1D/daily-met-targets.csv.gz"
+  )
+
+### Access the targets, forecasts, and scores subsets
+targets <-
+  open_dataset(target_files,
+               recursive = FALSE,
+               format = "csv",
+               #parser_options = list(nullstr = "NA"),
+               anonymous = TRUE,
+
+  ) |>
+  mutate(
+    depth_m = as.numeric(depth_m),
+    depth_m = ifelse(is.na(depth_m), -999999, depth_m),
+    datetime = sql("CAST(datetime AS TIMESTAMP)")) |>
+  #datetime = lubridate::floor_date(lubridate::as_datetime(datetime), "day")) |>
+  #datetime = lubridate::as_datetime(as.Date(datetime))) |> ### THIS SHOULD FIX THE DATETIME INNER-JOIN ISSUE
+  filter(project_id == {project},
+         datetime > {cut_off_date},
+         !is.na(observation)
+  ) |>
+  distinct(site_id, datetime, duration, depth_m, variable, .keep_all = T) |>
+  mutate(datetime = as.POSIXct(datetime))
+
+
+# No point in trying to score any forecasts still in future (relative to last observed)
+# (pull forces eval, can take a minute)
+last_observed_date <- targets |>
+  select(datetime) |>
+  distinct() |>
+  filter(datetime == max(datetime)) |> pull(datetime)
+
+#last_observed_date <- as.Date('2026-09-02')
+
+## Modify last observed date here -- adjust artificially to the past to make smaller processing chunk ##
+#last_observed_date <- cut_off_date + lubridate::dmonths(2)
+
+
+
+print('read forecasts for scoring...')
+# Omit scoring of daily forecasts that have a horizon > 35
+
+forecasts <-
+  open_dataset("s3://bio230121-bucket01/vera4cast/forecasts/bundled-parquet/",
+               s3_endpoint = "amnh1.osn.mghpcc.org",
+               anonymous=TRUE) |>
+  mutate(
+    depth_m = as.numeric(depth_m),
+    depth_m = ifelse(is.na(depth_m), -999999, depth_m),
+    # Normalize mixed DATE / TIMESTAMPTZ parquet datetime columns to TIMESTAMP
+    # before any filter or horizon calc — some bundle files surface datetime
+    # as TIMESTAMPTZ, and a later DATE cast otherwise fails with
+    # "Unimplemented type for cast (TIMESTAMP WITH TIME ZONE -> DATE)".
+    datetime = sql("CAST(datetime AS TIMESTAMP)"),
+    reference_datetime = sql("CAST(reference_datetime AS TIMESTAMP)")) |>
+  filter(project_id == {project},
+         datetime > {cut_off_date},
+         datetime <= {last_observed_date},
+         #datetime %in% rerun_dates,
+         reference_datetime %in% rerun_dates,
+         model_id == 'glm_aed_flare_v3',
+         site_id == 'bvre',
+         #variable == interest_var,
+         !is.na(model_id),
+         !is.na(parameter),
+         !is.na(prediction)
+
+  ) |>
+  # if necessary, enforce naming convention on "family" to avoid perpetual rescoring
+  mutate(family = ifelse(family == 'ensemble', "sample", family)) |>
+  # enforce horizon filter.
+  # Both sides are CAST to TIMESTAMP before DATE_DIFF: the parquet files mix
+  # DATE / TIMESTAMP / TIMESTAMPTZ datetime storage across bundles, and
+  # native subtraction (TIMESTAMP - TIMESTAMP -> INTERVAL) or EXTRACT(DAY
+  # FROM interval) on a TIMESTAMPTZ column triggers duckdb's
+  # "Unimplemented type for cast (TIMESTAMP WITH TIME ZONE -> DATE)".
+  mutate(horizon = sql(
+    "DATE_DIFF('day', CAST(reference_datetime AS TIMESTAMP), CAST(datetime AS TIMESTAMP))"
+  )) |>
+  filter(! (duration == "P1D" & horizon > 35))
+
+# THIS ONLY SCORES EARLIEST SUBMISSION OF A REFERENCE DATETIME.  SO A RESUBMISSION WILL NOT
+# BE SCORED.  CHANGGING slice_min(pub_datetime) to slice_max(pub_datetime) WILL SCORE THE MOST
+# RECENT SUBMITTED FORECAST
+## DuckDB's parquet_scan on bundled-parquet caches the file list at view
+## creation; in-flight bundle rewrites (bundle-forecasts.R) can then trigger a
+## spurious "HTTP 404 Not Found / NoSuchKey" on read.  Get distinct variable
+## names instead from a fresh directory listing of the hive-style
+## 'variable=<name>' partition folders via minioclient, which never reads the
+## parquet files.
+# variable_ids <-
+#   minioclient::mc_ls("osn/bio230121-bucket01/vera4cast/forecasts/bundled-parquet/project_id=vera4cast/",
+#                      recursive = TRUE) |>
+#   stringr::str_extract("variable=[^/]+") |>
+#   stringr::str_remove("^variable=") |>
+#   unique() |>
+#   sort()
+# Previous (fragile) duckdbfs approach:
+# variable_ids <- forecasts |> distinct(variable) |> collect() |> pull(variable)
+
+forecasts |>
+  #filter(variable == curr_variable_id) |>
+  group_by(model_id, variable, reference_datetime) |>
+  slice_min(pub_datetime) |>
+  ungroup() |>
+  group_by(variable) |>
+  write_dataset("s3://bio230121-bucket01/vera4cast/tmp/forecasts")
+
+#
+# for(i in 1:length(variable_ids)){
+#   curr_variable_id<- variable_ids[i]
+#   forecasts |>
+#     filter(variable == curr_variable_id) |>
+#     group_by(model_id, variable, reference_datetime) |>
+#     slice_min(pub_datetime) |>
+#     ungroup() |>
+#     group_by(variable) |>
+#     write_dataset("s3://bio230121-bucket01/vera4cast/tmp/forecasts")
+# }
+
+scores <-
+  open_dataset("s3://bio230121-bucket01/vera4cast/scores/bundled-parquet/",
+               s3_endpoint = "amnh1.osn.mghpcc.org", anonymous=TRUE) |>
+  mutate(
+    depth_m = as.numeric(depth_m),
+    depth_m = ifelse(is.na(depth_m), -999999, depth_m)) |>
+  filter(project_id == {project},
+         datetime > {cut_off_date},
+         site_id == 'bvre',
+         model_id == 'glm_aed_flare_v3',
+         #variable == interest_var,
+         !is.na(observation)
+  )
+
+tol <- 1e-2
+# if(rescore) {
+#   print("rescoring changed observations")
+#   # drop rows from scores if the scores and targets disagree on "observation"
+#   scores <- scores |>
+#     inner_join(targets, by = obs_key_cols) |>
+#     filter( abs(observation.x - observation.y)/observation.x < {tol})
+#
+#   ## Note: Only used to anti-join (filter).
+#   ## The new observations will come from latest targets
+#
+#   ## union() won't overwrite those rows.
+#
+# }
+
+## NOTE In theory we just want to do this:
+# bench::bench_time({
+#  forecasts |>
+#    anti_join(scores) |> # forecast is unscored
+#    inner_join(targets) |> # forecast has targets available
+#    write_dataset("score_me.parquet")
+#})
+
+
+print("Caching forecasts, scores, targets...")
+
+duckdbfs::duckdb_secrets(endpoint = "amnh1.osn.mghpcc.org",
+                         key = Sys.getenv("OSN_KEY"),
+                         secret = Sys.getenv("OSN_SECRET"),
+                         bucket = "bio230121-bucket01/vera4cast")
+
+
+## INSTEAD, we pull our subset to local disk first.
+## This looks silly but is much better for RAM and speed!!
+#bench::bench_time({ # ~ 5.4m (w/ 6mo cutoff)
+#  forecasts |> group_by(variable) |> write_dataset("s3://bio230121-bucket01/vera4cast/tmp/forecasts")
+#})
+
+bench::bench_time({
+  scores |> group_by(variable) |> write_dataset("s3://bio230121-bucket01/vera4cast/tmp/scores")
+})
+
+bench::bench_time({
+  targets |> group_by(variable) |> write_dataset("s3://bio230121-bucket01/vera4cast/tmp/targets")
+})
+
+bench::bench_time({
+  forecasts <- open_dataset("s3://bio230121-bucket01/vera4cast/tmp/forecasts/**")
+  scores <- open_dataset("s3://bio230121-bucket01/vera4cast/tmp/scores/**")
+  targets <- open_dataset("s3://bio230121-bucket01/vera4cast/tmp/targets/**")
+})
+
+## Magic rock&roll time: Subset unscored + targets available:
+print("Compute who needs to be scored...")
+
+bench::bench_time({ # ~ 13s
+  forecasts |>
+    anti_join(select(scores, all_of(score_key_cols))) |> # forecast is unscored
+    inner_join(targets) |> # forecast has targets available
+    distinct() |> # remove duplicate submissions
+    group_by(variable) |>
+    write_dataset("s3://bio230121-bucket01/vera4cast/tmp/score_me")
+
+})
+
+
+minioclient::mc_ls('osn/bio230121-bucket01/vera4cast/tmp/score_me')
+
