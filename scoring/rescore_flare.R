@@ -31,11 +31,11 @@ ds <- duckdbfs::open_dataset('s3://bio230121-bucket01/vera4cast/forecasts/bundle
                              s3_endpoint = 'amnh1.osn.mghpcc.org', anonymous = TRUE)
 
 
-unique_variables <- ds |>
-  filter(model_id == 'glm_aed_flare_v3',
-         site_id == 'bvre') |>
-  distinct(variable) |>
-  collect()
+#unique_variables <- ds |>
+# filter(model_id == 'glm_aed_flare_v3',
+#         site_id == 'bvre') |>
+#  distinct(variable) |>
+#  collect()
 
 interest_var <- 'Temp_C_mean'
 
@@ -78,8 +78,10 @@ unique_score_dates <- ds_scores |>
 
 
 
-#rerun_dates <- setdiff(unique_forecast_dates$reference_datetime, unique_score_dates$reference_datetime)
-rerun_dates <- lubridate::as_datetime('2025-05-25')
+rerun_dates <- setdiff(unique_forecast_dates$reference_datetime, unique_score_dates$reference_datetime)
+#rerun_dates <- lubridate::as_datetime('2025-05-25')
+rerun_dates <- rerun_dates[1:50] # JUST TRY RUNNING 50 FORECASTS AT A TIME
+
 
 remove_dir <- function(path) {
   tryCatch(
