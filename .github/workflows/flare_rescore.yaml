@@ -50,8 +50,8 @@ jobs:
       #- name: scoring-prep
         #run: r scoring/prep_scoring.R
 
-      - name: flare-rescore
-        run: r scoring/rescore_flare.R
+      #- name: flare-rescore
+      #  run: r scoring/rescore_flare.R
 
       - name: scoring
         run: r scoring/scoring.R
