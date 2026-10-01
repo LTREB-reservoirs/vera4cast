@@ -80,8 +80,6 @@ unique_score_dates <- ds_scores |>
 
 rerun_dates <- setdiff(unique_forecast_dates$reference_datetime, unique_score_dates$reference_datetime)
 #rerun_dates <- lubridate::as_datetime('2025-05-25')
-rerun_dates <- rerun_dates[1:200] # JUST TRY RUNNING 50 FORECASTS AT A TIME
-
 
 remove_dir <- function(path) {
   tryCatch(
