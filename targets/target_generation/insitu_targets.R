@@ -168,10 +168,25 @@ bvr_files <- c(paste0("https://pasta.lternet.edu/package/data/eml/edi/725/5/f649
 #schmidt_stability <- bind_rows(schmidt_stability_fcr, schmidt_stability_bvr)
 schmidt_stability <- schmidt_stability_fcr
 
+
+## water level
+source('targets/target_functions/target_generation_SchmidtStability.R')
+
+fcr_wl_files <- c(paste0("https://pasta.lternet.edu/package/data/eml/edi/271/10/814580ebec0385c66f0a0a97c38e9136?key=",edi_access_key),
+               "https://raw.githubusercontent.com/FLARE-forecast/FCRE-data/fcre-catwalk-data-qaqc/fcre-waterquality_L1.csv")
+
+bvr_wl_files <- c(paste0("https://pasta.lternet.edu/package/data/eml/edi/725/6/37e2587d2ab477068b295f97f1598cf9?key=",edi_access_key),
+               "https://raw.githubusercontent.com/FLARE-forecast/BVRE-data/bvre-platform-data-qaqc/bvre-waterquality_L1.csv")
+
+water_level_df <- target_generation_waterlevel_daily(fcr_files = fcr_wl_files,
+                                                     bvr_files = bvr_wl_files)
+
+water_level_df$datetime <- lubridate::as_datetime(water_level_df$datetime)
+
 ## combine the data and perform final adjustments (depth, etc.)
 
 combined_targets <- bind_rows(exo_daily, fluoro_daily, fcr_thermistor_temp_daily, bvr_thermistor_temp_daily, secchi_daily,
-                              mom_daily_targets, thermocline_depth, schmidt_stability, eddy_flux, chem_data, metals_data,ghg_data, silica_data) |>
+                              mom_daily_targets, thermocline_depth, schmidt_stability, eddy_flux, chem_data, metals_data,ghg_data, silica_data, water_level_df) |>
   select(all_of(column_names))
 
 combined_targets_deduped <- combined_targets |>
