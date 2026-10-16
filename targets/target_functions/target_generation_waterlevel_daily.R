@@ -46,7 +46,7 @@ target_generation_waterlevel_daily <- function (fcr_files,
   # BVR
   bvr_sum <- bvr_df |>
     dplyr::group_by(Date, site_id) |> #daily mean
-    dplyr::summarise(WaterLevel_m_mean = mean(LvlDepth_m_13 + 0.5, na.rm = T))
+    dplyr::summarise(WaterLevel_m_mean = mean(LvlDepth_m_13 + 0.5, na.rm = T)) #the difference between the staff gauge readings and the sensor readings, the average difference was 0.58
 
   #Combine
   comb_sum <- fcr_sum |>
