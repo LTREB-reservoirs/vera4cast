@@ -170,7 +170,7 @@ schmidt_stability <- schmidt_stability_fcr
 
 
 ## water level
-source('targets/target_functions/target_generation_SchmidtStability.R')
+source('targets/target_functions/target_generation_waterlevel_daily.R')
 
 fcr_wl_files <- c(paste0("https://pasta.lternet.edu/package/data/eml/edi/271/10/814580ebec0385c66f0a0a97c38e9136?key=",edi_access_key),
                "https://raw.githubusercontent.com/FLARE-forecast/FCRE-data/fcre-catwalk-data-qaqc/fcre-waterquality_L1.csv")
