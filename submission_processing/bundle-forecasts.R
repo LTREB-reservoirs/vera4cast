@@ -1,3 +1,5 @@
+remotes::install_version("duckdb", version = "1.5.2", repos = "http://cran.us.r-project.org")
+
 remotes::install_github("cboettig/duckdbfs", upgrade=FALSE)
 
 score4cast::ignore_sigpipe()
