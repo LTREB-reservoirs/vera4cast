@@ -1,5 +1,6 @@
 
 # devtools::install_version("duckdb", "1.2.2")
+remotes::install_version("duckdb", version = "1.5.2", repos = "http://cran.us.r-project.org")
 
 library(dplyr)
 library(duckdbfs)
