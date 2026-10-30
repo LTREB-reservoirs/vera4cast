@@ -1,4 +1,8 @@
-remotes::install_version("duckdb", version = "1.5.2", repos = "http://cran.us.r-project.org")
+#remotes::install_version("duckdb", version = "1.5.2", repos = "http://cran.us.r-project.org")
+remotes::install_url(
+  "https://cran.r-project.org/src/contrib/Archive/duckdb/duckdb_1.5.2.tar.gz",
+  dependencies = TRUE
+)
 
 remotes::install_github("cboettig/duckdbfs", upgrade=FALSE)
 
