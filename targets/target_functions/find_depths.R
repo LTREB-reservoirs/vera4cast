@@ -2,6 +2,7 @@
 
 # Edited: 04 Nov 2025 - changed the format of the offset file to make it a long format and to make the function cleaner with less arguments for a pre and post move.
 # 10 Feb 2026 - added a drop_na to take out NAs in the DateTime column. It was throwing errors. 
+# 05 Nov 2026 - forced all dates and times to EST because skipping some data with time mismatch
 
 
 
@@ -15,8 +16,15 @@ find_depths <- function(data_file, # data_file = the file of most recent data ei
   # Read in files if data file is a character. If not rename data_file to data
   if(is.character(data_file)){
     data <- readr::read_csv(data_file, show_col_types = F)
+
+    # Put all dates in EST
+    data$DateTime <- force_tz(as.POSIXct(data$DateTime), tzone = "EST")
+    
   }else{
     data <- data_file
+
+    # Put all dates in EST
+    data$DateTime <- force_tz(as.POSIXct(data$DateTime), tzone = "EST")
   }
 
   # Read in depth offset if it is a character. If not then just rename the file
@@ -32,6 +40,10 @@ find_depths <- function(data_file, # data_file = the file of most recent data ei
   depth <- depth|>
     mutate(
       Offset_end = ymd_hms(ifelse(Offset_end == "current", as.character(Sys.time()),Offset_end)))
+
+  # Make sure that times are in EST
+  depth$Offset_start <- force_tz(as.POSIXct(depth$Offset_start), tzone = "EST")
+  depth$Offset_end <- force_tz(as.POSIXct(depth$Offset_end), tzone = "EST")
 
   # Select the sensors on the temp string because they are stationary.
   # Then pivot the data frame longer to merge the offset file so you can add a depth to each sensor reading
