@@ -52,10 +52,13 @@ summaries_model_var_max_date_df <- duckdbfs::open_dataset(paste0("s3://anonymous
   filter(duration %in% c("P1D", "PT1H")) |>
   distinct(reference_datetime, model_id, variable, duration, datetime, pub_datetime) |>
   group_by(variable, duration, model_id) |>
-  summarize(date = max(datetime, na.rm = TRUE),
-            reference_datetime = max(reference_datetime, na.rm = TRUE),
-            pub_datetime = max(pub_datetime, na.rm = TRUE)) |>
-  collect()
+  summarize(max_date = as.Date(max(datetime, na.rm = TRUE)),
+            reference_datetime = as.Date(max(reference_datetime, na.rm = TRUE)),
+            pub_datetime = as.Date(max(pub_datetime, na.rm = TRUE))) |>
+  collect() |>
+  mutate(date_check = ifelse(max_date > (as.Date(reference_datetime) + days(60)), TRUE, FALSE)) |>
+  #mutate(date = ifelse(date_check == TRUE))
+  mutate(date_new = ifelse(date_check == TRUE, as.Date(reference_datetime), as.Date(max_date)))
 
 summaries_model_var_min_date_df <- duckdbfs::open_dataset(paste0("s3://anonymous@",config$scores_bucket,"/bundled-parquet/project_id=",
                                                                  config$project_id,"/?endpoint_override=",config$endpoint))   |>
@@ -433,7 +436,8 @@ for (i in 1:length(config$target_groups)){ # LOOP OVER VARIABLE GROUPS -- BUILD 
                                code_web_link = model_code_link,
                                model_keywords = model_keywords,
                                stac_web_link = stac_link,
-                               raw_json_link = json_link)
+                               raw_json_link = json_link,
+                               var_formal_name = var_formal_name)
 
       } ## end model loop
 
