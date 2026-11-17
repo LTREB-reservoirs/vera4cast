@@ -2,6 +2,7 @@ library(arrow)
 library(dplyr)
 library(gsheet)
 library(readr)
+library(lubridate)
 
 #source('catalog/R/stac_functions.R')
 config <- yaml::read_yaml('challenge_configuration.yaml')
@@ -56,7 +57,7 @@ summaries_model_var_max_date_df <- duckdbfs::open_dataset(paste0("s3://anonymous
             reference_datetime = as.Date(max(reference_datetime, na.rm = TRUE)),
             pub_datetime = as.Date(max(pub_datetime, na.rm = TRUE))) |>
   collect() |>
-  mutate(date_check = ifelse(max_date > (as.Date(reference_datetime) + days(60)), TRUE, FALSE)) |>
+  mutate(date_check = ifelse(max_date > (as.Date(reference_datetime) + lubridate::days(60)), TRUE, FALSE)) |>
   #mutate(date = ifelse(date_check == TRUE))
   mutate(date_new = ifelse(date_check == TRUE, as.Date(reference_datetime), as.Date(max_date)))
 
