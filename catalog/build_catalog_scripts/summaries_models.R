@@ -48,19 +48,21 @@ summaries_sites <- duckdbfs::open_dataset(paste0("s3://anonymous@",config$summar
 all_summaries_sites <- unique(summaries_sites$site_id)
 
 print('forecast dates...')
+date_cutoff <- Sys.Date() + lubridate::days(365)
+
 summaries_model_var_max_date_df <- duckdbfs::open_dataset(paste0("s3://anonymous@",config$summaries_bucket,"/bundled-summaries/project_id=",
                                                                  config$project_id,"/?endpoint_override=",config$endpoint))   |>
   filter(duration %in% c("P1D", "PT1H")) |>
   distinct(reference_datetime, model_id, variable, duration, datetime, pub_datetime) |>
+  filter(datetime < date_cutoff) |>
   group_by(variable, duration, model_id) |>
-  summarize(max_date = as.Date(max(datetime, na.rm = TRUE)),
+  summarize(date = as.Date(max(datetime, na.rm = TRUE)),
             reference_datetime = as.Date(max(reference_datetime, na.rm = TRUE)),
             pub_datetime = as.Date(max(pub_datetime, na.rm = TRUE))) |>
   collect() |>
-  mutate(date_check = ifelse(max_date > (as.Date(reference_datetime) + lubridate::days(60)), TRUE, FALSE)) |>
+  mutate(date_check = ifelse(date > (as.Date(reference_datetime) + lubridate::days(60)), TRUE, FALSE)) |>
   #mutate(date = ifelse(date_check == TRUE))
-  mutate(date_new = ifelse(date_check == TRUE, as.Date(reference_datetime), as.Date(max_date)))
-
+  mutate(date_new = ifelse(date_check == TRUE, as.Date(reference_datetime), as.Date(date)))
 summaries_model_var_min_date_df <- duckdbfs::open_dataset(paste0("s3://anonymous@",config$scores_bucket,"/bundled-parquet/project_id=",
                                                                  config$project_id,"/?endpoint_override=",config$endpoint))   |>
   filter(duration %in% c("P1D", "PT1H")) |>
